@@ -39,16 +39,21 @@ def open_raw(filename):
     weights = []
     coefficients = []
     alternatives = []
-    titles = ['alternatives', 'weights', 'coefficients']
-    matrix = [alternatives, weights, coefficients]
+    thresholds = []
+    titles = ['alternatives', 'weights', 'coefficients', 'thresholds']
+    matrix = [alternatives, weights, coefficients, thresholds]
     i = 0
-    ind = titles.index(header[i].lower())
+    ind = titles.index(header[i].lower().strip())
     for row in data[2:]:
         if row[0][0] == '#':
             i += 1
-            ind = titles.index(header[i].lower())
+            ind = titles.index(header[i].lower().strip())
         else:
             matrix[ind].append(list(map(lambda x: float(x), row[:])))
+    for i in range(1, len(matrix)):
+        if matrix[i]:
+            matrix[i] = matrix[i][0]
+
     return matrix
 
 

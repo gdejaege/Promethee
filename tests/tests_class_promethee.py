@@ -51,3 +51,31 @@ def test3():
     print(promethee.scores)
     rr = promethee.compute_rr_number(True)
     print(rr)
+
+
+def test4():
+    """Check that the number of rank reversals are the same than with matlab.
+
+    (robust promethee with HDI data set)
+    """
+    data_set = 'data/SHA/raw_20.csv'
+    alts, weights, coeff, ceils = dr.open_raw(data_set)
+    print(weights)
+    print(ceils)
+    # ceils = [3, 3]
+    # weights = [0.5, 0.5]
+    promethee = prom.PrometheeII(alts, weights=weights, ceils=ceils)
+    rr = promethee.compute_rr_number(True)
+    print(rr)
+
+
+def test5():
+    """Test the number of rank reversals in the 20 first EPI alternatives."""
+    data_set = 'data/EPI/raw.csv'
+    alts = dr.open_raw(data_set)[0]
+    alts = alts[0:20]
+    seed = 0
+
+    promethee = prom.PrometheeII(alts, seed=seed)
+    rr = promethee.compute_rr_number()
+    print(rr)
