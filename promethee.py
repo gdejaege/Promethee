@@ -96,6 +96,20 @@ class GeneralizedType5:
 """Complementary functions."""
 
 
+def strategy1(alternatives, ref_number, seed=0):
+    """Build a set of random references."""
+    random.seed(seed)
+    crit_number = len(alternatives[0])
+    RS = []
+    eval_per_criterion = list(map(list, zip(*alternatives)))
+    for ref in range(ref_number):
+        reference = []
+        for criterion in eval_per_criterion:
+            reference.append(random.uniform(min(criterion), max(criterion)))
+        RS.append(reference)
+    return RS
+
+
 class PrometheeII:
 
     """PrometheeII class."""
@@ -386,3 +400,84 @@ class RobustPII(PrometheeII):
             sum_row_i = sum([Pij[i][j] for j in range(len(Pij))])
             rob_flows.append((1/(len(Pij)-1))*(2*sum_row_i) - 1)
         return rob_flows
+
+
+class ReferencedPII(PrometheeII):
+
+    """Referenced Promethee class."""
+
+    def __init__(self, alternatives, seed=0, alt_num=-1, coefficients=None,
+                 weights=None, pref_func=None, ceils=None, ref_set=None,
+                 strategy=None, ref_num=4):
+        """Constructor."""
+        if (ref_set is not None):
+            self.RS = ref_set
+        elif (strategy is not None):
+            self.RS = strategy(alternatives, ref_num, seed)
+        else:
+            print("precise a references set or a strategy to build one")
+            exit()
+
+        super().__init__(alternatives=alternatives, seed=seed, alt_num=alt_num,
+                         ceils=ceils, coefficients=coefficients,
+                         weights=weights)
+
+    def compute_scores(self, alternatives=None, weights=None, pref_funcs=None,
+                       ref_set=None):
+        """Compute the referenced promethee score."""
+        if alternatives is None:
+            alternatives = self.alternatives
+        if weights is None:
+            weights = self.weights
+        if pref_funcs is None:
+            pref_funcs = self.pref_functions
+        if ref_set is None:
+            RS = self.RS
+
+        return self.compute_refflow(alternatives, weights, pref_funcs, RS)
+
+    def compute_refflow(self, alternatives, weights, pref_funcs, RS):
+        """Return the referenced flow."""
+        refflows = []
+        for alt in alternatives:
+            score = 0
+            for ref in RS:
+                for k in range(len(weights)):
+                    weight = weights[k]
+                    pref_k = pref_funcs[k]
+                    alt_k = alt[k]
+                    ref_k = ref[k]
+                    diff = alt_k - ref_k
+                    score += weight*(pref_k.value(diff) - pref_k.value(-diff))
+            score = score / (len(RS) - 1)
+            refflows.append(score)
+        return refflows
+
+    def tied_ranking(self, scores, threshold=1e-3, verbose=False):
+        """Compute a ranking with ties.
+
+        Alternatives have the same ranking if their score is closer than
+        threshold.
+
+        First build :
+        tied_ranking[i] = list of alternatives which are ranked ith.
+        """
+        ordered_scores = sorted(list(set(scores)), reverse=True)
+        managed_scores = set()
+        tied_ranking = []
+        for score in ordered_scores:
+            ties = []
+            for alt in range(len(scores)):
+                if abs(scores[alt] - score) <= threshold:
+                    if alt not in managed_scores:
+                        ties.append(alt)
+                        managed_scores.add(alt)
+            if ties:
+                tied_ranking.append(ties)
+        if(verbose):
+            print(tied_ranking)
+
+        tot_ties = 0
+        for ties in tied_ranking:
+            tot_ties += len(ties) - 1
+        return tot_ties
