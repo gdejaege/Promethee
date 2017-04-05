@@ -19,3 +19,14 @@ rank reversals :
 35.800,18.300,29.800,18.100,10.700
 38.000,17.300,29.400,19.600,11.400
 
+RR caused with Promethee: 11
+values of m: [14, 16]
+values of R: [500, 1000, 5000, 8000]
+average of: 10 repetitions 
+rank reversals : 
+9.000,8.000
+8.700,7.800
+9.000,8.500
+9.000,7.800
+
+

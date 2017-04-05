@@ -4,6 +4,67 @@ import data_reader as dr
 import random
 
 
+def count_rr(data='HDI', max_rep=10, R_parameter=None, m_parameter=None):
+    """Test the number of rank reversals."""
+    # Parameter initialization, the interesting stuff is way lower
+    if(data == 'HDI'):
+        # Change these parameters if needed
+        R_list = [500, 1000, 5000, 10000]
+        m_list = [3, 5, 6, 7, 8, 10, 15]
+
+        # Do not change these parameters ! They are not saved
+        data_set = 'data/HDI/raw.csv'
+        alts = dr.open_raw(data_set)[0]
+        weights = [0.5, 0.5]
+        ceils = [3, 3]
+        seed = 0                # Not used, here to match the general signature
+
+    elif(data == 'SHA'):
+        # Change these parameters if needed
+        R_list = [1000, 4000, 7000, 12000]
+        m_list = [4, 6, 8, 9, 12]
+
+        # Do not change these parameters ! They are not saved
+        data_set = 'data/SHA/raw_20.csv'
+        alts = dr.open_raw(data_set)[0]
+        weights = [0.1667, 0.1667, 0.1667, 0.1667, 0.1667, 0.1667]
+        ceils = [17.100, 23.7750, 26.100, 27.3750, 17.9250, 13.5750]
+        seed = 0                # Not used, here to match the general signature
+
+    else:
+        # Change these parameters if needed
+        R_list = [500, 1000, 5000, 8000]
+        m_list = [18]
+
+        # Do not change these parameters ! They are not saved
+        data_set = 'data/EPI/raw.csv'
+        alts = dr.open_raw(data_set)[0]
+        alts = alts[0:20]
+        seed = 0
+
+    output_dir = 'res/RobustPII_R_m_influence/'
+    output = output_dir + data + '.txt'
+
+    promethee = prom.PrometheeII(alts, weights=weights, ceils=ceils, seed=seed)
+    rr_promethee = promethee.compute_rr_number()
+
+    rr_matrix = []
+    for R in R_list:
+        rr_row = []
+        for m in m_list:
+            rr = 0
+            for repetition in range(max_rep):
+                random.seed()
+                robust = prom.RobustPII(alts, weights=weights, ceils=ceils,
+                                        seed=seed, R=R, m=m)
+                rr += robust.compute_rr_number()
+            rr = rr/max_rep
+            rr_row.append(rr)
+        print(rr_row)
+        rr_matrix.append(rr_row)
+    print_rr_to_file(output, rr_matrix, R_list, m_list, rr_promethee, max_rep)
+
+
 def test1(max_rep=20):
     """Test done for the 20 first alternatives of the HDI data set.
 
@@ -90,7 +151,7 @@ def test3(max_rep=10):
 
     # Change these parameters if needed
     R_list = [500, 1000, 5000, 8000]
-    m_list = [3, 4, 7, 9, 12]
+    m_list = [14, 16]
 
     # Do not change these parameters ! They are not saved
     data_set = 'data/EPI/raw.csv'

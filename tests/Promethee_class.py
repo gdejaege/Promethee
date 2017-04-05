@@ -1,9 +1,10 @@
 """Test file of the new Promethee module."""
+
 import promethee as prom
 import data_reader as dr
 
 
-def test1():
+def test_ranking():
     """Test that PII computes the same ranking that in the article RobustPII."""
     data_set = 'data/HDI/raw.csv'
     alts = dr.open_raw(data_set)[0]
@@ -18,7 +19,7 @@ def test1():
         print(str(rank[i]) + '::' + str(scores[rank[i]]))
 
 
-def test2():
+def test_rr_counting_function():
     """Test the function computing the amount of RR between two rankings."""
     # we don't care about the parameters, we just want to initialise the object
     data_set = 'data/HDI/raw.csv'
@@ -35,47 +36,33 @@ def test2():
     print(ranking_new)
 
 
-def test3():
-    """Check that the number of rank reversals are the same than in the article.
+def test_rr_analysis(data='HDI'):
+    """Check that the rank reversals are correct."""
+    # Data initialisation according to the data set
+    if(data == 'HDI'):
+        data_set = 'data/HDI/raw.csv'
+        alts = dr.open_raw(data_set)[0]
+        ceils = [3, 3]
+        weights = [0.5, 0.5]
+        promethee = prom.PrometheeII(alts, weights=weights, ceils=ceils)
 
-    (robust promethee with HDI data set)
-    """
-    data_set = 'data/HDI/raw.csv'
-    alts = dr.open_raw(data_set)[0]
-    ceils = [3, 3]
-    weights = [0.5, 0.5]
-    promethee = prom.PrometheeII(alts, weights=weights, ceils=ceils)
+    elif(data == 'SHA'):
+        data_set = 'data/SHA/raw_20.csv'
+        alts, weights, coeff, ceils = dr.open_raw(data_set)
+        promethee = prom.PrometheeII(alts, weights=weights, ceils=ceils)
+
+    elif(data == 'EPI'):
+        data_set = 'data/EPI/raw.csv'
+        alts = dr.open_raw(data_set)[0]
+        alts = alts[0:20]
+        seed = 0
+        promethee = prom.PrometheeII(alts, seed=seed)
+
     print("initial ranking :")
     print(promethee.ranking)
     print("initial scores :")
     print(promethee.scores)
     rr = promethee.compute_rr_number(True)
     print(rr)
-
-
-def test4():
-    """Check that the number of rank reversals are the same than with matlab.
-
-    (robust promethee with HDI data set)
-    """
-    data_set = 'data/SHA/raw_20.csv'
-    alts, weights, coeff, ceils = dr.open_raw(data_set)
-    print(weights)
-    print(ceils)
-    # ceils = [3, 3]
-    # weights = [0.5, 0.5]
-    promethee = prom.PrometheeII(alts, weights=weights, ceils=ceils)
-    rr = promethee.compute_rr_number(True)
-    print(rr)
-
-
-def test5():
-    """Test the number of rank reversals in the 20 first EPI alternatives."""
-    data_set = 'data/EPI/raw.csv'
-    alts = dr.open_raw(data_set)[0]
-    alts = alts[0:20]
-    seed = 0
-
-    promethee = prom.PrometheeII(alts, seed=seed)
-    rr = promethee.compute_rr_number()
-    print(rr)
+    rr_instances = promethee.analyse_rr()
+    print(rr_instances)

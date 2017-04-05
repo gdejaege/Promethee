@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""Promethee and other MCDA method implementation.
-
-The file is subdivided as follow:
-    - preferences functions classes. Classical, then symetric versions
-    - utility functions : bunch of functions that helps for various tasks
-    - mcda methods : netflow computations, preference matrix computation, etc.
-"""
+"""Promethee it's variation implementation."""
 from math import exp
 import csv
 import random
@@ -127,9 +121,9 @@ class PrometheeII:
         self.scores = self.compute_scores()
         self.ranking = self.compute_ranking(self.scores)
 
-    def random_parameters(self, seed, alternatives, nmbre=-1):
+    def random_parameters(self, s, alternatives, nmbre=-1):
         """Compute random parameters using a seed."""
-        random.seed(seed)
+        random.seed(s)
         if nmbre != -1:
             alternatives = random.sample(alternatives, nmbre)
 
@@ -142,18 +136,12 @@ class PrometheeII:
         return alternatives, weights, coefficients
 
     def max_diff_per_criterion(self, alternatives, crit_quantity=-1):
-        """Retun a list of delta max for each criterion.
-
-        Should not be used sinc we can use sort by criterion.
-        """
+        """Retun a list of delta max for each criterion."""
         # quantity of criteria we are looking at
         if crit_quantity == -1:
             crit_quantity = len(alternatives[0])
 
-        eval_per_criterion = []
-        # evaluations of the alternatives for each criterion individually
-        for criterion in range(crit_quantity):
-            eval_per_criterion.append([row[criterion] for row in alternatives])
+        eval_per_criterion = list(map(list, zip(*alternatives)))
 
         diff = []
         for criterion in eval_per_criterion:
@@ -238,21 +226,20 @@ class PrometheeII:
 
         verbose input only serves for printing debug information
         """
-        RR = 0
+        total_rr_quantity = 0
         for i in range(len(self.alternatives)):
             copy_alternatives = self.alternatives[:]
             del copy_alternatives[i]
             scores = self.compute_scores(alternatives=copy_alternatives)
-            # print(scores)
             ranks = self.compute_ranking(scores)
             """Since we applied the method on n-1 alternatives, the ranks
             will be in [0, n-1] instead of [0, n]"""
             for j in range(len(ranks)):
                 if ranks[j] >= i:
                     ranks[j] += 1
-            # print(ranks)
-            RR += self.compare_rankings(self.ranking, ranks, i, verbose)
-        return RR
+            rr_quantity = self.compare_rankings(self.ranking, ranks, i, verbose)
+            total_rr_quantity += rr_quantity
+        return total_rr_quantity
 
     def compare_rankings(self, init_ranking, new_ranking, deleted_alt,
                          verbose=False):
@@ -267,7 +254,7 @@ class PrometheeII:
         new_copy = new_ranking[:]
         init_copy.remove(deleted_alt)
 
-        RR = 0
+        rr_quantity = 0
         while(len(init_copy) > 0):
             j = 0
             while (init_copy[0] != new_copy[j]):
@@ -275,11 +262,68 @@ class PrometheeII:
                     print("RR between " + str(init_copy[0]) + " and "
                           + str(new_copy[j]) + " when " + str(deleted_alt)
                           + "is deleted")
-                RR += 1
+
+                rr_quantity += 1
                 j += 1
             del init_copy[0]
             del new_copy[j]
-        return RR
+        return rr_quantity
+
+    def analyse_rr(self, verbose=False):
+        """Compute the pair of alternatives for which rr occurs.
+
+        This function is similar to the one counting the number of rank
+        reversals but is reimplemented here for more lisibility.
+        """
+        all_rr_instances = dict()
+        for i in range(len(self.alternatives)):
+            copy_alternatives = self.alternatives[:]
+            del copy_alternatives[i]
+            scores = self.compute_scores(alternatives=copy_alternatives)
+            ranks = self.compute_ranking(scores)
+            """Since we applied the method on n-1 alternatives, the ranks
+            will be in [0, n-1] instead of [0, n]"""
+            for j in range(len(ranks)):
+                if ranks[j] >= i:
+                    ranks[j] += 1
+
+            rr_instances = self.get_rr(self.ranking, ranks, i, verbose)
+
+            for key in rr_instances:
+                all_rr_instances[key] = \
+                    all_rr_instances.get(key, 0) + rr_instances.get(key)
+        return all_rr_instances
+
+    def get_rr(self, init_ranking, new_ranking, deleted_alt, verbose=False):
+        """Compute the number of rank reversal between two rankings.
+
+        Input :
+            init_ranking : ranking obtained with all alternatives
+            new_ranking : ranking obtained when deleted_alt is removed from
+                          the set of alternatives.
+        """
+        init_copy = init_ranking[:]
+        new_copy = new_ranking[:]
+        init_copy.remove(deleted_alt)
+
+        rr_instances = dict()
+        while(len(init_copy) > 0):
+            j = 0
+            while (init_copy[0] != new_copy[j]):
+                if (verbose):
+                    print("RR between " + str(init_copy[0]) + " and "
+                          + str(new_copy[j]) + " when " + str(deleted_alt)
+                          + "is deleted")
+
+                # add occurrence to dict of rank reversals
+                a = max(new_copy[j], init_copy[0])
+                b = min(new_copy[j], init_copy[0])
+                rr_instances[(a, b)] = rr_instances.get((a, b), 0) + 1
+
+                j += 1
+            del init_copy[0]
+            del new_copy[j]
+        return rr_instances
 
 
 class RobustPII(PrometheeII):

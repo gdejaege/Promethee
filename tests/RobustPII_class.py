@@ -4,7 +4,7 @@ import data_reader as dr
 import random
 
 
-def test1():
+def test_ranking():
     """Test if the ranking obtained is the same as in Robust PII article."""
     data_set = 'data/HDI/raw.csv'
     alts = dr.open_raw(data_set)[0]
