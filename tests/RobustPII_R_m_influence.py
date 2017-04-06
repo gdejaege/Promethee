@@ -40,6 +40,7 @@ def count_rr(data='HDI', max_rep=10, R_parameter=None, m_parameter=None):
         data_set = 'data/EPI/raw.csv'
         alts = dr.open_raw(data_set)[0]
         alts = alts[0:20]
+        weights, ceils = None, None
         seed = 0
 
     output_dir = 'res/RobustPII_R_m_influence/'

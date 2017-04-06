@@ -21,12 +21,14 @@ def analyse_rr(data='SHA', max_rep=20, R_parameter=None, m_parameter=None):
         ceils = [17.100, 23.7750, 26.100, 27.3750, 17.9250, 13.5750]
         seed = 1
     else:
+        data = 'EPI'
         R = 5000
         m = 16
         # Do not change these parameters ! They are not saved
         data_set = 'data/EPI/raw.csv'
         alts = dr.open_raw(data_set)[0]
         alts = alts[0:20]
+        weights, ceils = None, None
         seed = 0
 
     if R_parameter is not None:
