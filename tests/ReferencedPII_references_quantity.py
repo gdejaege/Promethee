@@ -13,7 +13,7 @@ def count_draws(threshold):
     # Change these parameters if needed
     ref_numbers = [2, 3, 5, 10, 15, 25]
     alternative_numbers = [10, 20, 40, 80]
-    seed_list = range(50)
+    seed_list = range(20)
 
     ref_set_strategy = prom.strategy1
 
@@ -29,7 +29,7 @@ def count_draws(threshold):
                     ref_prom = prom.ReferencedPII(alts, alt_num=alt_number,
                                                   strategy=ref_set_strategy,
                                                   seed=seed, ref_num=ref_number)
-                    tot += ref_prom.tied_ranking(ref_prom.scores, threshold)
+                    tot += ref_prom.draws_quantity(ref_prom.scores, threshold)
             res.append(tot)
         all_res.append(res)
     print_to_file(output, ref_numbers, alternative_numbers, seed_list, all_res)

@@ -1,4 +1,4 @@
-"""Test file of the new Promethee module."""
+"""Test file of the new Promethee module and the Promethee class."""
 
 import promethee as prom
 import data_reader as dr

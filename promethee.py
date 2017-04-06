@@ -130,6 +130,7 @@ class PrometheeII:
         if (ceils is None):
             ceils = [diffs[i] * coeff
                      for i, coeff in enumerate(self.coefficients)]
+        self.ceils = ceils
         self.pref_functions = [PreferenceType5(0, ceil) for ceil in ceils]
 
         self.scores = self.compute_scores()
@@ -449,35 +450,20 @@ class ReferencedPII(PrometheeII):
                     ref_k = ref[k]
                     diff = alt_k - ref_k
                     score += weight*(pref_k.value(diff) - pref_k.value(-diff))
-            score = score / (len(RS) - 1)
+            score = score / (len(RS))
             refflows.append(score)
         return refflows
 
-    def tied_ranking(self, scores, threshold=1e-3, verbose=False):
-        """Compute a ranking with ties.
+    def draws_quantity(self, scores, threshold=1e-3, verbose=False):
+        """Compute the quantity of ties.
 
         Alternatives have the same ranking if their score is closer than
-        threshold.
+        threshold. Each pair of such alternative will consist in a draw.
 
-        First build :
-        tied_ranking[i] = list of alternatives which are ranked ith.
         """
-        ordered_scores = sorted(list(set(scores)), reverse=True)
-        managed_scores = set()
-        tied_ranking = []
-        for score in ordered_scores:
-            ties = []
-            for alt in range(len(scores)):
-                if abs(scores[alt] - score) <= threshold:
-                    if alt not in managed_scores:
-                        ties.append(alt)
-                        managed_scores.add(alt)
-            if ties:
-                tied_ranking.append(ties)
-        if(verbose):
-            print(tied_ranking)
-
-        tot_ties = 0
-        for ties in tied_ranking:
-            tot_ties += len(ties) - 1
-        return tot_ties
+        ties = 0
+        for i in range(len(scores) - 1):
+            for j in range(i + 1, len(scores)):
+                if abs(scores[i] - scores[j]) < threshold:
+                    ties += 1
+        return ties
