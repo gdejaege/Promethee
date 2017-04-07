@@ -225,7 +225,7 @@ class PrometheeII:
         return netflows
 
     def compute_ranking(self, scores):
-        """Return the ranking given the netflows.
+        """Return the ranking given the scores.
 
         ranking[i] = index in the alternatives (input) of the alternative
                     which is ranked ith.
@@ -433,9 +433,9 @@ class ReferencedPII(PrometheeII):
         if pref_funcs is None:
             pref_funcs = self.pref_functions
         if ref_set is None:
-            RS = self.RS
+            ref_set = self.RS
 
-        return self.compute_refflow(alternatives, weights, pref_funcs, RS)
+        return self.compute_refflow(alternatives, weights, pref_funcs, ref_set)
 
     def compute_refflow(self, alternatives, weights, pref_funcs, RS):
         """Return the referenced flow."""

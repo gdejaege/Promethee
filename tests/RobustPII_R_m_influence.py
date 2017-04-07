@@ -32,6 +32,7 @@ def count_rr(data='HDI', max_rep=10, R_parameter=None, m_parameter=None):
         seed = 0                # Not used, here to match the general signature
 
     else:
+        data = 'EPI'
         # Change these parameters if needed
         R_list = [500, 1000, 5000, 8000]
         m_list = [18]
