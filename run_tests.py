@@ -18,8 +18,9 @@ data = ['HDI', 'SHA', 'EPI']
 # RobustPII_analyse_rank_reversals.analyse_rr(data=data[2], m_parameter=16,
 #                                             R_parameter=5000, max_rep=10)
 
-# ReferencedPII_class.compare_refflows(3)
-ReferencedPII_references_quantity.count_draws(threshold=1e-3)
+# ReferencedPII_class.compare_refflows()
+# ReferencedPII_references_quantity.count_draws(threshold=1e-3)
+ReferencedPII_strategies_comparison.compare()
 
 t2 = time.time()
 print('test durations ::' + str(t2-t1))
