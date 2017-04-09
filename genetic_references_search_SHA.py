@@ -22,6 +22,7 @@ def genetic_search(alternatives, seed=None, weights=None, ceils=None,
                                  ceils=ceils, weights=weights,
                                  coefficients=coefficients)
     prom_ranking = promethee.ranking
+    random.seed()
 
     population = initial_population(alternatives, pop_size, RS_size)
     referenced = prom.ReferencedPII(alternatives, seed=seed, alt_num=alt_num,
@@ -200,9 +201,11 @@ if __name__ == '__main__':
 
     # Here we retry the seeds failed with different parameters
     t0 = time.time()
-    data_set = 'EPI'
-    alternative_numbers = [25, 40, 50]
-    pseeds = [[4], [4, 12], [4, 5, 6, 9, 14]]
+    data_set = 'SHA'
+    alternative_numbers = [25, 30, 40, 50]
+    alternative_numbers = [50]
+    pseeds = [[0, 6], [3, 5, 7], [0, 2, 3, 5, 10, 11, 14], [0, 1, 2, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14]]
+    pseeds = [[0, 1, 2, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14]]
     input_file = 'data/' + str(data_set) + '/raw.csv'
     output = 'res/ReferencedPII_genetic_search/' + str(data_set) + '.txt'
     alts = dr.open_raw(input_file)[0]
@@ -216,9 +219,9 @@ if __name__ == '__main__':
             it = 0
             while (tau < 1 - 1e-5 and it < 3):
                 prob = 0.01 +0.01*it
-                tau2 = genetic_search(alts, seed=s, weights=weights,RS_size=5, 
-                                      ceils=ceils, alt_num=alt_num, pop_size=600,
-                                      mut_prob=prob, MAXIT=300)
+                tau2 = genetic_search(alts, seed=s, weights=weights,RS_size=4, 
+                                      ceils=ceils, alt_num=alt_num, pop_size=1000,
+                                      mut_prob=prob, MAXIT=120)
                 tau = max(tau, tau2)
                 print(str(s) + ', total time: ' + str(time.time() - t0) + 
                       ", it time: " + str(time.time() - t1) + ', tau: ' + str(tau))

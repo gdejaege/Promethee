@@ -1,0 +1,38 @@
+
+##### 20 alts #####
+succesfull seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+failed  seeds: []
+failed taus: []
+
+
+
+
+##### 25 alts #####
+succesfull seeds: [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+failed  seeds: [4]
+failed taus: [0.993]
+
+
+##### 30 alts #####
+succesfull seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+failed  seeds: []
+failed taus: []
+
+
+
+
+##### 40 alts #####
+succesfull seeds: [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 13, 14]
+failed  seeds: [4, 12]
+failed taus: [0.964, 0.992]
+
+
+
+
+##### 50 alts #####
+succesfull seeds: [0, 1, 2, 3, 7, 8, 10, 11, 12]
+failed  seeds: [4, 5, 6, 9, 14]
+failed taus: [0.964, 0.88, 0.924, 0.99, 0.962] 
+
+
+

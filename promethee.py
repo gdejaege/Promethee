@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Promethee it's variation implementation."""
 from math import exp
-import csv
+from scipy import stats
 import random
 import data_reader as dr
 
@@ -93,13 +93,9 @@ class GeneralizedType5:
             return - res
 
 
-"""Complementary functions."""
-
-
-def strategy1(alternatives, ref_number, seed=0):
+def strategy1(alternatives, ref_number=4, seed=0):
     """Build a set of random references."""
     random.seed(seed)
-    crit_number = len(alternatives[0])
     RS = []
     eval_per_criterion = list(map(list, zip(*alternatives)))
     for ref in range(ref_number):
@@ -108,6 +104,93 @@ def strategy1(alternatives, ref_number, seed=0):
             reference.append(random.uniform(min(criterion), max(criterion)))
         RS.append(reference)
     return RS
+
+
+def strategy2(alternatives, refs_quantity=4, seed=0) :
+    """Build reference profiles as percentiles of the evaluations.
+    
+    The seed is not needed as parameter but it is kept to keep the same
+    signature between all strategies.
+    """
+    RS = []
+    eval_per_criterion = list(map(list, zip(*alternatives)))
+        
+    for percentile in range(refs_quantity):
+        ref = []
+        percent = (percentile/(refs_quantity-1))*100
+        for criterion in eval_per_criterion:
+            ref.append(stats.scoreatpercentile(criterion, percent)) 
+        RS.append(ref)
+        
+    return RS
+
+
+def strategy3(alternatives, refs_quantity=4, seed=0):
+    """Build reference profiles equally spaced between the alternatives.
+    
+    The seed is not needed as parameter but it is kept to keep the same
+    signature between all strategies.
+    """
+    RS = []
+    eval_per_criterion = list(map(list, zip(*alternatives)))
+
+    min_per_criterion = []
+    diff= []
+    for criterion in eval_per_criterion:
+        diff.append(max(criterion) - min(criterion))
+        min_per_criterion.append(min(criterion))
+        
+    for i in range(refs_quantity):
+        ref = []
+        prop = (i/(refs_quantity-1))
+        for criterion in range(len(diff)):
+            ref.append(diff[criterion]*prop + min_per_criterion[criterion])
+        RS.append(ref)
+    return RS
+
+
+
+def strategy4(alternatives, refs_quantity=4, seed=0):
+    """References equally spaced in the interquartile range of evaluations.
+    
+    The seed is not needed as parameter but it is kept to keep the same
+    signature between all strategies.
+    """
+    RS = []
+    eval_per_criterion = list(map(list, zip(*alternatives)))
+
+    for percentile in range(refs_quantity):
+        ref = []
+        percent = (percentile/(refs_quantity-1))*50 + 25
+        for criterion in eval_per_criterion:
+            ref.append(stats.scoreatpercentile(criterion, percent)) 
+        RS.append(ref)
+        
+    return RS
+
+def check_parameters(method1, method2):
+    """Check if all the common parameters between the methods are equal."""
+    res = True
+    # Alternatives
+    A1 = method1.alternatives
+    A2 = method2.alternatives
+    for i in range(len(A1)):
+        if A1[i] != A2[i]:
+            res = False
+
+    # Weights
+    W1 = method1.weights
+    W2 = method2.weights
+    if W1 != W2:
+        res = False
+
+    # Ceils
+    C1 = method1.ceils
+    C2 = method2.ceils
+    if C1 != C2:
+        res = False
+
+    return res
 
 
 class PrometheeII:
