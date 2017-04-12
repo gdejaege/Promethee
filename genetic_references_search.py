@@ -22,6 +22,7 @@ def genetic_search(alternatives, seed=None, weights=None, ceils=None,
                                  ceils=ceils, weights=weights,
                                  coefficients=coefficients)
     prom_ranking = promethee.ranking
+    random.seed()
 
     population = initial_population(alternatives, pop_size, RS_size)
     referenced = prom.ReferencedPII(alternatives, seed=seed, alt_num=alt_num,
@@ -63,7 +64,7 @@ def mutate_population(population, p):
             new_ref = ref[:]
             for i in range(len(new_ref)):
                 if p >= random.random():
-                    new_ref[i] = new_ref[i]*random.uniform(0.5, 1.5)
+                    new_ref[i] = new_ref[i]*random.uniform(0.75, 1.25)
             new_RS.append(new_ref)
         new_population.append(new_RS)
     return new_population
@@ -202,7 +203,7 @@ if __name__ == '__main__':
     t0 = time.time()
     data_set = 'EPI'
     alternative_numbers = [25, 40, 50]
-    pseeds = [[4], [4, 12], [4, 5, 6, 9, 14]]
+    pseeds = [[4], [4, 12], [4, 5, 6, 14]]
     input_file = 'data/' + str(data_set) + '/raw.csv'
     output = 'res/ReferencedPII_genetic_search/' + str(data_set) + '.txt'
     alts = dr.open_raw(input_file)[0]
@@ -214,11 +215,11 @@ if __name__ == '__main__':
             t1 = time.time()
             tau = 0
             it = 0
-            while (tau < 1 - 1e-5 and it < 3):
-                prob = 0.01 +0.01*it
+            while (tau < 1 - 1e-5 and it < 2):
+                prob = 0.03 +0.02*it
                 tau2 = genetic_search(alts, seed=s, weights=weights,RS_size=5, 
-                                      ceils=ceils, alt_num=alt_num, pop_size=600,
-                                      mut_prob=prob, MAXIT=300)
+                                      ceils=ceils, alt_num=alt_num, pop_size=1000,
+                                      mut_prob=prob, MAXIT=200)
                 tau = max(tau, tau2)
                 print(str(s) + ', total time: ' + str(time.time() - t0) + 
                       ", it time: " + str(time.time() - t1) + ', tau: ' + str(tau))

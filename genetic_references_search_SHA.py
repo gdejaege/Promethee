@@ -64,7 +64,7 @@ def mutate_population(population, p):
             new_ref = ref[:]
             for i in range(len(new_ref)):
                 if p >= random.random():
-                    new_ref[i] = new_ref[i]*random.uniform(0.5, 1.5)
+                    new_ref[i] = new_ref[i]*random.uniform(0.85, 1.15)
             new_RS.append(new_ref)
         new_population.append(new_RS)
     return new_population
@@ -202,10 +202,8 @@ if __name__ == '__main__':
     # Here we retry the seeds failed with different parameters
     t0 = time.time()
     data_set = 'SHA'
-    alternative_numbers = [25, 30, 40, 50]
-    alternative_numbers = [50]
-    pseeds = [[0, 6], [3, 5, 7], [0, 2, 3, 5, 10, 11, 14], [0, 1, 2, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14]]
-    pseeds = [[0, 1, 2, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14]]
+    alternative_numbers = [40, 50]
+    pseeds = [[0, 5, 10, 11], [0, 1, 3, 7, 9, 10, 11, 12, 13, 14]]
     input_file = 'data/' + str(data_set) + '/raw.csv'
     output = 'res/ReferencedPII_genetic_search/' + str(data_set) + '.txt'
     alts = dr.open_raw(input_file)[0]
@@ -218,10 +216,10 @@ if __name__ == '__main__':
             tau = 0
             it = 0
             while (tau < 1 - 1e-5 and it < 3):
-                prob = 0.01 +0.01*it
-                tau2 = genetic_search(alts, seed=s, weights=weights,RS_size=4, 
+                prob = 0.04 +0.03*it
+                tau2 = genetic_search(alts, seed=s, weights=weights,RS_size=5, 
                                       ceils=ceils, alt_num=alt_num, pop_size=1000,
-                                      mut_prob=prob, MAXIT=120)
+                                      mut_prob=prob, MAXIT=100)
                 tau = max(tau, tau2)
                 print(str(s) + ', total time: ' + str(time.time() - t0) + 
                       ", it time: " + str(time.time() - t1) + ', tau: ' + str(tau))
