@@ -57,50 +57,18 @@ failed taus: []
 
 
 
-
 ##### 40alts #####
-succesfull seeds: [1, 14]
-failed  seeds: [3, 4, 6, 7, 8, 10, 11, 12, 13]
-failed taus: [0.992, 0.884, 0.946, 0.997, 0.899, 0.976, 0.989, 0.987, 0.997]
+succesfull seeds: [1]
+failed  seeds: [3, 4, 7, 8, 10, 12, 13]
+failed taus: [0.992, 0.884, 0.946, 0.899, 0.976, 0.987, 0.997]
 
 
 
 
 ##### 50alts #####
-succesfull seeds: [0, 2, 6, 7]
-failed  seeds: [4, 5, 8, 9, 10, 11, 12, 13, 14]
-failed taus: [0.998, 0.983, 0.898, 0.88, 0.841, 0.957, 0.983, 0.915, 0.924]
-
-
-
-
-##### 20alts #####
-succesfull seeds: []
-failed  seeds: [7]
-failed taus: [0.884]
-
-
-
-
-##### 25alts #####
-succesfull seeds: []
-failed  seeds: [10]
-failed taus: [0.98]
-
-
-
-
-##### 40alts #####
-succesfull seeds: []
-failed  seeds: [3, 4, 6, 7, 8, 10, 11, 12, 13]
-failed taus: [0.992, 0.907, 0.992, 0.964, 0.997, 0.946, 0.992, 0.987, 0.997]
-
-
-
-
-##### 50alts #####
-succesfull seeds: [4]
+succesfull seeds: [0, 2, 4, 6, 7]
 failed  seeds: [5, 8, 9, 10, 11, 12, 13, 14]
+failed taus: [0.983, 0.898, 0.88, 0.841, 0.957, 0.983, 0.915, 0.924]
 failed taus: [0.988, 0.864, 0.892, 0.875, 0.915, 0.944, 0.913, 0.944]
 
 

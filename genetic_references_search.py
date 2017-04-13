@@ -14,8 +14,8 @@ import data_reader as dr
 
 
 def genetic_search(alternatives, seed=None, weights=None, ceils=None,
-                   coefficients=None, alt_num=-1, RS_size=4, pop_size=400,
-                   mut_prob=0.01, MAXIT=400):
+                   coefficients=None, alt_num=-1, RS_size=4, pop_size=600,
+                   mut_prob=0.01, MAXIT=50):
     """Search for references sets reproducing PII."""
     # Initialisation of the PrometheeII, ReferencedPII objects
     promethee = prom.PrometheeII(alternatives, seed=seed, alt_num=alt_num,
@@ -180,83 +180,3 @@ def compute_evaluations(population, prom_ranking, referenced):
         tau = stats.kendalltau(refrank, prom_ranking)[0]
         population_scores.append(tau)
     return population_scores
-
-
-def save_res_to_file(file_name, alt_num, succes, failures, failures_tau):
-    """Print the results in a file."""
-    output = open(file_name, 'a')
-    output.write('\n')
-    title = '#'*5 + ' ' + str(alt_num) + 'alts ' + '#'*5 + '\n'
-    output.write(title)
-    output.write("succesfull seeds: " + str(succes) + "\n")
-    output.write("failed  seeds: " + str(failures) + "\n")
-    output.write("failed taus: " + str(failures_tau) + "\n")
-    output.write("\n"*3)
-
-
-if __name__ == '__main__':
-    data_sets = ['EPI', 'SHA', 'GEQ']
-    weights, ceils = None, None
-    pseed = range(15)
-
-    # Here we retry the seeds failed with different parameters
-    t0 = time.time()
-    data_set = 'EPI'
-    alternative_numbers = [25, 40, 50]
-    pseeds = [[4], [4, 12], [4, 5, 6, 14]]
-    input_file = 'data/' + str(data_set) + '/raw.csv'
-    output = 'res/ReferencedPII_genetic_search/' + str(data_set) + '.txt'
-    alts = dr.open_raw(input_file)[0]
-    for i, alt_num in enumerate(alternative_numbers):
-        succes = []
-        failures = []
-        failures_tau = []
-        for s in pseeds[i]:
-            t1 = time.time()
-            tau = 0
-            it = 0
-            while (tau < 1 - 1e-5 and it < 2):
-                prob = 0.03 +0.02*it
-                tau2 = genetic_search(alts, seed=s, weights=weights,RS_size=5, 
-                                      ceils=ceils, alt_num=alt_num, pop_size=1000,
-                                      mut_prob=prob, MAXIT=200)
-                tau = max(tau, tau2)
-                print(str(s) + ', total time: ' + str(time.time() - t0) + 
-                      ", it time: " + str(time.time() - t1) + ', tau: ' + str(tau))
-                it += 1
-            if (tau > 1 - 1e-5):
-                succes.append(s)
-            else:
-                failures.append(s)
-                tau_rounded = int(tau*1000)/1000
-                failures_tau.append(tau_rounded)
-        save_res_to_file(output, alt_num, succes, failures, failures_tau)
-
-    print("time :" + str(time.time() - t1))
-
-    # Initial rough procedure
-    # alternative_numbers = [20, 25, 30, 40, 50]
-
-    # for data_set in data_sets:
-    #     input_file = 'data/' + str(data_set) + '/raw.csv'
-    #     output = 'res/ReferencedPII_genetic_search/' + str(data_set) + '.txt'
-    #     alts = dr.open_raw(input_file)[0]
-    #     for alt_num in alternative_numbers:
-    #         succes = []
-    #         failures = []
-    #         failures_tau = []
-    #         for s in pseed:
-    #             t1 = time.time()
-    #             tau = genetic_search(alts, seed=s, weights=weights,
-    #                                  ceils=ceils, alt_num=alt_num)
-    #             print(str(s) + ', time: ' + str(time.time() - t1) + ', tau: '
-    #                   + str(tau))
-    #             if (tau > 1 - 1e-5):
-    #                 succes.append(s)
-    #             else:
-    #                 failures.append(s)
-    #                 tau_rounded = int(tau*1000)/1000
-    #                 failures_tau.append(tau_rounded)
-    #         save_res_to_file(output, alt_num, succes, failures, failures_tau)
-
-    # print("time :" + str(time.time() - t1))
