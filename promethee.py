@@ -106,28 +106,28 @@ def strategy1(alternatives, ref_number=4, seed=0):
     return RS
 
 
-def strategy2(alternatives, refs_quantity=4, seed=0) :
+def strategy2(alternatives, refs_quantity=4, seed=0):
     """Build reference profiles as percentiles of the evaluations.
-    
+
     The seed is not needed as parameter but it is kept to keep the same
     signature between all strategies.
     """
     RS = []
     eval_per_criterion = list(map(list, zip(*alternatives)))
-        
+
     for percentile in range(refs_quantity):
         ref = []
         percent = (percentile/(refs_quantity-1))*100
         for criterion in eval_per_criterion:
-            ref.append(stats.scoreatpercentile(criterion, percent)) 
+            ref.append(stats.scoreatpercentile(criterion, percent))
         RS.append(ref)
-        
+
     return RS
 
 
 def strategy3(alternatives, refs_quantity=4, seed=0):
     """Build reference profiles equally spaced between the alternatives.
-    
+
     The seed is not needed as parameter but it is kept to keep the same
     signature between all strategies.
     """
@@ -135,11 +135,11 @@ def strategy3(alternatives, refs_quantity=4, seed=0):
     eval_per_criterion = list(map(list, zip(*alternatives)))
 
     min_per_criterion = []
-    diff= []
+    diff = []
     for criterion in eval_per_criterion:
         diff.append(max(criterion) - min(criterion))
         min_per_criterion.append(min(criterion))
-        
+
     for i in range(refs_quantity):
         ref = []
         prop = (i/(refs_quantity-1))
@@ -149,10 +149,9 @@ def strategy3(alternatives, refs_quantity=4, seed=0):
     return RS
 
 
-
 def strategy4(alternatives, refs_quantity=4, seed=0):
-    """References equally spaced in the interquartile range of evaluations.
-    
+    """Build profiles equally spaced in the interquartile range of evaluations.
+
     The seed is not needed as parameter but it is kept to keep the same
     signature between all strategies.
     """
@@ -163,10 +162,11 @@ def strategy4(alternatives, refs_quantity=4, seed=0):
         ref = []
         percent = (percentile/(refs_quantity-1))*50 + 25
         for criterion in eval_per_criterion:
-            ref.append(stats.scoreatpercentile(criterion, percent)) 
+            ref.append(stats.scoreatpercentile(criterion, percent))
         RS.append(ref)
-        
+
     return RS
+
 
 def check_parameters(method1, method2):
     """Check if all the common parameters between the methods are equal."""
@@ -202,6 +202,8 @@ class PrometheeII:
         """Constructor of the PrometheeII class."""
         self.alternatives, self.weights, self.coefficients = \
             self.random_parameters(seed, alternatives, alt_num)
+
+        self.eval_per_crit = list(map(list, zip(*self.alternatives)))
 
         if(weights is not None):
             self.weights = weights

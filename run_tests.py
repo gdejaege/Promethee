@@ -6,7 +6,7 @@ t1 = time.time()
 
 # tests_data_reader.test1()
 
-data = ['HDI', 'SHA', 'EPI']
+data = ['HDI', 'SHA', 'EPI', 'GEQ']
 # Promethee_class.test_ranking()
 # Promethee_class.test_rr_counting_function()
 # Promethee_class.test_rr_analysis(data[1])
@@ -18,9 +18,22 @@ data = ['HDI', 'SHA', 'EPI']
 # RobustPII_analyse_rank_reversals.analyse_rr(data=data[2], m_parameter=16,
 #                                             R_parameter=5000, max_rep=10)
 
+
 # ReferencedPII_class.compare_refflows()
 # ReferencedPII_references_quantity.count_draws(threshold=1e-3)
-ReferencedPII_strategies_comparison.compare()
+
+
+# ReferencedPII_genetic_search.first_search()
+
+alternatives_qty = [25, 40, 50]
+failed_seeds = [[4], [4, 12], [4, 5, 6, 14]]
+
+# ReferencedPII_genetic_search.retry_failed(data[2], alternatives_qty,
+#                                           failed_seeds)
+
+# ReferencedPII_strategies_comparison.compare(1000)
+ReferencedPII_questioning_procedure.analyse()
+# ReferencedPII_questioning_procedure.test_functions()
 
 t2 = time.time()
 print('test durations ::' + str(t2-t1))
