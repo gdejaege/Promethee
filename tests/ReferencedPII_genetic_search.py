@@ -37,7 +37,7 @@ def first_search():
             save_res_to_file(output, alt_num, succes, failures, failures_tau)
 
 
-def retry_failed(data_set, alt_numbers, failed_seeds, ref_number=4, maxrep=1):
+def retry_failed(data_set, alt_numbers, failed_seeds, ref_number=5, maxrep=1):
     """Retry the search for subsets which failed the first time."""
     weights, ceils = None, None
 
@@ -59,7 +59,7 @@ def retry_failed(data_set, alt_numbers, failed_seeds, ref_number=4, maxrep=1):
             while (tau < 1 - 1e-5 and it < maxrep):
                 prob = 0.03 + 0.02*it
                 tau2 = GS.genetic_search(alts, seed=s, weights=weights,
-                                         RS_size=5, ceils=ceils,
+                                         RS_size=ref_number, ceils=ceils,
                                          alt_num=alt_num, pop_size=600,
                                          mut_prob=prob, MAXIT=50)
                 tau = max(tau, tau2)

@@ -95,7 +95,8 @@ class Adaptive_procedure:
         The points are in ref_num*crit_num dimension spaces.
         """
         for point_iteration in range(self.pts_per_random_it):
-            pt = [[random.uniform(self.min_per_crit[j], self.max_per_crit[j])
+            pt = [[random.uniform(self.min_per_crit[j]*0.75,
+                                  self.max_per_crit[j]*1.25)
                    for k in range(self.crit_number)]
                   for j in range(self.ref_number)]
 
@@ -162,9 +163,13 @@ class Adaptive_procedure:
         The alternatives pairs with the smallest flow difference will be
         considered for next query.
         """
-        RS = self.center
-        refflows = self.referenced.compute_scores(ref_set=RS)
-        ref_ranking = self.referenced.compute_ranking(refflows)
+        center_refflows = self.referenced.compute_scores(ref_set=self.center)
+        center_ranking = self.referenced.compute_ranking(center_refflows)
+        if (self.is_admissible(center_ranking)
+                or self.commonest_ranking is not None):
+            ref_ranking = center_ranking
+        else:
+            ref_ranking = random.sample(self.actual_rankings, 1)[0]
 
         candidates = []
         for i in range(len(ref_ranking)-1):
@@ -173,6 +178,8 @@ class Adaptive_procedure:
             if self.is_admissible_constraint((ai, aj)):
                 candidates.append((ai, aj))
         if(len(candidates) == 0):
+            print(ref_ranking)
+            print(self.constraints)
             exit("no admissible candidate")
         return candidates
 
@@ -303,9 +310,9 @@ class Adaptive_procedure:
         """
         all_taus = []
         min_kendall = 1
-        max_kendall = 0
+        max_kendall = -1
 
-        possible_ranks = set()
+        rankings = dict()
         for pt in self.admissible_points:
             RS = pt
             refflows = self.referenced.compute_scores(ref_set=pt)
@@ -318,14 +325,18 @@ class Adaptive_procedure:
             if tau > max_kendall:
                 max_kendall = tau
 
-            possible_ranks.add(tuple(ref_ranking))
+            rank = tuple(ref_ranking)
+            rankings[rank] = rankings.get(rank, 0) + 1
 
         for i in range(len(self.correct_points)):
             max_kendall = 1
             all_taus.append(1)
         self.kendall_taus.append(all_taus)
 
-        return len(possible_ranks), min_kendall, max_kendall
+        self.commonest_ranking = None
+        if(rankings):
+            self.commonest_ranking = max(rankings, key=rankings.get)
+        return len(rankings), min_kendall, max_kendall
 
     def round_analyse(self):
         """Execute one round of the procedure.
@@ -353,17 +364,20 @@ class Adaptive_procedure:
         """Add points until self.desired_points our maxit iterations."""
         tot_pts = len(self.admissible_points) + len(self.correct_points)
         maxit = 5
-        while (tot_pts < ((self.desired_points)*1.25)//2 and maxit >= 0):
+        while (tot_pts < ((self.desired_points))//2 and maxit >= 0):
             self.divide_points()
             tot_pts = len(self.admissible_points) + len(self.correct_points)
             maxit -= 1
-        maxit = 30
+        maxit = 600
         while (tot_pts < self.desired_points and maxit > 0):
             self.add_random_points()
             tot_pts = len(self.admissible_points) + len(self.correct_points)
             maxit -= 1
         if(tot_pts > 0):
             self.compute_center()
+        else:
+            print('no points found ...')
+            exit()
 
     def execute(self, max_rounds=20):
         """Execute one round of the procudure."""
@@ -405,45 +419,3 @@ class Adaptive_procedure:
                                       center_ok, pts_deleted))
         # self.check_for_errors()
         return self.correct_points
-
-
-if __name__ == '__main__':
-    data_sets = ['EPI/', 'SHA/', 'GEQ/']
-    crits_files = ['raw_4_crit.csv', 'raw_5_crit.csv']
-
-    redos = [['EPI/', [4]], ['GEQ/', [2, 3]]]
-
-    output_dir = "../REUNIONS/mars_30/"
-
-    pp = PdfPages(output_dir + 'kendall_tau_boxplots.pdf')
-
-    for data_redo in redos:
-        for seed in data_redo[1]:
-            data_set = data_redo[0]
-            t1 = time.time()
-            title = data_set[0:3] + ' with 30 alternatives (seed ' \
-                + str(seed) + ')'
-            output_file = open(output_dir
-                               + "adaptative_questionning_results.txt", "a")
-            print(title)
-            with redirect_stdout(output_file):
-                print(title)
-                source = 'data/' + data_set + 'raw.csv'
-                alternatives = dr.open_raw(source)
-                procedure = Adaptative_procedure(alternatives, seed)
-                corrects = procedure.execute()
-                print()
-
-                fig = plt.figure(1, figsize=(9, 6))
-                plt.suptitle(title)
-                ax = fig.add_subplot(111)
-                ax.set_ylim(0, 1.1)
-                ax.yaxis.set_major_locator(ticker.FixedLocator([0, 0.25, 0.5,
-                                                                0.75, 1]))
-                bp = ax.boxplot(procedure.kendall_taus)
-                pp.savefig(bbox_inches='tight')
-                fig.savefig(output_dir + title + '.pdf', bbox_inches='tight')
-                plt.clf()
-            output_file.close()
-            print(time.time() - t1)
-    pp.close()

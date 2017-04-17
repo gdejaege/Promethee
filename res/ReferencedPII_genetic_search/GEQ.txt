@@ -73,3 +73,11 @@ failed taus: [0.988, 0.864, 0.892, 0.875, 0.915, 0.944, 0.913, 0.944]
 
 
 
+
+##### 20alts #####
+succesfull seeds: [0]
+failed  seeds: []
+failed taus: []
+
+
+

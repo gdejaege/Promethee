@@ -28,7 +28,7 @@ data = ['HDI', 'SHA', 'EPI', 'GEQ']
 alternatives_qty = [25, 40, 50]
 failed_seeds = [[4], [4, 12], [4, 5, 6, 14]]
 
-# ReferencedPII_genetic_search.retry_failed(data[2], alternatives_qty,
+# ReferencedPII_genetic_search.retry_failed(data[3], alternatives_qty,
 #                                           failed_seeds)
 
 # ReferencedPII_strategies_comparison.compare(1000)

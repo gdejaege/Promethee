@@ -14,26 +14,29 @@ from matplotlib.font_manager import FontProperties
 from matplotlib.backends.backend_pdf import PdfPages
 
 
-def analyse():
+def analyse(alt_num=20):
     """Analyse the results of the adaptive questioning procedure."""
     data_sets = ['EPI', 'SHA', 'GEQ']
+    # data_sets = ['GEQ']
     weights, ceils = None, None
     seeds = range(5)
 
     output_dir = 'res/ReferencedPII_questioning_procedure/'
     output_file = open(output_dir + "adaptative_questionning_results.txt", "a")
-    pp = PdfPages(output_dir + 'kendall_tau_boxplots.pdf')
+    # pp = PdfPages(output_dir + 'kendall_tau_boxplots.pdf')
 
     for data_set in data_sets:
         input_file = 'data/' + str(data_set) + '/raw.csv'
         alts = dr.open_raw(input_file)[0]
         for seed in seeds:
-            title = data_set + ' with 30 alternatives (seed ' + str(seed) + ')'
+            title = data_set + ' with ' + str(alt_num) +' alternatives (seed ' \
+                + str(seed) + ')'
             print(title)
             with redirect_stdout(output_file):
-                procedure = aqp.Adaptive_procedure(alts, seed=seed, alt_num=20,
+                procedure = aqp.Adaptive_procedure(alts, seed=seed,
+                                                   alt_num=alt_num,
                                                    pts_per_random_it=200,
-                                                   desired_points=3000)
+                                                   desired_points=4000)
                 corrects = procedure.execute()
             fig = plt.figure(1, figsize=(9, 6))
             plt.suptitle(title)
@@ -42,11 +45,11 @@ def analyse():
             ax.yaxis.set_major_locator(ticker.FixedLocator([0, 0.25, 0.5,
                                                             0.75, 1]))
             bp = ax.boxplot(procedure.kendall_taus)
-            pp.savefig(bbox_inches='tight')
+            # pp.savefig(bbox_inches='tight')
             fig.savefig(output_dir + title + '.pdf', bbox_inches='tight')
             plt.clf()
     output_file.close()
-    pp.close()
+    # pp.close()
 
 
 def test_functions():
