@@ -166,10 +166,10 @@ class Adaptive_procedure:
         center_refflows = self.referenced.compute_scores(ref_set=self.center)
         center_ranking = self.referenced.compute_ranking(center_refflows)
         if (self.is_admissible(center_ranking)
-                or self.commonest_ranking is not None):
+                or self.commonest_ranking is None):
             ref_ranking = center_ranking
         else:
-            ref_ranking = random.sample(self.actual_rankings, 1)[0]
+            ref_ranking = self.commonest_ranking
 
         candidates = []
         for i in range(len(ref_ranking)-1):

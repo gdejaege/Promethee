@@ -19,11 +19,11 @@ def analyse(alt_num=20):
     data_sets = ['EPI', 'SHA', 'GEQ']
     # data_sets = ['GEQ']
     weights, ceils = None, None
-    seeds = range(5)
+    seeds = range(3)
 
     output_dir = 'res/ReferencedPII_questioning_procedure/'
     output_file = open(output_dir + "adaptative_questionning_results.txt", "a")
-    # pp = PdfPages(output_dir + 'kendall_tau_boxplots.pdf')
+    pp = PdfPages(output_dir + 'kendall_tau_boxplots.pdf')
 
     for data_set in data_sets:
         input_file = 'data/' + str(data_set) + '/raw.csv'
@@ -33,11 +33,13 @@ def analyse(alt_num=20):
                 + str(seed) + ')'
             print(title)
             with redirect_stdout(output_file):
+                print(title)
                 procedure = aqp.Adaptive_procedure(alts, seed=seed,
                                                    alt_num=alt_num,
                                                    pts_per_random_it=200,
                                                    desired_points=4000)
                 corrects = procedure.execute()
+                print()
             fig = plt.figure(1, figsize=(9, 6))
             plt.suptitle(title)
             ax = fig.add_subplot(111)
