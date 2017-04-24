@@ -5,6 +5,8 @@ import data_reader as dr
 import adaptive_questioning_procedure as aqp
 
 from contextlib import redirect_stdout
+import csv
+import random
 import sys
 import matplotlib as mpl
 mpl.use('agg')
@@ -14,37 +16,45 @@ from matplotlib.font_manager import FontProperties
 from matplotlib.backends.backend_pdf import PdfPages
 
 
-def analyse(alt_num=20):
+def analyse(alt_num=20, seeds=range(3), data_sets=['EPI', 'SHA', 'GEQ']):
     """Analyse the results of the adaptive questioning procedure."""
-    data_sets = ['EPI', 'SHA', 'GEQ']
     # data_sets = ['GEQ']
     weights, ceils = None, None
-    seeds = range(3)
+    # seeds = range(7, 8)
 
     output_dir = 'res/ReferencedPII_questioning_procedure/'
     output_file = open(output_dir + "adaptative_questionning_results.txt", "a")
-    pp = PdfPages(output_dir + 'kendall_tau_boxplots.pdf')
+    # pp = PdfPages(output_dir + 'kendall_tau_boxplots.pdf')
 
     for data_set in data_sets:
         input_file = 'data/' + str(data_set) + '/raw.csv'
         alts = dr.open_raw(input_file)[0]
         for seed in seeds:
-            title = data_set + ' with ' + str(alt_num) +' alternatives (seed ' \
+            correct_pts_output = ('res/ReferencedPII_questioning_procedure/'
+                                  + data_set + '/' + str(seed) + '.csv')
+            title = data_set + ' with ' + str(alt_num) + ' alternatives (seed '\
                 + str(seed) + ')'
+            title_plot = ('Adaptive questioning procedure on a subset of the '
+                          + data_set + 'data set with ' + str(alt_num)
+                          + ' aletrnatives')
             print(title)
+            # with open('test', 'w') as f: #$
             with redirect_stdout(output_file):
                 print(title)
                 procedure = aqp.Adaptive_procedure(alts, seed=seed,
                                                    alt_num=alt_num,
                                                    pts_per_random_it=200,
-                                                   desired_points=4000)
-                corrects = procedure.execute()
+                                                   desired_points=3000)
+                corrects = procedure.execute(20)
+                write_correct_pts(corrects, correct_pts_output)
                 print()
+            # Boxplot of the rankings
             fig = plt.figure(1, figsize=(9, 6))
-            plt.suptitle(title)
+            plt.suptitle(title_plot)
             ax = fig.add_subplot(111)
-            ax.set_ylim(0, 1.1)
-            ax.yaxis.set_major_locator(ticker.FixedLocator([0, 0.25, 0.5,
+            ax.set_ylim(-0.3, 1.1)
+            ax.yaxis.set_major_locator(ticker.FixedLocator([-0.25, 0,
+                                                            0.25, 0.5,
                                                             0.75, 1]))
             bp = ax.boxplot(procedure.kendall_taus)
             # pp.savefig(bbox_inches='tight')
@@ -52,6 +62,20 @@ def analyse(alt_num=20):
             plt.clf()
     output_file.close()
     # pp.close()
+
+def write_correct_pts(pts, output_file, qty=10):
+    """Write correct points to file."""
+    pts_qty = len(pts)
+    qty = min(qty, pts_qty)
+
+    if qty > 0:
+        output = open(output_file, 'a')
+        wr = csv.writer(output, delimiter=',')
+        points_to_write = random.sample(pts, qty)
+        for RS in points_to_write:
+            for ref in RS:
+                wr.writerow(ref)
+            wr.writerow(['##########'])
 
 
 def test_functions():
