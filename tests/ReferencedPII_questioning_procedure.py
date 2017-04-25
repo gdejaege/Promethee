@@ -16,9 +16,9 @@ from matplotlib.font_manager import FontProperties
 from matplotlib.backends.backend_pdf import PdfPages
 
 
-def analyse(alt_num=20, seeds=range(3), data_sets=['EPI', 'SHA', 'GEQ']):
+def analyse(alt_num=30, seeds=range(3,4), data_sets=['EPI', 'SHA', 'GEQ']):
     """Analyse the results of the adaptive questioning procedure."""
-    # data_sets = ['GEQ']
+    data_sets = ['GEQ']
     weights, ceils = None, None
     # seeds = range(7, 8)
 
