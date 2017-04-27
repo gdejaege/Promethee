@@ -16,10 +16,10 @@ from matplotlib.font_manager import FontProperties
 from matplotlib.backends.backend_pdf import PdfPages
 
 
-def analyse(alt_num=20, seeds=range(2,4), data_sets=['EPI', 'SHA', 'GEQ'],
+def analyse(alt_num=20, seeds=range(0,3), data_sets=['EPI', 'SHA', 'GEQ'],
             rounds=20):
     """Analyse the results of the adaptive questioning procedure."""
-    data_sets = ['GEQ']
+    # data_sets = ['GEQ']
     weights, ceils = None, None
     # seeds = range(7, 8)
 
@@ -39,8 +39,8 @@ def analyse(alt_num=20, seeds=range(2,4), data_sets=['EPI', 'SHA', 'GEQ'],
                           + data_set + ' data set with ' + str(alt_num)
                           + ' alternatives')
             print(title)
-            if True:
-            # with redirect_stdout(output_file):
+            # if True:
+            with redirect_stdout(output_file):
                 print(title)
                 procedure = aqp.Adaptive_procedure(alts, seed=seed,
                                                    alt_num=alt_num,
@@ -64,7 +64,7 @@ def analyse(alt_num=20, seeds=range(2,4), data_sets=['EPI', 'SHA', 'GEQ'],
     output_file.close()
     # pp.close()
 
-def write_correct_pts(pts, output_file, qty=10):
+def write_correct_pts(pts, output_file, qty=100):
     """Write correct points to file."""
     pts_qty = len(pts)
     qty = min(qty, pts_qty)
