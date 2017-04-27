@@ -341,6 +341,12 @@ class Adaptive_procedure:
         self.kendall_taus.append(all_taus)
         if rankings:
             self.commonest_ranking = max(rankings, key=rankings.get)
+            # prevent the randomness if equality
+            number = rankings.get(self.commonest_ranking)
+            for key in rankings:
+                if key < self.commonest_ranking:
+                    self.commonest_ranking = key
+
         mean_kendall = np.mean(all_taus)
         median_kendall = np.median(all_taus)
 
