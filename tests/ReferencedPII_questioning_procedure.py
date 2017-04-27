@@ -16,7 +16,8 @@ from matplotlib.font_manager import FontProperties
 from matplotlib.backends.backend_pdf import PdfPages
 
 
-def analyse(alt_num=30, seeds=range(3,4), data_sets=['EPI', 'SHA', 'GEQ']):
+def analyse(alt_num=20, seeds=range(3,4), data_sets=['EPI', 'SHA', 'GEQ'],
+            rounds=8):
     """Analyse the results of the adaptive questioning procedure."""
     data_sets = ['GEQ']
     weights, ceils = None, None
@@ -35,17 +36,17 @@ def analyse(alt_num=30, seeds=range(3,4), data_sets=['EPI', 'SHA', 'GEQ']):
             title = data_set + ' with ' + str(alt_num) + ' alternatives (seed '\
                 + str(seed) + ')'
             title_plot = ('Adaptive questioning procedure on a subset of the '
-                          + data_set + 'data set with ' + str(alt_num)
-                          + ' aletrnatives')
+                          + data_set + ' data set with ' + str(alt_num)
+                          + ' alternatives')
             print(title)
-            # with open('test', 'w') as f: #$
+            # if True:
             with redirect_stdout(output_file):
                 print(title)
                 procedure = aqp.Adaptive_procedure(alts, seed=seed,
                                                    alt_num=alt_num,
                                                    pts_per_random_it=200,
                                                    desired_points=3000)
-                corrects = procedure.execute(20)
+                corrects = procedure.execute(rounds)
                 write_correct_pts(corrects, correct_pts_output)
                 print()
             # Boxplot of the rankings
