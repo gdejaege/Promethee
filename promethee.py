@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
-"""Promethee it's variation implementation."""
+"""Implementation of PrometheeII, Robust Promethee and Referenced Promethee.
+
+The tree methods are implemented in the form of a hierarchy of classes. Some
+other usefull functions are implemented such as:
+    * classes for the preference functions
+    * functions for the strategies that can be used to build the sets of
+      reference profiles needed by Referenced Promethee
+    * a function checking if the common parameters between two methods
+      instanciation are equal.
+"""
+
 from math import exp
 from scipy import stats
 import random
@@ -15,9 +25,9 @@ class PreferenceType2:
 
     q = 0
 
-    def __init__(self, valQ):
+    def __init__(self, q=0):
         """Constructor."""
-        self.q = valQ
+        self.q = q
 
     def value(self, diff):
         """Value."""
@@ -33,10 +43,10 @@ class PreferenceType5:
     q = 0
     p = 1
 
-    def __init__(self, valQ, valP):
+    def __init__(self, q=0, p=1):
         """Constructor."""
-        self.q = valQ
-        self.p = valP
+        self.q = q
+        self.p = p
 
     def value(self, diff):
         """Value."""
@@ -47,25 +57,6 @@ class PreferenceType5:
         return 1
 
 
-class PreferenceType6:
-
-    """Gaussian criterion."""
-
-    s = 0.5
-    valSquare = 0.5
-
-    def __init__(self, valS):
-        """Constructor."""
-        self.s = valS
-        self.valSquare = -1 * (2 * valS * valS)
-
-    def value(self, diff):
-        """Value."""
-        if (diff <= 0):
-            return 0
-        return 1 - exp(diff * diff / self.valSquare)
-
-
 class GeneralizedType5:
 
     """Symetric type5 criterion."""
@@ -73,10 +64,10 @@ class GeneralizedType5:
     q = 0
     p = 1
 
-    def __init__(self, valQ, valP):
+    def __init__(self, q, p):
         """Constructor."""
-        self.q = valQ
-        self.p = valP
+        self.q = q
+        self.p = p
 
     def value(self, diff):
         """Value."""
@@ -94,25 +85,41 @@ class GeneralizedType5:
 
 
 def strategy1(alternatives, ref_number=4, seed=0):
-    """Build a set of random references."""
+    """Build a set of random reference profiles (SRP).
+
+    Inputs:
+        alternatives - matrix composed of one list of evaluations for each
+                       alternative.
+        ref_number - number of profiles composing the set.
+        seed - initialisation of the python pseudorandom functions.
+
+    Note: the reference profiles evaluation hower lie between the minimal and
+    maximal evaluation of the set of alternatives.
+    """
     random.seed(seed)
-    RS = []
+    SRP = []
+    # Transposition of the alternatives: one list of alternatives for each
+    # criteria
     eval_per_criterion = list(map(list, zip(*alternatives)))
     for ref in range(ref_number):
         reference = []
         for criterion in eval_per_criterion:
             reference.append(random.uniform(min(criterion), max(criterion)))
-        RS.append(reference)
-    return RS
+        SRP.append(reference)
+    return SRP
 
 
 def strategy2(alternatives, refs_quantity=4, seed=0):
-    """Build reference profiles as percentiles of the evaluations.
+    """Build a set of reference profiles (SRP) as percentiles of the evaluations.
 
-    The seed is not needed as parameter but it is kept to keep the same
-    signature between all strategies.
+    Inputs:
+        alternatives - matrix composed of one list of evaluations for each
+                       alternative.
+        ref_number - number of profiles composing the set.
+        seed - not used but kept to keep the same signature between all
+               strategies.
     """
-    RS = []
+    SRP = []
     eval_per_criterion = list(map(list, zip(*alternatives)))
 
     for percentile in range(refs_quantity):
@@ -120,18 +127,24 @@ def strategy2(alternatives, refs_quantity=4, seed=0):
         percent = (percentile/(refs_quantity-1))*100
         for criterion in eval_per_criterion:
             ref.append(stats.scoreatpercentile(criterion, percent))
-        RS.append(ref)
+        SRP.append(ref)
 
-    return RS
+    return SRP
 
 
 def strategy3(alternatives, refs_quantity=4, seed=0):
-    """Build reference profiles equally spaced between the alternatives.
+    """Build a set of ref profiles (SRP) equally spaced between the alternatives.
 
-    The seed is not needed as parameter but it is kept to keep the same
-    signature between all strategies.
+    Inputs:
+        alternatives - matrix composed of one list of evaluations for each
+                       alternative.
+        ref_number - number of profiles composing the set.
+        seed - not used but kept to keep the same signature between all
+               strategies.
     """
-    RS = []
+    SRP = []
+    # Transposition of the alternatives: one list of alternatives for each
+    # criteria
     eval_per_criterion = list(map(list, zip(*alternatives)))
 
     min_per_criterion = []
@@ -145,17 +158,23 @@ def strategy3(alternatives, refs_quantity=4, seed=0):
         prop = (i/(refs_quantity-1))
         for criterion in range(len(diff)):
             ref.append(diff[criterion]*prop + min_per_criterion[criterion])
-        RS.append(ref)
-    return RS
+        SRP.append(ref)
+    return SRP
 
 
 def strategy4(alternatives, refs_quantity=4, seed=0):
-    """Build profiles equally spaced in the interquartile range of evaluations.
+    """Build (SRP) equally spaced in the interquartile range of evaluations.
 
-    The seed is not needed as parameter but it is kept to keep the same
-    signature between all strategies.
+    Inputs:
+        alternatives - matrix composed of one list of evaluations for each
+                       alternative.
+        ref_number - number of profiles composing the set.
+        seed - not used but kept to keep the same signature between all
+               strategies.
     """
-    RS = []
+    SRP = []
+    # Transposition of the alternatives: one list of alternatives for each
+    # criteria
     eval_per_criterion = list(map(list, zip(*alternatives)))
 
     for percentile in range(refs_quantity):
@@ -163,9 +182,9 @@ def strategy4(alternatives, refs_quantity=4, seed=0):
         percent = (percentile/(refs_quantity-1))*50 + 25
         for criterion in eval_per_criterion:
             ref.append(stats.scoreatpercentile(criterion, percent))
-        RS.append(ref)
+        SRP.append(ref)
 
-    return RS
+    return SRP
 
 
 def check_parameters(method1, method2):
@@ -199,10 +218,32 @@ class PrometheeII:
 
     def __init__(self, alternatives, seed=0, alt_num=-1, ceils=None,
                  weights=None, coefficients=None):
-        """Constructor of the PrometheeII class."""
+        """Constructor of the PrometheeII class.
+
+        Inputs:
+            alternatives - matrix composed of one list of evaluations for each
+                           alternative.
+            seed - seed provided to python pseudo random number generator. It
+                   is used to create some random (w, F) for the method if these
+                   are not provided as arguments.
+            alt_num - quantity of alternatives from 'alternative' which must be
+                      kept.
+            ceils - list of the values of the strict preference thresholds for
+                    all criteria (p).
+            weights - list of the relative importance (or weigths) of all
+                      criteria.
+            coefficients - if 'ceils' is not provided, some new ceils will be
+                           computed as these coefficents time the amplitude
+                           between the highest and lowest evaluation of each
+                           criterion.
+        """
+        # first, each Promethee parameter is set at random, this value is then
+        # overwritten by the the value of the parameters given as argument
         self.alternatives, self.weights, self.coefficients = \
             self.random_parameters(seed, alternatives, alt_num)
 
+        # Transposition of the alternatives: one list of alternatives for each
+        # criteria
         self.eval_per_crit = list(map(list, zip(*self.alternatives)))
 
         if(weights is not None):
@@ -221,22 +262,35 @@ class PrometheeII:
         self.scores = self.compute_scores()
         self.ranking = self.compute_ranking(self.scores)
 
-    def random_parameters(self, s, alternatives, nmbre=-1):
-        """Compute random parameters using a seed."""
+    def random_parameters(self, s, alternatives, qty=-1):
+        """Compute random subset of alternatives and parameters using a seed.
+
+        Inputs:
+            s - seed.
+            alternatives - matrix composed of one list of evaluations for each
+                           alternative.
+            qty - quantity of alternatives desired, if 'qty' is equal to -1
+                  then the set the whole set of alternatives is returned
+                  (in the original ordering!).
+        """
         random.seed(s)
-        if nmbre != -1:
+        if qty != -1:
             alternatives = random.sample(alternatives, nmbre)
 
         coefficients = [random.uniform(0.4, 1) for i in alternatives[0]]
         weights = [random.randint(30, 100) for i in alternatives[0]]
         weights = [w/sum(weights) for w in weights]
-        # print(weights)
-        # print(coefficients)
-        # print(alternatives[0])
         return alternatives, weights, coefficients
 
     def max_diff_per_criterion(self, alternatives, crit_quantity=-1):
-        """Retun a list of delta max for each criterion."""
+        """Retun a list of delta max for each criterion.
+
+        Inputs:
+            alternatives - matrix composed of one list of evaluations for each
+                           alternative.
+            crit_quantity - number of criteria for which the amplitude of the
+                            maximal difference must be computed.
+        """
         # quantity of criteria we are looking at
         if crit_quantity == -1:
             crit_quantity = len(alternatives[0])
@@ -249,26 +303,40 @@ class PrometheeII:
 
         return diff
 
-    def compute_pairwise_pref(self, alternatives, weights, funcPrefCrit):
-        """Return the pairwise preference matrix Pi."""
+    def compute_pairwise_pref(self, alternatives, weights, pref_funct_crit):
+        """Return the pairwise preference matrix Pi.
+
+        Inputs:
+            alternatives - matrix composed of one list of evaluations for each
+                           alternative.
+            weights - list of weights of the criteria.
+            pref_funct_crit - list of the preference functions for all criteria.
+
+        """
         pi = [[0 for alt in alternatives] for alt in alternatives]
         for i, alti in enumerate(alternatives):
             for j, altj in enumerate(alternatives):
                 for k in range(len(weights)):
                     weight = weights[k]
-                    funcPref = funcPrefCrit[k]
+                    pref_function = pref_funct_crit[k]
                     valAlti = alti[k]
                     valAltj = altj[k]
                     diff = valAlti - valAltj
                     # val2 = valAlt2 - valAlt1
-                    pi[i][j] += weight * funcPref.value(diff)
-                    pi[j][i] += weight * funcPref.value(-diff)
+                    pi[i][j] += weight * pref_function.value(diff)
+                    pi[j][i] += weight * pref_function.value(-diff)
         return pi
 
     def compute_scores(self, alternatives=None, weights=None, pref_funcs=None):
         """Compute the score of this of the alternatives with this method.
 
-        Please redefine this function for child classes.
+        Inputs:
+            alternatives - matrix composed of one list of evaluations for each
+                           alternative.
+            weights - list of weights of the criteria.
+            pref_functs - list of the preference functions for all criteria.
+
+        Note : this function should be redefined for child classes.
         """
         if alternatives is None:
             alternatives = self.alternatives
@@ -282,10 +350,12 @@ class PrometheeII:
     def compute_netflow(self, alternatives, weights, pref_func):
         """Compute the netflows of the alternatives.
 
-        Inuput :
-            alternatives : matrice
-            weights : list
-            funcPrefCrit : list of functions
+        Inputs:
+            alternatives - matrix composed of one list of evaluations for each
+                           alternative.
+            weights - list of weights of the criteria.
+            pref_funct_crit - list of the preference functions for all criteria.
+
         Output :
             netflows[i] = score of the ith alternative in alternatives(input)
         """
@@ -312,9 +382,11 @@ class PrometheeII:
     def compute_ranking(self, scores):
         """Return the ranking given the scores.
 
-        ranking[i] = index in the alternatives (input) of the alternative
-                    which is ranked ith.
-        scores[i] = score of the ith alternative in of the alternatives(input)
+        Input:
+            scores[i] = score of the ith alternative
+
+        Output:
+            ranking[i] = index in 'scores' of the alternative ranked ith.
         """
         # sort k=range(...) in decreasing order of the netflows[k]
         ranking = sorted(range(len(scores)), key=lambda k: scores[k],
@@ -322,9 +394,11 @@ class PrometheeII:
         return ranking
 
     def compute_rr_number(self, verbose=False):
-        """Compute the total number of rank reversals on the method.
+        """Compute the total number of rank reversals of the method.
 
-        verbose input only serves for printing debug information
+        Notes:
+            * verbose only serves for printing debug information
+            * the ranking (self.ranking) must already be computed
         """
         total_rr_quantity = 0
         for i in range(len(self.alternatives)):
@@ -332,8 +406,8 @@ class PrometheeII:
             del copy_alternatives[i]
             scores = self.compute_scores(alternatives=copy_alternatives)
             ranks = self.compute_ranking(scores)
-            """Since we applied the method on n-1 alternatives, the ranks
-            will be in [0, n-1] instead of [0, n]"""
+            # Since we applied the method on n-1 alternatives, the ranks
+            # will be in [0, n-1] instead of [0, n]
             for j in range(len(ranks)):
                 if ranks[j] >= i:
                     ranks[j] += 1
@@ -343,12 +417,14 @@ class PrometheeII:
 
     def compare_rankings(self, init_ranking, new_ranking, deleted_alt,
                          verbose=False):
-        """Compute the number of rank reversal between two rankings.
+        """Compute the number of rank reveSRPal between two rankings.
 
-        Input :
-            init_ranking : ranking obtained with all alternatives
-            new_ranking : ranking obtained when deleted_alt is removed from
+        Inputs:
+            init_ranking - ranking obtained with all alternatives
+            new_ranking - ranking obtained when deleted_alt is removed from
                           the set of alternatives.
+            deleted_alt - please guess
+            verbose - print debuging messages
         """
         init_copy = init_ranking[:]
         new_copy = new_ranking[:]
@@ -372,8 +448,13 @@ class PrometheeII:
     def analyse_rr(self, verbose=False):
         """Compute the pair of alternatives for which rr occurs.
 
-        This function is similar to the one counting the number of rank
-        reversals but is reimplemented here for more lisibility.
+        Output:
+            all_rr_instance - dictionary containing the the pair of alternatives
+                              which have had their rank reversed (key), and the
+                              quantity of time this reversal happened (value).
+        Note:
+            * this function is similar to the one counting the number of rank
+              reversals but is reimplemented here for more lisibility.
         """
         all_rr_instances = dict()
         for i in range(len(self.alternatives)):
@@ -397,9 +478,9 @@ class PrometheeII:
     def get_rr(self, init_ranking, new_ranking, deleted_alt, verbose=False):
         """Compute the number of rank reversal between two rankings.
 
-        Input :
-            init_ranking : ranking obtained with all alternatives
-            new_ranking : ranking obtained when deleted_alt is removed from
+        Inputs:
+            init_ranking - ranking obtained with all alternatives
+            new_ranking - ranking obtained when deleted_alt is removed from
                           the set of alternatives.
         """
         init_copy = init_ranking[:]
@@ -415,7 +496,7 @@ class PrometheeII:
                           + str(new_copy[j]) + " when " + str(deleted_alt)
                           + "is deleted")
 
-                # add occurrence to dict of rank reversals
+                # add occurrence to dict of rank reveSRPals
                 a = max(new_copy[j], init_copy[0])
                 b = min(new_copy[j], init_copy[0])
                 rr_instances[(a, b)] = rr_instances.get((a, b), 0) + 1
@@ -432,18 +513,50 @@ class RobustPII(PrometheeII):
 
     def __init__(self, alternatives, seed=0, alt_num=-1, coefficients=None,
                  weights=None, pref_func=None, ceils=None, R=1000, m=5):
-        """Constructor."""
+        """Constructor.
+
+        Inputs:
+            alternatives - matrix composed of one list of evaluations for each
+                           alternative.
+            seed - seed provided to python pseudo random number generator. It
+                   is used to create some random (w, F) for the method if these
+                   are not provided as arguments.
+            alt_num - quantity of alternatives from 'alternative' which must be
+                      kept.
+            coefficients - if 'ceils' is not provided, some new ceils will be
+                           computed as these coefficents time the amplitude
+                           between the highest and lowest evaluation of each
+                           criterion.
+            weights - list of the relative importance (or weigths) of all
+                      criteria.
+            pref_func - list of preference functions for all criteria
+            ceils - list of the values of the strict preference thresholds for
+                    all criteria (p).
+            R - number of repetions of the PrometheeII methods on samples of
+                the alternatives.
+            m - size of these samples.
+        """
         self.R = R
         self.m = m
         super().__init__(alternatives=alternatives, seed=seed, alt_num=alt_num,
                          ceils=ceils, coefficients=coefficients,
                          weights=weights)
         if(m > len(self.alternatives)):
-            exit("lol m>alternatives")
+            exit("m > alternatives, this is not possible")
 
     def compute_scores(self, alternatives=None, weights=None, pref_funcs=None,
                        R=None, m=None):
-        """Compute the robust promethee score."""
+        """Compute the robust promethee score.
+
+        Inputs:
+            alternatives - matrix composed of one list of evaluations for each
+                           alternative.
+            weights - list of weights of the criteria.
+            pref_funcs - list of the preference functions for all criteria.
+            R - number of repetions of the PrometheeII methods on samples of
+                the alternatives.
+            m - size of these samples.
+        """
         if alternatives is None:
             alternatives = self.alternatives
         if weights is None:
@@ -458,7 +571,17 @@ class RobustPII(PrometheeII):
         return self.compute_robflow(alternatives, weights, pref_funcs, R, m)
 
     def compute_robflow(self, alternatives, weights, pref_funcs, R, m):
-        """Return the robust flow."""
+        """Return the robust flow.
+
+        Inputs:
+            alternatives - matrix composed of one list of evaluations for each
+                           alternative.
+            weights - list of weights of the criteria.
+            pref_funcs - list of the preference functions for all criteria.
+            R - number of repetions of the PrometheeII methods on samples of
+                the alternatives.
+            m - size of these samples.
+        """
         random.seed()
         Pij = [[0 for i in range(len(alternatives))]
                for j in range(len(alternatives))]
@@ -495,11 +618,34 @@ class ReferencedPII(PrometheeII):
     def __init__(self, alternatives, seed=0, alt_num=-1, coefficients=None,
                  weights=None, pref_func=None, ceils=None, ref_set=None,
                  strategy=None, ref_num=4):
-        """Constructor."""
+        """Constructor.
+
+        Inputs:
+            alternatives - matrix composed of one list of evaluations for each
+                           alternative.
+            seed - seed provided to python pseudo random number generator. It
+                   is used to create some random (w, F) for the method if these
+                   are not provided as arguments.
+            alt_num - quantity of alternatives from 'alternative' which must be
+                      kept.
+            coefficients - if 'ceils' is not provided, some new ceils will be
+                           computed as these coefficents time the amplitude
+                           between the highest and lowest evaluation of each
+                           criterion.
+            weights - list of the relative importance (or weigths) of all
+                      criteria.
+            pref_func - list of preference functions for all criteria
+            ceils - list of the values of the strict preference thresholds for
+                    all criteria (p).
+            ref_set - matrix composed of one list of evaluations for each
+                      reference profile.
+            strategy - strategy used to build a set of reference profiles.
+            ref_num - quantity of reference profiles needed in a set.
+        """
         if (ref_set is not None):
-            self.RS = ref_set
+            self.SRP = ref_set
         elif (strategy is not None):
-            self.RS = strategy(alternatives, ref_num, seed)
+            self.SRP = strategy(alternatives, ref_num, seed)
         else:
             print("precise a references set or a strategy to build one")
             exit()
@@ -510,7 +656,17 @@ class ReferencedPII(PrometheeII):
 
     def compute_scores(self, alternatives=None, weights=None, pref_funcs=None,
                        ref_set=None):
-        """Compute the referenced promethee score."""
+        """Compute the referenced promethee score.
+
+        Inputs:
+            alternatives - matrix composed of one list of evaluations for each
+                           alternative.
+            weights - list of weights of the criteria.
+            pref_funcs - list of the preference functions for all criteria.
+                the alternatives.
+            ref_set - matrix composed of one list of evaluations for each
+                      reference profile.
+        """
         if alternatives is None:
             alternatives = self.alternatives
         if weights is None:
@@ -518,16 +674,25 @@ class ReferencedPII(PrometheeII):
         if pref_funcs is None:
             pref_funcs = self.pref_functions
         if ref_set is None:
-            ref_set = self.RS
+            ref_set = self.SRP
 
         return self.compute_refflow(alternatives, weights, pref_funcs, ref_set)
 
-    def compute_refflow(self, alternatives, weights, pref_funcs, RS):
-        """Return the referenced flow."""
+    def compute_refflow(self, alternatives, weights, pref_funcs, SRP):
+        """Return the referenced flow.
+
+        Inputs:
+            alternatives - matrix composed of one list of evaluations for each
+                           alternative.
+            weights - list of weights of the criteria.
+            pref_funcs - list of the preference functions for all criteria.
+            SRP - matrix composed of one list of evaluations for each
+                      reference profile.
+        """
         refflows = []
         for alt in alternatives:
             score = 0
-            for ref in RS:
+            for ref in SRP:
                 for k in range(len(weights)):
                     weight = weights[k]
                     pref_k = pref_funcs[k]
@@ -535,7 +700,7 @@ class ReferencedPII(PrometheeII):
                     ref_k = ref[k]
                     diff = alt_k - ref_k
                     score += weight*(pref_k.value(diff) - pref_k.value(-diff))
-            score = score / (len(RS))
+            score = score / (len(SRP))
             refflows.append(score)
         return refflows
 

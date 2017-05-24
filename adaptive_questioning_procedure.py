@@ -36,14 +36,33 @@ class Adaptive_procedure:
     """Adaptive procedure to find possible RS reproducing PII rankings."""
 
     def __init__(self, init_alternatives, seed=0, alt_num=30, ref_number=4,
-                 pts_per_random_it=200, desired_points=3000):
+                 pts_per_random_it=200, random_add_it=1500, divide_it=5,
+                 desired_points=3000):
         """Constructor.
 
-        Arguments
-        inti_alternatives - list of all alternatives from an alternative set
-        seed - used to generate some pseudo random parameters
-        max_alt - maximal number of alternatives on which the procedure must
-        be applied
+        Inputs:
+            init_alternatives - matrix composed of one list of evaluations for
+                                each alternative.
+            seed - used to generate some pseudo random parameters.
+            max_alt - maximal number of alternatives on which the procedure must
+                      be applied.
+            ref_number - number of reference profiles in each set.
+            pts_per_random_it - minimal quantity of points which are tried to
+                                be added at random 'simultaneously'. This
+                                quantity is repeated 'random_add_it' times at
+                                each iteration of the procedure.
+            random_add_it - quantity of times at each iteration of the procedure
+                            'pts_per_random_it' are considered to be added to
+                            the set of all admissible points.
+            divide_it - number of times we try to add a new point near of an
+                        admissible one (for each of the admissible ones).
+            desired_points - desired size of the set of admissible points after
+                             each iteration.
+
+            These four last arguments are used because it is computationally
+            not possible to start with a big enough set of admissible points.
+            Therefore, at each iteration some points. More information in the
+            'round_add_points' function.
         """
         self.ref_number = ref_number
         self.pts_per_random_it = pts_per_random_it
