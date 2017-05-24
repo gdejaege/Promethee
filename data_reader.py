@@ -57,6 +57,24 @@ def open_raw(filename):
     return matrix
 
 
+def open_raw_RS(filename):
+    """Open file with RS separated by some ###."""
+    data = []
+    with open(filename, newline='') as csvfile:
+        content = csv.reader(csvfile, delimiter=',', quotechar='|')
+        for row in content:
+            data.append(row)
+
+    all_RS = []
+    RS = []
+    for row in data:
+        if row[0][0] == '#':
+            all_RS.append(RS)
+            RS = []
+        else:
+            RS.append(list(map(lambda x: float(x), row[:])))
+    return all_RS
+
 def write_raw(alternatives, filename):
     """write classic csv-data-files.
 
