@@ -1,7 +1,7 @@
-"""Rough adaptative questionning procedure to find RS reproducing PII ranks.
+"""Rough adaptative questionning procedure to find SRP reproducing PII ranks.
 
 The procedure is based on random points generation in a ref_num*crit_num
-dimension space. Each point represent a reference set (RS).
+dimension space. Each point represent a reference set (SRP).
 
 At each iteration, the ranking obtained with the most admissible points is used
 to compute the query candidates which are couple of pairwise succesive
@@ -12,15 +12,15 @@ is the one he prefers (this is done according to the PII ranking that we are
 trying to reproduce). This will yield a new constraint and some points will not
 be admissible anymore.
 
-For performence purposes, some reduced promethee methods are re-implemented
+For performance purposes, some 'reduced' promethee methods are re-implemented
 here.
 """
 
 import promethee as PII
 import data_reader as dr
 
-from contextlib import redirect_stdout
-import sys
+# from contextlib import redirect_stdout
+# import sys
 import string
 import random
 import numpy as np
@@ -28,12 +28,12 @@ import scipy.spatial as spp
 import scipy.stats as stats
 import time
 
-import os
+# import os
 
 
 class Adaptive_procedure:
 
-    """Adaptive procedure to find possible RS reproducing PII rankings."""
+    """Adaptive procedure to find possible SRP reproducing PII rankings."""
 
     def __init__(self, init_alternatives, seed=0, alt_num=30, ref_number=4,
                  pts_per_random_it=200, random_add_it=1500, divide_it=5,
@@ -68,6 +68,8 @@ class Adaptive_procedure:
         self.pts_per_random_it = pts_per_random_it
         self.desired_points = desired_points
         self.seed = seed
+        self.random_add_it = random_add_it
+        self.divide_it = divide_it
         self.promethee = PII.PrometheeII(init_alternatives, seed=self.seed,
                                          alt_num=alt_num)
         self.PII_ranking = self.promethee.ranking
@@ -81,26 +83,30 @@ class Adaptive_procedure:
 
         self.crit_number = len(self.promethee.alternatives[0])
 
-        # RS only used to initialise
-        RS = [[1 for i in range(self.crit_number)] for ref in range(ref_number)]
+        # SRP only used to initialise the referenced promethee object
+        SRP = [[1 for i in range(self.crit_number)] for r in range(ref_number)]
         self.referenced = PII.ReferencedPII(init_alternatives, seed=self.seed,
                                             alt_num=alt_num,
-                                            ref_set=RS)
+                                            ref_set=SRP)
 
         if (not PII.check_parameters(self.promethee, self.referenced)):
             print('parameters not equal between method')
             exit()
 
+        # This list contains all points which are still admissible at any given
+        # iteration but which do not exactly reproduce the PII ranking. Points
+        # reproducing the PII ranking are kept in another list for performances
+        # purposes.
         self.admissible_points = []
         self.correct_points = []
         self.constraints = []
 
-        # Matrix that keep trace of all the rankings (one row per iteration)
+        # Matrix that keep trace of all the rankings (one list per iteration)
         self.kendall_taus = []
 
         self.add_initial_points()
-        # self.compute_center()
-        # define the template for printing the points
+
+        # define the template for printing the iteration analysis
         self.it_template = "{:^3d}|{: ^9d}|{: ^10d}|" \
             + "{:^7d}|{: ^7.3f}|{: ^7.3f}|{: ^7.3f}|{: ^7.3f}|{: ^10s}|{: ^9d}"
         self.iteration = 0
@@ -115,7 +121,9 @@ class Adaptive_procedure:
     def add_random_points(self):
         """try to add random points that satisfy all the constraints.
 
-        The points are in ref_num*crit_num dimension spaces.
+        The points are in ref_num*crit_num dimension spaces. Of course, not
+        whole this space is explored but only the region around the evaluations
+        of the alternatives.
         """
         for point_iteration in range(self.pts_per_random_it):
             pt = [[random.uniform(
@@ -137,15 +145,16 @@ class Adaptive_procedure:
 
         for pt in all_points:
             # Transposition: list[references][crit] -> list[crit][reference]
-            RS_per_crit = list(map(list, zip(*pt)))
+            SRP_per_crit = list(map(list, zip(*pt)))
 
-            for crit in range(len(RS_per_crit)):
+            for crit in range(len(SRP_per_crit)):
                 # Create a new point which can not be further than 5% of the
                 # maximal difference of each criterion from the the cloned point
                 lim = self.delta_per_crit[crit]*0.05
-                RS_per_crit[crit] = \
-                    [el + random.uniform(-lim, lim) for el in RS_per_crit[crit]]
-            point = list(map(list, zip(*RS_per_crit)))
+                SRP_per_crit[crit] = \
+                    [el + random.uniform(-lim, lim)
+                     for el in SRP_per_crit[crit]]
+            point = list(map(list, zip(*SRP_per_crit)))
 
             refflows = self.referenced.compute_scores(ref_set=point)
             ranking = self.referenced.compute_ranking(refflows)
@@ -167,9 +176,8 @@ class Adaptive_procedure:
     def compute_center(self):
         """Compute the center of the points.
 
-        This center will be used to make the next query. The ref-ranking will
-        be computed at this center, then the alpha pair of alternatives with
-        the smallest ref-flow difference will be envisaged as next query.
+        This center was originally used to make the next query.
+        This function only serve to check wheter the center is admissible
         """
         center = [[0 for i in range(self.crit_number)]
                   for j in range(self.ref_number)]
@@ -204,27 +212,34 @@ class Adaptive_procedure:
         return candidates
 
     def select_best_candidate(self, candidates):
-        """Return the candidate with the highest discriminationg power."""
+        """Return the candidate with the highest discriminationg power.
+
+        Input:
+            candidates - list of tuples (pairs) of alternatives
+        """
         best_score = -1
         for cand in candidates:
+            # The score of a candidate is the minimal quantity of points that
+            # would be removed from admissible points if this candidate was
+            # selected.
             score = self.eval_candidate(cand)
             if score > best_score:
                 best_score = score
                 best_cand = cand
         return best_cand
 
-    def eval_candidate(self, candidate):
+    def eval_candidate(self, candidates):
         """Compute the discriminating power of a candidate pair.
 
         Input
-            candidates : index of the two candidates concerned
+            candidates : index of the two candidates concerned.
 
-        In this method we compute the deleted points supposing that candidate0
-        will be preffered over candidate1 (del0).
+        In this method we first compute the quantity of deleted points supposing
+        that candidate0 will be preffered over candidate1 (del0).
 
         The points deleted in the other case (del1) are simply all_pts - del0
         """
-        c = candidate
+        c = candidates
 
         # Number of points rejected if candidate[0] preferred over candidate[1]
         del0 = 0
@@ -256,10 +271,15 @@ class Adaptive_procedure:
         return True
 
     def get_score(self, alt, point):
-        """Compute the score of alt with the RS represented by point.
+        """Compute the score of alt with the SRP represented by point.
+
+        Input:
+            alt - alternative concerned. List of evaluations.
+            point -  set of reference profiles list of list of evaluations.
 
         This is not the real refferenced score. This should be divided by the
-        number of referencs but it is useless in our application.
+        number of referencs but it is useless in our procedure and therefore
+        not done.
         """
         score = 0
         for i in range(self.crit_number):
@@ -273,8 +293,10 @@ class Adaptive_procedure:
     def ask_question(self, query):
         """Ask a query to DM and add appropriate constraint to the constraints.
 
-        The query has the form (alternatives)
+        Input:
+            query - tuple (pair) of alternatives
         """
+        # ranking of alternative 0 and 1
         r_alt0 = self.PII_ranking.index(query[0])
         r_alt1 = self.PII_ranking.index(query[1])
         if (r_alt0 < r_alt1):
@@ -285,29 +307,21 @@ class Adaptive_procedure:
         self.add_constraint(alternatives)
 
     def add_constraint(self, constraint):
-        """Add a constraint to the list of constraints.
-
-        This contstaint must have the form (type, (alernatives) with
-            type = 0 : for a PAC constraint
-                   1 : for a POS constraint
-                   2 : for a ASR constraint
-            alternatives : already ordered/ranked alternatives
-
-        For the moment only PAC constraints are handled.
-        """
+        """Add a constraint to the list of constraints."""
         self.constraints.append(constraint)
         self.update_points(constraint)
-        # self.add_random_points()
 
     def update_points(self, constraint):
         """Check which points of the hypervolume are still admissible.
 
-        This function should be used to check if the existing points do satisfy
-        the last constraint added only.
+        Input:
+            constraint - newly added constraint, pair of alternatives
         """
         c = constraint
         if len(self.admissible_points) == 0:
             return
+        # This still_valid list is used to avoid removing items from the list
+        # admissible_points, while looping on its items
         still_valid = []
         for pt in self.admissible_points:
             scoreA = self.get_score(self.alternatives[c[0]], pt)
@@ -337,9 +351,9 @@ class Adaptive_procedure:
         min_kendall = 1
         max_kendall = -1
 
+        # keep a dictionary of all the rankings with their frequence
         rankings = dict()
         for pt in self.admissible_points:
-            RS = pt
             refflows = self.referenced.compute_scores(ref_set=pt)
             ref_ranking = self.referenced.compute_ranking(refflows)
 
@@ -360,10 +374,12 @@ class Adaptive_procedure:
         self.kendall_taus.append(all_taus)
         if rankings:
             self.commonest_ranking = max(rankings, key=rankings.get)
-            # prevent the randomness if equality
-            number = rankings.get(self.commonest_ranking)
+            # If different rankings are produced by the same maximal nylver if
+            # points, select the one with the 'smallest' key.
+            max_qty = rankings.get(self.commonest_ranking)
             for key in rankings:
-                if key < self.commonest_ranking:
+                if (rankings.get(key) >= max_qty
+                   and key < self.commonest_ranking):
                     self.commonest_ranking = key
 
         mean_kendall = np.mean(all_taus)
@@ -386,12 +402,12 @@ class Adaptive_procedure:
     def round_add_points(self):
         """Add points until self.desired_points our maxit iterations."""
         tot_pts = len(self.admissible_points) + len(self.correct_points)
-        maxit = 5
+        maxit = self.divide_it
         while (tot_pts < ((self.desired_points))*(2/3) and maxit >= 0):
             self.divide_points()
             tot_pts = len(self.admissible_points) + len(self.correct_points)
             maxit -= 1
-        maxit = 1500
+        maxit = self.random_add_it
         while (tot_pts < self.desired_points and maxit > 0):
             self.add_random_points()
             tot_pts = len(self.admissible_points) + len(self.correct_points)
