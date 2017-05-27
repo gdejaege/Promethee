@@ -275,7 +275,7 @@ class PrometheeII:
         """
         random.seed(s)
         if qty != -1:
-            alternatives = random.sample(alternatives, nmbre)
+            alternatives = random.sample(alternatives, qty)
 
         coefficients = [random.uniform(0.4, 1) for i in alternatives[0]]
         weights = [random.randint(30, 100) for i in alternatives[0]]

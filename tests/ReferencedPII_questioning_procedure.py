@@ -19,12 +19,14 @@ from matplotlib.backends.backend_pdf import PdfPages
 def analyse(alt_num=20, seeds=range(0,3), data_sets=['EPI', 'SHA', 'GEQ'],
             rounds=20):
     """Analyse the results of the adaptive questioning procedure."""
-    # data_sets = ['GEQ']
+    data_sets = ['GEQ']
     weights, ceils = None, None
-    # seeds = range(7, 8)
+    seeds = range(3, 4)
+    rounds = 20
+    alt_num = 30
 
-    output_dir = 'res/ReferencedPII_questioning_procedure/'
-    output_file = open(output_dir + "adaptative_questionning_results.txt", "a")
+    output_dir = 'res/ReferencedPII/adaptive_questioning_procedure/'
+    output_file = open(output_dir + "adaptative_questionning_results2.txt", "a")
     # pp = PdfPages(output_dir + 'kendall_tau_boxplots.pdf')
 
     for data_set in data_sets:
@@ -39,8 +41,8 @@ def analyse(alt_num=20, seeds=range(0,3), data_sets=['EPI', 'SHA', 'GEQ'],
                           + data_set + ' data set with ' + str(alt_num)
                           + ' alternatives')
             print(title)
-            # if True:
-            with redirect_stdout(output_file):
+            if True:
+            # with redirect_stdout(output_file):
                 print(title)
                 procedure = aqp.Adaptive_procedure(alts, seed=seed,
                                                    alt_num=alt_num,

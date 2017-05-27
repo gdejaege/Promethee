@@ -1,0 +1,5 @@
+EPI with 20 alternatives (seed 0)
+it |init pts | corrects | ranks |tau_min|tau_max|tau_mu |tau_med| center ok| deleted 
+ 1 |  3000   |    3     | 2699  |-0.210 | 1.000 | 0.448 | 0.442 |          |  1387   
+ 2 |  3162   |    5     | 2098  |-0.242 | 1.000 | 0.446 | 0.431 |          |  1503   
+ 3 |  3199   |    9     | 1552  |-0.115 | 1.000 | 0.588 | 0.610 |          |  1452   

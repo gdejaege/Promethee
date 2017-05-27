@@ -36,7 +36,7 @@ class Adaptive_procedure:
     """Adaptive procedure to find possible SRP reproducing PII rankings."""
 
     def __init__(self, init_alternatives, seed=0, alt_num=30, ref_number=4,
-                 pts_per_random_it=200, random_add_it=1500, divide_it=5,
+                 pts_per_random_it=200, random_add_it=500, divide_it=5,
                  desired_points=3000):
         """Constructor.
 

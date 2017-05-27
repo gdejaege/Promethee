@@ -32,9 +32,9 @@ failed_seeds = [[4], [4, 12], [4, 5, 6, 14]]
 #                                           failed_seeds)
 
 # ReferencedPII_strategies_comparison.compare(1000)
-# ReferencedPII_questioning_procedure.analyse()
+ReferencedPII_questioning_procedure.analyse()
 # ReferencedPII_questioning_procedure.test_functions()
-ReferencedPII_search_RS_properties.RS_from_aqp()
+# ReferencedPII_search_RS_properties.RS_from_aqp()
 
 t2 = time.time()
 print('test durations ::' + str(t2-t1))
