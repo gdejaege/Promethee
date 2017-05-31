@@ -1,0 +1,148 @@
+%        File: 
+%     Created: Wed Nov 23 07:00 PM 2016 C
+% Last Change: Wed Nov 23 07:00 PM 2016 C
+%
+\chapter{Temporar name}
+\label{chapter2}
+
+\section{Non monotonicity of the Robust Promethee method} 
+The monotonicity property in multicriteria decision aid states that for any alternatives 
+$a_\alpha, a_\beta \in A$, if $a_\alpha$ is dominating $a_\beta$ (with the classical notion of dominance), then a monotone multicriteria decision aid method should never prefer $a_\beta$ over $a_\alpha$.
+
+The classical notion of dominance relation for a multicriteria problem, where all the criteria have to be maximised, is defined as follow\cite{Brans2016}\footnote{propably defined in intro, change in reference} :
+\begin{equation}
+  \label{eqn:IP}
+  \forall a_i, a_j \in A : \left\{ 
+    \renewcommand{\arraystretch}{1.75}
+    \begin{array}{l l}
+      a_iPa_j  & \Leftrightarrow \quad \left\{ 
+          \begin{array}{l l}
+              f_c(a_i)\ge f_c(a_j) \quad \forall c=1\dots k \\
+              \exists h: f_h(a_i) > f_h(a_j) \\
+          \end{array} \right . \\
+      a_iIa_j & \Leftrightarrow \quad f_c(a_i) = f_c(a_j) \quad \forall c=1 \dots k \\
+      a_iRa_j & \Leftrightarrow \quad \left\{
+          \begin{array}{l l}
+              \exists h : f_h(a_i) > f_h(a_j) \\
+              \exists h' : f_{h'}(a_i)< f_{h'}(a_j) \\
+          \end{array} \right . \\
+    \end{array} \right . 
+\end{equation}
+with $a_iPa_b$ indicating the preference of $a_i$ over $a_j$, $a_iIa_j$ the indifference, and $a_iRa_j$ the incomparability.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+If $a_{\alpha}$ and $a_\beta$ are two alternatives choosen from $A$, with $a_{\alpha}$ dominating $a_\beta$, one can see that the Promethee method is monotone :
+\begin{align}
+    \label{eq:monotone_PII}
+        \begin{split}
+            \phi (a_{\alpha}) - \phi (a_\beta) &= \frac{1}{n-1} \Big[ \sum\limits_{a_j}^A (\pi(a_{\alpha} ,a_j) - \pi(a_j,a_{\alpha}) ) \\
+                & \qquad \qquad - \sum\limits_{a_j}^A (\pi(a_\beta,a_j) - \pi(a_j,a_\beta) ) \Big] 
+        \end{split}\\
+        \begin{split}
+        &= \frac{1}{n-1} \sum\limits_{a_j}^A \big(  \pi (a_{\alpha} ,a_j) - \pi(a_j,a_{\alpha}) \\
+        & \qquad \qquad -  \pi(a_\beta,a_j) + \pi(a_j,a_\beta) \big) 
+        \end{split}\\
+        \begin{split}
+        &=  \frac{1}{n-1} \sum\limits_{a_j}^A \sum\limits_{c=1}^k \big( P_c(a_{\alpha},a_j) - P_c(a_j,a_{\alpha}) \\
+        & \qquad \qquad \qquad - P_c(a_\beta,a_j) + P_c(a_j,a_\beta) \big) \cdot w_j
+        \end{split}
+\end{align}
+Since $P_c(x,y)$ is a non decreasing function of the differnce between the evaluations of the alternatives $x$ and $y$ on the criterion $f_c$, and since $f_c(a_{\alpha}) \ge f_c(a_\beta) \forall c$, we have that:
+\begin{equation}
+    P_c(a_{\alpha},a_j) \ge  P_c(a_\beta,a_j)  \land  P_c(a_j,a_\beta)    \ge  P_c(a_j,a_{\alpha}) 
+    \label{eq:monotone_PII_end}
+\end{equation}
+
+%%%%%%
+
+With $a_\alpha$ being a random alternative chosen from $A$ and $a_\alpha ^+$ being the same alternative but with an increasement on at least on of the criteria evaluation, one can see that the Promethee II method is monotone :
+\begin{equation}
+\begin{split}
+    \forall a_\alpha, a_\alpha^+ \in A, \forall c=1\dots k &: \quad f_c(a_\alpha ^+) \ge f_c(a_\alpha) \\
+     & \Rightarrow \pi _c(a_\alpha ^+,a_i) \ge \pi _c(a_\alpha,a_i)\qquad \forall a_i \in A\\
+     & \qquad \land \exists h : \pi _h(a_\alpha ^+, a_\alpha) > \pi _h(a_\alpha, a_\alpha ^+) \\
+     & \Rightarrow \phi (a_\alpha ^+) > \phi(a_\alpha) 
+\end{split}
+    \label{eqn:monotone_promethee}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Unfortunately, the Robust Promethee method is not guarenteed to be monotone. The following paragraphs will give an example of the Robust Promethee method where an alternative $a_\alpha$, which is prefered (in the classical sens (see \ref{eqn:IP})) over another alternative $a_\alpha^-$, but which will be ranked after this other alternative.\\
+Consider for example the problem with an evaluation table given in Table \ref{tbl:monotonicity_counter_ex_ini}. 
+\begin{table}[h]
+\begin{tabular*}{\textwidth}{@{\hskip 1cm} C @{\hskip 1cm}C C C C C@{\hskip 1cm}}
+    \toprule
+    a        & f_1(.)               & \dots  & f_c(.)        & \dots  & f_k(.) \\ [7pt]
+    \midrule
+    a_1      & f_1(a_1)             & \dots  & f_c(a_1)      & \dots  & f_k(a_1)\\ 
+    \vdots   & \vdots               & \ddots & \vdots        & \ddots & \vdots \\
+    a_\beta  & f_1(a_\beta)         & \dots  & f_c(a_\beta)  & \dots  & f_k(a_\beta)  \\ 
+    \vdots   & \vdots               & \ddots & \vdots        & \ddots & \vdots \\
+    a_\alpha & f_1(a_\alpha)        & \dots  & f_c(a_\alpha) & \dots  & f_k(a_\alpha)  \\
+    \vdots   & \vdots               & \ddots & \vdots        & \ddots & \vdots \\
+    a_n      & f_1(a_n)             & \dots  & f_c(a_n)      & \dots  & f_k(a_n)\\ 
+    \bottomrule
+\end{tabular*}
+\caption{example evaluation table}
+\label{tbl:monotonicity_counter_ex_ini}
+\end{table}
+
+It is well known that the Promethee II methods suffer from rank reversal instances. We can therefore assume that we can find two alternatives $a_\alpha$ and $a_\beta$ such that there exist a family of subsets $S_{\alpha \beta} \subset A^m$ where $a_\alpha \succ a_\beta$ but such that there also exists another family of subsets $S_{\beta \alpha} \subset A^m$ where $a_\beta \succ a_\alpha$.
+
+Now consider the same problem where two alternatives $a_\alpha^-$ and $a_\beta'$ have been added (Table \ref{tbl:monotonicity_counter_ex_prime}), with $a_\beta$ and $a_\beta '$ being two identical alternatives while $a_\alpha$ and $a_\alpha ^-$ are two nearly identical alternatives, $a_\alpha ^-$ having a slightly worse evaluation than $a_{\alpha}$ on at least one criterion. 
+
+\begin{table}
+\begin{tabular*}{\textwidth}{@{\hskip 1cm} C @{\hskip 1cm}C C C C C@{\hskip 1cm}}
+    \toprule
+    a           & f_1(.)               & \dots  & f_c(.)          & \dots  & f_k(.) \\[7pt]
+    \midrule
+    a_1         & f_1(a_1)             & \dots  & f_c(a_1)        & \dots  & f_k(a_1)\\ 
+    \vdots      & \vdots               & \ddots & \vdots          & \ddots & \vdots \\
+    a_\beta     & f_1(a_\beta)         & \dots  & f_c(a_\beta)    & \dots  & f_k(a_\beta)  \\ 
+    a_\beta '   & f_1(a_\beta)         & \dots  & f_c(a_\beta)    & \dots  & f_k(a_\beta)  \\
+    \vdots      & \vdots               & \ddots & \vdots          & \ddots & \vdots \\
+    a_\alpha    & f_1(a_\alpha)        & \dots  & f_c(a_\alpha)   & \dots  & f_k(a_\alpha) \\
+    a_\alpha ^- & f_1(a_\alpha)        & \dots  & < f_c(a_\alpha)&\dots  & f_k(a_\alpha) \\
+    \vdots      & \vdots               & \ddots & \vdots          & \ddots & \vdots \\
+    a_n         & f_1(a_n)             & \dots  & f_c(a_n)        & \dots  & f_k(a_n)\\ 
+    \bottomrule
+\end{tabular*}
+\caption{modified evaluation table of the example}
+\label{tbl:monotonicity_counter_ex_prime}
+\end{table}
+Since $a_\beta'$ is identical to $a_\beta$ and $a_\alpha ^-$ is arbitrarly similar to $a_\alpha$, we can expand our definition of the family of sets $S_{\alpha \beta}$ to also contain the sets where $a_\alpha ^- \succ a_\beta$ or $a_\alpha^- \succ a_\beta'$ (and similarly for $S_{\beta \alpha}$). 
+
+It should not be forgotten that if the Robust Promethee method was monotone, $a_\alpha$ should be prefered to $a_\alpha^-$. We will show that it is not always the case in our previous example.
+
+Assume that at each of the $R$ iterations of the Robust Promethee method one of the three following cases happen :
+\begin{itemize}
+    \item Not both an alternative from $a_\alpha$ and $a_\alpha ^-$ and another alternative from $a_\beta$ and $a_\beta'$ are selected in the $m$ compaired alternatives. 
+    \item $a_\alpha^-$ and one of $a_\beta$ or $a_\beta'$ are selected in the set of $m$ alternatives, and this set of alternatives belongs to the family $S_{\alpha \beta}$. This implies that $a_\alpha^-$ will always be ranked before alternatives $a_\beta$ and $a_\beta'$.      
+    \item $a_\alpha$ and one of $a_\beta$ or $a_\beta'$ are selected in the set of $m$ alternatives, and this set of alternatives belongs to the family $S_{\beta \alpha}$. This implies that $a_\alpha$ will always be ranked after alternatives $a_\beta$ and $a_\beta'$.      
+\end{itemize}
+
+After the $R$ iterations of the method, the probability matrix will be similar to the folowing one : \\
+        $$P= \bordermatrix{ &  & \beta   & \beta'   & & \alpha  & \alpha^- &\cr 
+                           &  &         &          & &         &          &\cr
+               \beta       &  &         &          & &   1     &    0     &\cr 
+               \beta'      &  &         &          & &   1     &    0     & \cr
+                           &  &         &          & &         &          &\cr
+               \alpha      &  &    0    & 0        & &         &    1     &\cr 
+               \alpha^-    &  &    1    & 1        & &   0     &         &\cr 
+                           &  &         &          & &         &          &\cr
+        } $$
+        We can see in this matrix that $P_{\alpha \alpha^-} =1$ and $P_{\alpha ^- \alpha}=0$ (due to the fact that the Promethee II method is monotone). These values could also have had a default value of $0.5$ if the two alternatives had not been compaired together at least once during one of the iterations.
+
+If we consider that the diferences between the preferences of $a_\alpha$ over the other alternatives (not shown in the matrix) and the preferences $a_\alpha ^-$ over the other alternatives are neglectables, then we can easily see that the net flow score of $a_\alpha^-$ will be greater than the one of $a_\alpha$ :
+\begin{equation}
+    \begin{split}
+        \phi(a_\alpha^-) - \phi(a_\alpha) & = \sum\limits_{i=1}^n \left[ (P(a_\alpha^-, a_i) - P(a_i, a_\alpha^-)) - (P(a_\alpha, a_i) - P(a_i, a_\alpha)  \right] \\
+        & = P(a_\alpha^-,a_\beta) + P(a_\alpha^-,a_\beta') - P(a_\alpha, a_\alpha^-)  \\ 
+        & \quad - (- P(a_\beta,a_\alpha) - P(a_\beta',a_\alpha) + P(a_\alpha, a_\alpha^-)) \\
+        & = (1 + 1 -1 ) - (- 1 -1 +1) \\
+        & > 0
+    \end{split}
+    \label{dem:non_monotony}
+\end{equation}
+
+This example shows the non monotonicity of the Robust Promethee method. However, it reposes on possible but unlikly assumptions that the dominated alternative $a_\alpha^-$ is always compared to other alternatives in ``favorable'' sets and $a_\alpha$ in ``unfavorable'' ones. It should be verified if this phonomenon happens in practical problems.

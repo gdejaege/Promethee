@@ -1,0 +1,61 @@
+\chapter{Conclusion}
+
+As it has been seen in the first chapter, not all decision problems can efficiently be solved with a purely qualitative approach. 
+When the decision problem reality is too complex, a mathematical model should be used.
+The discipline of helping the decision maker with his decision problem is called operational research or decision aid.
+
+In the large majority of practical decision aid applications, a model based on the optimisation of a single criterion is used. 
+This is called the mono-criterion approach.
+Unfortunately it has some shortcomings.
+In particular, it has been seen that this approach does not correctly model how the human mind approaches decision problems when their contexts consist in conflicting aspects of different natures.
+% Therefore, a more adapted multi-criteria decision aid approach has emerged.
+Another approach, the multi-criteria approach is then more adapted.
+
+Some multi-criteria decision aid methods have been analysed in this work.
+For instance, the \textsc{promethee} methods have been studied in chapter \ref{chapterPromethee}.
+
+When facing multi-criteria decision problems, one could be confronted to the rank reversal phenomenon. 
+At first glance, one could reject methods suffering from this phenomenon as it seems counter-intuitive and irrational.
+However, it has been seen, in the dedicated chapter (chapter \ref{chap:rank_reversal}), that this phenomenon is more complex and it's legitimacy is far from being trivial.
+
+Nevertheless, two approaches have been proposed to deal with this phenomenon within the framework of the \textsc{promethee ii} method.
+
+The first one, \textsc{robust promethee}, has been analysed in chapter \ref{chap:robst}.
+It works by applying \textsc{promethee ii} on numerous random samplings.
+Until now, it seems to be reducing the quantity of rank reversals with regard to \textsc{promethee ii} while keeping a similar ranking (which therefore can be considered as satisfactory). 
+However, its efficiency is strongly dependent on the quantity of alternatives considered and on the size of the subsets on which \textsc{promethee ii} is applied.
+Due to the random nature of this method, it also has the unfortunate characteristic of not guaranteeing that the ranking produced will respect the natural dominance relation. This characteristic should however be mitigated since no violations have until now been observed.
+
+Also due to the random nature of the sampling selection, it could happen that two alternatives would never be part simultaneously of one of the subsets on which \textsc{promethee ii} is applied.
+This would lead the \textsc{robust promethee} method to produce some unexpected and undesirable results.
+An upper bound on the probability that this phenomen happen has been found. 
+This bound depends on the number of repetitions of \textsc{promethee ii} on the random subsets and on the size of these subsets.
+However, it has been seen that this bound should be used with caution as the method often need each pair of alternatives to be part of the same subset more than once to perform optimally. 
+% each pair of alternatives should be part of the same subset more than once for the method to perform optimally.
+
+
+A lot of analysis could still be done on this method:
+\begin{itemize}
+    \item The rankings produced are similar, but not an exact reproduction of the ones produced by \textsc{promethee ii}. Are these differences relevant? Are they leading to a ranking which is more in adequation with the decision makers preferences?
+    \item All the analysis has been performed by using random subsets of constant size (as proposed by the method). \textsc{robust promethee} could be adapted and used with subsets of various sizes or even with subsets which are not built at random.
+\end{itemize}
+\vskip 0.5cm
+
+The second method analysed in this work is called \textsc{referenced promethee}. It is based on the application of \textsc{promethee ii} with a set of fixed reference profiles.
+
+The first characteristic observed for this method is that it is not necessary to use a large number of reference profiles to discriminate large sets of alternatives. 
+For this reason, the majority of the tests have been performed using sets of 4 reference profiles.
+Then, it has been observed that it was generally possible for small sets of alternatives to reproduce the rankings obtained with \textsc{promethee ii}, by using an appropriate set of profiles. 
+In our case, these appropriate sets of reference profiles have been found using a genetic algorithm.
+
+Knowing this, some procedures have been developed in order to build sets of reference profiles leading to rankings as close as possible to the ones produced by \textsc{promethee ii}. 
+The first one is based on the development of strategies (section \ref{sec:strategies}) and did not show any encouraging results. 
+
+The second one, more elaborated, consists in an iterative questioning procedure.
+The results of the experimentations of this procedure were not very satisfying neither. 
+Indeed, it is not always yielding sets of reference profiles reproducing the \textsc{promethee ii} ranking, and when it does, it is only after that the decision maker has answered a consequent amount of questions.
+% when this method finds sets of reference profiles reproducing the \textsc{promethee ii} ranking, it is only after that the decision maker has a consequent number of questions.
+
+As for the first method, different research question are still to be investigated. 
+First of all, the influence of the size of the sets of reference profiles should be analysed. Indeed, only few references being sufficient to discriminate large sets of alternatives, the procedures tested in this chapter were gerenally used with 4 reference profiles.
+Moreover, the procedures were tested on random sets of alternatives, with preference functions with random ceils and random weight factors. It could be interesting to study the effect of the modifications of individual parameters on their efficiency to find satisfactory sets of reference profiles.

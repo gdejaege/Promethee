@@ -1,0 +1,59 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/dev/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: main.aux
+The style file: plain.bst
+Database file #1: bibli.bib
+Warning--to sort, need author or key in HDI
+Warning--to sort, need author or key in SHA
+Name 1 in "N.A.V. Doan, and Y. De Smet" has a comma at the end for entry RefPII
+while executing---line 1049 of file plain.bst
+Warning--can't use both author and editor fields in Brans2016
+Name 1 in "N.A.V. Doan, and Y. De Smet" has a comma at the end for entry RefPII
+while executing---line 1090 of file plain.bst
+Warning--empty chapter and pages in Bertrand2002
+Warning--there's a number but no series in Bertrand2002
+Warning--empty chapter and pages in DecisionEng
+Warning--empty publisher in DecisionEng
+Warning--can't use both author and editor fields in DeSmet2013
+You've used 32 entries,
+            2118 wiz_defined-function locations,
+            715 strings with 8889 characters,
+and the built_in function-call counts, 10259 in all, are:
+= -- 1038
+> -- 355
+< -- 8
++ -- 149
+- -- 110
+* -- 660
+:= -- 1617
+add.period$ -- 100
+call.type$ -- 32
+change.case$ -- 144
+chr.to.int$ -- 0
+cite$ -- 40
+duplicate$ -- 418
+empty$ -- 903
+format.name$ -- 110
+if$ -- 2229
+int.to.chr$ -- 0
+int.to.str$ -- 32
+missing$ -- 34
+newline$ -- 162
+num.names$ -- 60
+pop$ -- 191
+preamble$ -- 1
+purify$ -- 119
+quote$ -- 0
+skip$ -- 303
+stack$ -- 0
+substring$ -- 729
+swap$ -- 102
+text.length$ -- 8
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 114
+warning$ -- 8
+while$ -- 102
+width$ -- 34
+write$ -- 347
+(There were 2 error messages)

@@ -1,0 +1,187 @@
+\begin{thebibliography}{10}
+
+\bibitem{SHA}
+Academic ranking of world universities.
+\newblock Available: \url{http://www.shanghairanking.com/ARWU2016.html}, last
+  consulted: 24-05-2017.
+
+\bibitem{HDI}
+Human development reports.
+\newblock Available: \url{http://hdr.undp.org/}, last consulted: 24-05-2017.
+
+\bibitem{arrow1950difficulty}
+K.J. Arrow.
+\newblock A difficulty in the concept of social welfare.
+\newblock {\em Journal of political economy}, 58(4):328--346, 1950.
+
+\bibitem{barrico2006robustness}
+C.~Barrico and C.H. Antunes.
+\newblock Robustness analysis in evolutionary multi-objective optimization,
+  2006.
+
+\bibitem{Behzadian2010198}
+M.~Behzadian, R.B. Kazemzadeh, A.~Albadvi, and M.~Aghdasi.
+\newblock Promethee: A comprehensive literature review on methodologies and
+  applications.
+\newblock {\em European Journal of Operational Research}, 200(1):198 -- 215,
+  2010.
+
+\bibitem{belton1983short}
+V.~Belton and T.~Gear.
+\newblock On a short-coming of saaty's method of analytic hierarchies.
+\newblock {\em Omega}, 11(3):228--230, 1983.
+
+\bibitem{brans1994promcalc}
+J.P. Brans and B.~Mareschal.
+\newblock The promcalc \& gaia decision support system for multicriteria
+  decision aid.
+\newblock {\em Decision support systems}, 12(4-5):297--310, 1994.
+
+\bibitem{Brans2016}
+J.P. Brans and Y.~De Smet.
+\newblock {\em PROMETHEE Methods}, pages 187--219.
+\newblock Springer New York, New York, NY, 2016.
+
+\bibitem{BransVincke85}
+{J.P} Brans and {Ph}. Vincke.
+\newblock A preference ranking organization method.
+\newblock {\em Management Science}, 31(6):647--656, 1985.
+
+\bibitem{Gilles2017}
+G.~Dejaegere.
+\newblock Promethee.
+\newblock \url{https://github.com/gdejaege/Promethee}, last consulted:
+  31-05-2017, 2017.
+
+\bibitem{RefPII}
+N.A.V. Doan and Y.~De Smet.
+\newblock On the use of reference profiles to compute alternative promethee ii
+  rankings: A preliminary study.
+\newblock In {\em Industrial Engineering and Engineering Management (IEEM),
+  2016 IEEE International Conference on}, pages 326--330. IEEE, 2016.
+
+\bibitem{eppe2014adaptive}
+S.~Eppe and Y.~De Smet.
+\newblock An adaptive questioning procedure for eliciting promethee ii’s
+  weight parameters.
+\newblock {\em International Journal of Multicriteria Decision Making},
+  4(1):1--30, 2014.
+
+\bibitem{Hites2006322}
+R.~Hites, Y.~De Smet, N.~Risse, M.~Salazar-Neumann, and P.~Vincke.
+\newblock About the applicability of \{MCDA\} to some robustness problems.
+\newblock {\em European Journal of Operational Research}, 174(1):322 -- 332,
+  2006.
+
+\bibitem{EPI}
+A.~Hsu and al.
+\newblock 2016 environmental performance index.
+\newblock New Haven, CT: Yale University.
+\newblock Available: \url{www.epi.yale.edu}, last consulted: 24-05-2017.
+
+\bibitem{iyengar2001evaluating}
+V.S. Iyengar, J.~Lee, and M.~Campbell.
+\newblock Evaluating multiple attribute items using queries.
+\newblock In {\em Proceedings of the 3rd ACM conference on Electronic
+  Commerce}, pages 144--153. ACM, 2001.
+
+\bibitem{de1996note}
+W.~De Keyser and P.~Peeters.
+\newblock A note on the use of promethee multicriteria methods.
+\newblock {\em European Journal of Operational Research}, 89(3):457--461, 1996.
+
+\bibitem{Luce1956}
+R.D. Luce.
+\newblock Semiorders and a theory of utility discrimination.
+\newblock {\em Econometrica}, 24(2):178--191, 04 1956.
+\newblock Date revised - 2013-06-12; Last updated - 2013-09-16;
+  SubjectsTermNotLitGenreText - 3889 6071 1542 11325; 5403 8010 4025; 13221;
+  13521.
+
+\bibitem{Bertrand2002}
+B.~Mareschal and J.P. Brans.
+\newblock {\em {Prométhée-Gaia: une méthodologie d'aide à la décision en
+  présence de critères multiples}}.
+\newblock Number 2013/9303. Editions Ellipses, December 2002.
+
+\bibitem{mareschal2008rank}
+B.~Mareschal, Y.~De Smet, and Ph. Nemery.
+\newblock Rank reversal in the promethee ii method: some new results.
+\newblock In {\em 2008 IEEE International Conference on Industrial Engineering
+  and Engineering Management}, pages 959--963. IEEE, 2008.
+
+\bibitem{Mitzenmacher:2005:PCR:1076315}
+M.~Mitzenmacher and E.~Upfal.
+\newblock {\em Probability and Computing: Randomized Algorithms and
+  Probabilistic Analysis}.
+\newblock Cambridge University Press, New York, NY, USA, 2005.
+
+\bibitem{Roy1968}
+B.~Roy.
+\newblock Classement et choix en présence de points de vue multiples.
+\newblock {\em RAIRO - Operations Research - Recherche Opérationnelle},
+  2(V1):57--75, 1968.
+
+\bibitem{roy1book85}
+B.~Roy.
+\newblock {\em M\'ethodologie multicrit\`ere d'aide \`a la d\'ecision}.
+\newblock Economica, Paris, 1985.
+
+\bibitem{ROY1990324}
+B.~Roy.
+\newblock Decision-aid and decision-making.
+\newblock {\em European Journal of Operational Research}, 45(2):324 -- 331,
+  1990.
+
+\bibitem{Roy2010629}
+B.~Roy.
+\newblock Robustness in operational research and decision aiding: A
+  multi-faceted issue.
+\newblock {\em European Journal of Operational Research}, 200(3):629 -- 638,
+  2010.
+
+\bibitem{RobPII}
+Y.~De Smet.
+\newblock About the computation of robust promethee ii rankings: Empirical
+  evidence.
+\newblock In {\em Industrial Engineering and Engineering Management (IEEM),
+  2016 IEEE International Conference on}, pages 1116--1120. IEEE, 2016.
+
+\bibitem{DecisionEng}
+Y.~De Smet.
+\newblock {\em MATH-H-405 Decision Engineering}.
+\newblock 2016.
+
+\bibitem{DeSmet2013}
+Y.~De Smet and K.~Lidouh.
+\newblock {\em An Introduction to Multicriteria Decision Aid: The PROMETHEE and
+  GAIA Methods}, pages 150--176.
+\newblock Springer Berlin Heidelberg, Berlin, Heidelberg, 2013.
+
+\bibitem{tversky1969}
+A.~Tversky.
+\newblock 19 intransitivity of preferences.
+\newblock {\em Preference, Belief, and Similarity}, page 433, 1969.
+
+\bibitem{Verly2013}
+C.~Verly and Y.~De Smet.
+\newblock Some results about rank reversal instances in the promethee methods.
+\newblock {\em International Journal of Multicriteria Decision Making 71},
+  3(4):325--345, 2013.
+
+\bibitem{Vin92}
+{Ph}. Vincke.
+\newblock {\em Multicriteria Decision-Aid}.
+\newblock J. Wiley, New York, 1992.
+
+\bibitem{wang2009rank}
+Y.M. Wang and Y.~Luo.
+\newblock On rank reversal in decision analysis.
+\newblock {\em Mathematical and Computer Modelling}, 49(5):1221--1229, 2009.
+
+\bibitem{Whitley1994}
+D.~Whitley.
+\newblock A genetic algorithm tutorial.
+\newblock {\em Statistics and Computing}, 4(2):65--85, 1994.
+
+\end{thebibliography}

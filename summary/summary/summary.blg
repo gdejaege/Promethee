@@ -1,0 +1,54 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/dev/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: summary.aux
+The style file: plain.bst
+Database file #1: bibli.bib
+Warning--to sort, need author or key in HDI
+Warning--to sort, need author or key in SHA
+Name 1 in "N.A.V. Doan, and Y. De Smet" has a comma at the end for entry RefPII
+while executing---line 1049 of file plain.bst
+Warning--can't use both author and editor fields in Brans2016
+Name 1 in "N.A.V. Doan, and Y. De Smet" has a comma at the end for entry RefPII
+while executing---line 1090 of file plain.bst
+You've used 9 entries,
+            2118 wiz_defined-function locations,
+            557 strings with 5607 characters,
+and the built_in function-call counts, 3264 in all, are:
+= -- 345
+> -- 94
+< -- 5
++ -- 38
+- -- 28
+* -- 179
+:= -- 464
+add.period$ -- 30
+call.type$ -- 9
+change.case$ -- 39
+chr.to.int$ -- 0
+cite$ -- 12
+duplicate$ -- 148
+empty$ -- 300
+format.name$ -- 28
+if$ -- 756
+int.to.chr$ -- 0
+int.to.str$ -- 9
+missing$ -- 7
+newline$ -- 47
+num.names$ -- 16
+pop$ -- 74
+preamble$ -- 1
+purify$ -- 31
+quote$ -- 0
+skip$ -- 122
+stack$ -- 0
+substring$ -- 239
+swap$ -- 60
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 34
+warning$ -- 3
+while$ -- 32
+width$ -- 10
+write$ -- 99
+(There were 2 error messages)

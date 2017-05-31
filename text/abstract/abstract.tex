@@ -1,0 +1,74 @@
+\chapter*{\centering Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+
+Some practical decision problems are complex and need to be formalised to be efficiently managed.
+The decision aid discipline consists in modeling these problems.
+More specifically, multi-criteria decision aid methods model them using different conflicting criteria.
+
+Different multi-criteria decision aid methods exist but the study performed in this master thesis focus on the \textsc{promethee} methods.
+
+Like other multi-criteria decision aid methods, \textsc{promethee ii} suffers from the rank reversal phenomenon.
+This phenomenon consists in the relative ordering between two alternatives being dependant on some other alternatives of the problem.
+The possibility of suffering from rank reversals can be undesirable due to manipulation threats.
+Therefore, two modifications of the \textsc{promethee ii} method aimed at avoiding this phenomon have been studied.
+
+The first modification analysed, \textsc{robust promethee}, is based on the repetition of \textsc{promethee ii} on a large number of samplings of the alternatives.
+The results of this analysis show that it seems to reduce the number of rank reversals, but its efficiency in this regard strongly depends on the decision problem and on the size of the subsets on which \textsc{promethee ii} is applied.
+This method introduces two new parameters: the number of iterations and the size of the samplings.
+Some bounds on the minimal value of these parameters have been found.
+Finally, it has been shown that some irrational results could occur (such as the non respect of the dominance relation), but with a very low probability.
+
+A second method, \textsc{referenced promethee} has also been analysed.
+It is based on the comparison using \textsc{promethee ii} of each alternative with a set of predefined reference profiles.
+Since each alternative is compared with the same fixed set, this method does not suffer from the rank reversal phenomenon.
+Nevertheless, it comes with the additional cost of having to find a set of fixed references.
+It has been seen in this work that the rankings obtained are highly dependent on this set of reference profiles.
+
+\newpage 
+Several properties of these sets have been found. First, it is shown that a small number of references is sufficient to discriminate large set of alternatives.
+Then, it is shown that it is generally even possible to replicate the rankings produced by \textsc{promethee ii} with \textsc{referenced promethee} using only this small quantity of reference profiles.
+Finally, two approaches for defining these sets of reference profiles are detailed and analysed. The efficiency of each of them however strongly depends on the decision problem and it is therefore not guaranteed that they will yield set of reference profiles which lead to a satisfactory ranking.
+
+
+\textit{keywords : multi-criteria decision aid, \textsc{promethee}, rank reversals, \textsc{robust promethee}, \textsc{referenced promethee}, reference profiles.}
+
+
+
+\chapter*{\centering Résumé}
+%\addcontentsline{toc}{chapter}{Resumé}
+
+Certains problèmes d'aide à la décision sont trop complexes et doivent être formalisés pour pouvoir être appréhendés efficacement.
+La discipline de l'aide à la décision consiste à modéliser ces problèmes. \\
+Plus précisément, les méthodes d'aide à la décision multicritères consistent à modéliser ces problèmes en utilisant plusieurs critères de natures souvent conflictuelles.
+
+Différentes méthodes d'aide à la décision multi-critères existent, cependant seules les méthodes \textsc{promethee} seront abordées dans ce travail.
+L'une des méthodes de la famille \textsc{promethee} est \textsc{promethee ii} qui a pour but d'ordonner l'ensemble fini des solutions du problème (ces solutions sont aussi appelées des alternatives).
+
+Comme d'autres méthodes d'aide à la décision multi-critère, \textsc{promethee ii} souffre de ce qui est appelé l'inversion de rang.
+Ce phénomène consiste en ce que l'ordre relatif entre deux alternatives dépende d'autres alternatives du problème.
+La possibilité pour une méthode de subir ces inversions de rang peut être indésirable. En effet, cela signifierait que celle-ci soit susceptible de subir des manipulations de rang via l'ajout ou la modification artificielle de données.
+C'est pourquoi, deux méthodes dérivées de \textsc{promethee ii}, ayant pour but de réduire ces inversions de rang, sont analysées dans ce travail.
+
+La première modification analysée, \textsc{robust promethee}, est basée sur la répétition de \textsc{promethee ii} sur une grande quantité de d'échantillons de solutions.
+Les résultats de cette analyse montrent que celle-ci semble réduire le nombre de d'inversions de rangs.
+Cependant, son efficacité à réduire cette quantité est fortement dépendante du problème de décision et de la taille des sous-ensembles sur lesquels \textsc{promethee ii} est appliquée.\\
+Cette méthode introduit deux nouveaux paramètres: le nombre d'itérations et la taille des échantillons.
+Certaines bornes sur la valeur minimale de ces paramètres ont été définies.
+Enfin, il a été démontré que des résultats irrationnels peuvent être produits, mais avec une très faible probabilité.
+
+\newpage 
+Une deuxième méthode, \textsc{referenced promethee}, a ensuite été analysée.
+Celle-ci est basée sur la comparaison avec \textsc{promethee ii} de chaque alternative avec un ensemble fixe de profils de référence.
+Étant donné que chaque alternative est comparée au même ensemble fixe de profils, cette méthode ne souffre pas du phénomène d'inversion de rang.
+Cependant, un coût additionnel consistant en la nécessité de devoir établir cet ensemble fixe de références est introduit.
+Il a été observé dans ce travail que le choix de cet ensemble a un impact considérable sur le rangement final obtenu.
+
+Plusieurs propriétés de ces ensembles de profils de référence ont été trouvées. Tout d'abord, il a été constaté qu'un large ensemble d'alternatives pouvait être départagé en utilisant un petit nombre de profils de référence.
+Ensuite, il a été remarqué qu'il est en général possible de reproduire exactement le classement obtenu par \textsc{promethee ii} avec \textsc{referenced promethee} en utilisant cette petite quantité de profils de références.
+
+Enfin, deux approches pour définir ces ensembles de profils de références sont détaillées et analysées. L'efficacité de chacune de ces deux approches dépend cependant du problème de décision, et aucune des deux ne garantit de fournir des profils de référence satisfaisants.
+
+
+\textit{mots-clés: aide à la décision multicritères, \textsc{promethee}, inversion de rang, \textsc{robust promethee}, \textsc{referenced promethee}}
+

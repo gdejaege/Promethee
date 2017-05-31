@@ -1,0 +1,21 @@
+\begin{thebibliography}{1}
+
+\bibitem{Kobza2007}
+John~E. Kobza, Sheldon~H. Jacobson, and Diane~E. Vaughan.
+\newblock A survey of the coupon collector's problem with random sample sizes.
+\newblock {\em Methodology and Computing in Applied Probability},
+  9(4):573--584, 2007.
+
+\bibitem{Mitzenmacher:2005:PCR:1076315}
+Michael Mitzenmacher and Eli Upfal.
+\newblock {\em Probability and Computing: Randomized Algorithms and
+  Probabilistic Analysis}.
+\newblock Cambridge University Press, New York, NY, USA, 2005.
+
+\bibitem{SENETA199224}
+E~Seneta.
+\newblock On the history of the strong law of large numbers and boole's
+  inequality.
+\newblock {\em Historia Mathematica}, 19(1):24 -- 39, 1992.
+
+\end{thebibliography}

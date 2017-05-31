@@ -1,0 +1,54 @@
+\BOOKMARK [0][-]{chapter*.2}{Abstract}{}% 1
+\BOOKMARK [0][-]{chapter*.5}{List of symbols}{}% 2
+\BOOKMARK [0][-]{chapter.1}{Introduction to Multi-Criteria Decision Aid}{}% 3
+\BOOKMARK [1][-]{section.1.1}{Introduction to Decision aid}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.2}{Mono-criterion approach}{chapter.1}% 5
+\BOOKMARK [2][-]{subsection.1.2.1}{Formalisation and properties of mono-criterion \040problems}{section.1.2}% 6
+\BOOKMARK [2][-]{subsection.1.2.2}{Drawback of the mono-criterion approach}{section.1.2}% 7
+\BOOKMARK [1][-]{section.1.3}{Multi-Criteria Approach}{chapter.1}% 8
+\BOOKMARK [2][-]{subsection.1.3.1}{Mathematically ill-defined problem}{section.1.3}% 9
+\BOOKMARK [2][-]{subsection.1.3.2}{Types of multi-criteria decision problems}{section.1.3}% 10
+\BOOKMARK [2][-]{subsection.1.3.3}{Dominance relation}{section.1.3}% 11
+\BOOKMARK [2][-]{subsection.1.3.4}{Types of multi-criteria decision aid methods}{section.1.3}% 12
+\BOOKMARK [1][-]{section.1.4}{Conclusion}{chapter.1}% 13
+\BOOKMARK [0][-]{chapter.2}{Introduction to the promethee methods}{}% 14
+\BOOKMARK [1][-]{section.2.1}{Enrichment of the preference structure}{chapter.2}% 15
+\BOOKMARK [1][-]{section.2.2}{Enrichment of the dominance relationship}{chapter.2}% 16
+\BOOKMARK [2][-]{subsection.2.2.1}{ Global preference index}{section.2.2}% 17
+\BOOKMARK [2][-]{subsection.2.2.2}{Outranking flow}{section.2.2}% 18
+\BOOKMARK [1][-]{section.2.3}{Decision aid}{chapter.2}% 19
+\BOOKMARK [2][-]{subsection.2.3.1}{Promethee i}{section.2.3}% 20
+\BOOKMARK [2][-]{subsection.2.3.2}{Promethee ii}{section.2.3}% 21
+\BOOKMARK [2][-]{subsection.2.3.3}{Conclusion}{section.2.3}% 22
+\BOOKMARK [0][-]{chapter.3}{Rank Reversal}{}% 23
+\BOOKMARK [1][-]{section.3.1}{Transitivity of preferences and pairwise \040comparisons}{chapter.3}% 24
+\BOOKMARK [2][-]{subsection.3.1.1}{Ranking methods based on pairwise comparisons}{section.3.1}% 25
+\BOOKMARK [2][-]{subsection.3.1.2}{Transitivity of the preferences}{section.3.1}% 26
+\BOOKMARK [2][-]{subsection.3.1.3}{Rank reversal occurrences in consistent RBPC with nontransitive preferences}{section.3.1}% 27
+\BOOKMARK [1][-]{section.3.2}{Some results about the rank reversal \040phenomenon in the promethee methods}{chapter.3}% 28
+\BOOKMARK [2][-]{subsection.3.2.1}{Respect of the natural dominance relation}{section.3.2}% 29
+\BOOKMARK [2][-]{subsection.3.2.2}{Rank reversal and net flow differences}{section.3.2}% 30
+\BOOKMARK [1][-]{section.3.3}{Comments about the rank reversal phenomenon and conclusion}{chapter.3}% 31
+\BOOKMARK [0][-]{chapter.4}{The robust promethee method}{}% 32
+\BOOKMARK [1][-]{section.4.1}{The robust promethee algorithm}{chapter.4}% 33
+\BOOKMARK [1][-]{section.4.2}{First empirical results}{chapter.4}% 34
+\BOOKMARK [2][-]{subsection.4.2.1}{Empirical results with the hdi data set}{section.4.2}% 35
+\BOOKMARK [2][-]{subsection.4.2.2}{Empirical results with the shanghai data set}{section.4.2}% 36
+\BOOKMARK [2][-]{subsection.4.2.3}{Empirical results with the epi data set}{section.4.2}% 37
+\BOOKMARK [1][-]{section.4.3}{Mathematical properties of robust promethee}{chapter.4}% 38
+\BOOKMARK [2][-]{subsection.4.3.1}{Pairwise comparisons probability \205 lower bound on the number of iterations}{section.4.3}% 39
+\BOOKMARK [2][-]{subsection.4.3.2}{Non respect of the dominance relation}{section.4.3}% 40
+\BOOKMARK [1][-]{section.4.4}{Synthesis of the robust promethee method and conclusion}{chapter.4}% 41
+\BOOKMARK [0][-]{chapter.5}{The referenced promethee method}{}% 42
+\BOOKMARK [1][-]{section.5.1}{Characteristics of sets of reference profiles}{chapter.5}% 43
+\BOOKMARK [2][-]{subsection.5.1.1}{Number of reference profiles needed to discriminate all the alternatives}{section.5.1}% 44
+\BOOKMARK [2][-]{subsection.5.1.2}{Possibility of replicating the promethee ii rankings}{section.5.1}% 45
+\BOOKMARK [1][-]{section.5.2}{Constructive methods to build sets of reference profiles}{chapter.5}% 46
+\BOOKMARK [2][-]{subsection.5.2.1}{Building sets of reference profiles using strategies}{section.5.2}% 47
+\BOOKMARK [2][-]{subsection.5.2.2}{Building sets of reference profiles using an adaptative questioning procedure}{section.5.2}% 48
+\BOOKMARK [2][-]{subsection.5.2.3}{Analysis of the satisfactory sets of reference profiles found}{section.5.2}% 49
+\BOOKMARK [1][-]{section.5.3}{Conclusions and synthesis of the \040referenced promethee method}{chapter.5}% 50
+\BOOKMARK [0][-]{chapter.6}{Conclusion}{}% 51
+\BOOKMARK [0][-]{section*.41}{Appendices}{}% 52
+\BOOKMARK [0][-]{Appendix.1.A}{robust promethee algorithm}{}% 53
+\BOOKMARK [0][-]{Appendix.1.B}{Expectation and variance in the coupon collector's problem}{}% 54

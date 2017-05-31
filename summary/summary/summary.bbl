@@ -1,0 +1,56 @@
+\begin{thebibliography}{1}
+
+\bibitem{SHA}
+Academic ranking of world universities.
+\newblock Available: \url{http://www.shanghairanking.com/ARWU2016.html}, last
+  consulted: 24-05-2017.
+
+\bibitem{HDI}
+Human development reports.
+\newblock Available: \url{http://hdr.undp.org/}, last consulted: 24-05-2017.
+
+\bibitem{Bra1982}
+J.P. Brans.
+\newblock L'ing{\'e}ni{\`e}rie de la d{\'e}cision; {E}laboration d'instruments
+  d'aide {\`a} la d{\'e}cision. {L}a m{\'e}thode {PROMETHEE}.
+\newblock In R.~Nadeau and M.~Landry, editors, {\em L'aide {\`a} la
+  d{\'e}cision: {N}ature, Instruments et Perspectives d'Avenir}, pages
+  183--213, Qu{\'e}bec, Canada, 1982. Presses de l'Universit{\'e} Laval.
+
+\bibitem{Brans2016}
+J.P. Brans and Y.~De Smet.
+\newblock {\em PROMETHEE Methods}, pages 187--219.
+\newblock Springer New York, New York, NY, 2016.
+
+\bibitem{RefPII}
+N.A.V. Doan and Y.~De Smet.
+\newblock On the use of reference profiles to compute alternative promethee ii
+  rankings: A preliminary study.
+\newblock In {\em Industrial Engineering and Engineering Management (IEEM),
+  2016 IEEE International Conference on}, pages 326--330. IEEE, 2016.
+
+\bibitem{EPI}
+A.~Hsu and al.
+\newblock 2016 environmental performance index.
+\newblock New Haven, CT: Yale University.
+\newblock Available: \url{www.epi.yale.edu}, last consulted: 24-05-2017.
+
+\bibitem{de1996note}
+W.~De Keyser and P.~Peeters.
+\newblock A note on the use of promethee multicriteria methods.
+\newblock {\em European Journal of Operational Research}, 89(3):457--461, 1996.
+
+\bibitem{mareschal2008rank}
+B.~Mareschal, Y.~De Smet, and Ph. Nemery.
+\newblock Rank reversal in the promethee ii method: some new results.
+\newblock In {\em 2008 IEEE International Conference on Industrial Engineering
+  and Engineering Management}, pages 959--963. IEEE, 2008.
+
+\bibitem{RobPII}
+Y.~De Smet.
+\newblock About the computation of robust promethee ii rankings: Empirical
+  evidence.
+\newblock In {\em Industrial Engineering and Engineering Management (IEEM),
+  2016 IEEE International Conference on}, pages 1116--1120. IEEE, 2016.
+
+\end{thebibliography}

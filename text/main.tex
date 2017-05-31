@@ -1,0 +1,71 @@
+\documentclass[a4paper, oneside, 11pt]{book}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[font=small,format=hang,parskip=5pt]{caption}
+\usepackage[sumlimits,]{amsmath}
+\usepackage{array}
+\usepackage{etex}
+\usepackage{tikz, pgfplots}
+\usetikzlibrary{arrows}
+\tikzset {domaine/.style 2 args={domain=#1:#2} }
+\usepackage{fancyhdr}
+\usepackage{parskip}
+\usepackage{calrsfs}
+\usepackage[toc,page]{appendix}
+\usepackage{titlesec}
+\usepackage{algorithm,algorithmic, setspace}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\usepackage{enumitem}
+\usepackage{calc}  
+\setlist[description]{leftmargin=3em,labelindent=2em}
+\usepackage{acronym}
+%\setlength{\parindent}{1em}
+%\setlength{\parskip}{0.75em}
+\setlength{\jot}{9pt}
+
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "l" column type
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "l" column type
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\definecolor{ttttff}{rgb}{0.2,0.2,1}
+\definecolor{qqzzqq}{rgb}{0,0.6,0}
+\definecolor{qqqqff}{rgb}{0,0,1}
+
+\begin{document}
+
+\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
+\input{front_page/front_page.tex}
+
+\input{acknowledgements/acknowledgements.tex}
+\input{abstract/abstract.tex}
+\tableofcontents
+\input{acronyms/acronyms.tex}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\leftmark}
+\rhead{ \thepage}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+\mainmatter
+\input{mcda/mcda.tex}
+\input{promethee/promethee.tex}
+\input{rank_reversal/rank_reversal.tex}
+\input{robust_promethee/robust_promethee.tex}
+\input{referenced_promethee/referenced_promethee.tex}
+\input{conclusion/conclusion.tex}
+
+\begin{appendices}
+    \input{appendices/robust_promethee_algorithm.tex}
+    %\input{appendices/robust_empirical_tests.tex}
+    \input{appendices/geometric.tex}
+\end{appendices}
+
+
+\bibliographystyle{plain}
+\bibliography{bibli}
+\end{document}

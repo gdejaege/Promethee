@@ -1,0 +1,59 @@
+\chapter{Expectation and variance in the coupon collector's problem} \label{app:coupon_collector}
+
+In the context of the coupon collector's problem, the variable $d_i$ is a random variable denoting the number of random balls that must be drawn from the urn in order to obser the $i$th ball once $(i-1)$ balls have already been observed.
+
+The probability of finding a new ball at the next draw once $(i-1)$ of the $N$ balls have already been found is constant and given by:
+
+\begin{equation}
+    p_i = \frac{N - (i-1)}{N}
+\end{equation}
+
+Consider now an experiment which two only possible outcomes are \textit{succes} with probability $p$ and \textit{failure} with probability $(1-p)$.
+A random variable $Y$ associated to this experiment which takes the value $1$ if the experiment succeeds and $0$ if it fails is said to be a bernoulli random variable \cite{Mitzenmacher:2005:PCR:1076315}.
+
+Each draw, once $i-1$ balls have already been observed and until $i$th ball is observed, can be seen as an bernoulli experiment.
+Therefore, the random variable $d_i$ can also be seen as the distribution of the number of bernoulli experiments of equal probabilities that must be performed until the first experiment succeeds \cite{Mitzenmacher:2005:PCR:1076315}.
+
+This defines $d_i$ as a geometric random variable of parameter $p_i$ with the following probability distribution on $n=1,2...$ \cite{Mitzenmacher:2005:PCR:1076315}:
+
+\begin{equation}
+    Pr[d_i = n] = (1 - p_i)^{n-1}p_i
+    \label{eqn:geometric_di}
+\end{equation}
+
+The expectation and the variance of the geometric random variable $d_i$ is given by the following relations \cite{Mitzenmacher:2005:PCR:1076315}:
+\begin{equation}
+    E[d_i] = \frac{1}{p_i} \qquad Var[d_i] = \frac{1-p_i}{p_i^2}
+    \label{eqn:expectancy_var_di}
+\end{equation}
+
+Since $D$ is defined as the random variable representing the total number of draws needed, it is equal to the sum of the $d_i$. 
+\begin{equation}
+    D=\sum_i d_i 
+\end{equation}
+    
+Its expectation and its variance can therefore be computed as follow \cite{Mitzenmacher:2005:PCR:1076315}:
+\begin{equation}
+    \label{eqn:expectationD}
+    \begin{split}
+        E(D) & = \sum_{i=1}^N E(d_i) \\
+    & = \sum_{i=1}^N \frac{1}{p_i} \\ 
+    & = \frac{N}{N} +\frac{N}{N-1}+\dots+\frac{N}{1} \\
+    & = N\cdot H_N \\
+\end{split}
+\end{equation}
+With $H_N$ being the $N$th harmonic number
+\begin{equation}
+    \label{eqn:varD}
+    \begin{split}
+    Var(D) & = \sum_{i=1}^N Var(d_i) \\
+    & = \sum_{i=1}^N \frac{1-p_i}{p_i^2}\\
+    & \le \sum_{i=1}^N \frac{1}{p_i^2}\\
+    & = \sum_{i=1}^N \left(\frac{N}{N - i+1}\right) ^2\\
+    & = N^2 \sum_{i=1}^N \left( \frac{1}{i}\right) ^2\\
+    & \le \frac{\pi ^2N^2}{6}\\
+    \end{split}
+\end{equation}
+With $\frac{\pi^2}{6}$ being the result of the Riemann $\zeta$ function evaluated in 2.
+
+

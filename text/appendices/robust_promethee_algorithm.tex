@@ -1,0 +1,77 @@
+\chapter{\textsc{robust promethee} algorithm} \label{app:rob_promethee_algorithm}
+
+Here under, an algorithm is proposed to compute the robust flow of a set of alternatives:
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+    \REQUIRE $A, \mathcal{P}, w, R, m$ 
+    \STATE $P = n\times n$ matrix of zeros
+    \FOR{$r=1\dots R$}
+        \STATE $A_{mr} =$ random sample of $m$ alternatives from $A$
+        \STATE $Ranking_{r}=$ \textsc{promethee\_ii}$(A_{mr}, w, \mathcal{P})$
+        \STATE $P=$ update($P, Ranking_{r}$) \label{alg:line_update}
+    \ENDFOR
+    \STATE $P=$ normalise($P$) \label{alg:line_normalise}
+    \STATE $\Phi =$ netflow($P$)
+    \RETURN ranking($\Phi$)
+\end{algorithmic}
+\caption{\textsc{robust promethee} algorithm}
+\label{alg:robust_pii}
+\end{algorithm}
+
+% The inputs of this algorithm are designed by there usual symbol and are recalled here under:
+
+% \begin{description}
+%     \item[$A :$] the matrix of alternatives.
+%     \item[$\mathcal{P} :$] the vector of preference functions. These preference functions must come with the values of their corresponding parameters. 
+%         For example, a preference function of type V should be given with its values of $p$ and $q$ (see section \ref{ss:pref_type_5}).
+%     \item[$w :$] the weight vectors.
+%     \item[$R :$] the number of iterations of the \textsc{promethee ii} method on subsets.
+%     \item[$m :$] the size of the subsets.
+% \end{description}
+
+The following parts of the algorithm shoud require some additional commnents:
+\begin{description}
+    \item[Input $\mathcal{P} :$] the vector of preference functions. These preference functions must come with the values of their corresponding parameters. 
+        For example, a preference function of type V should be given with its values of $p$ and $q$ (see section \ref{ss:pref_type_5}).
+    \item[line \ref{alg:line_update}, update:] returns an updated probability matrix according to ranking given. 
+        Here under, one can see an example of how a given probability matrix is updated if the function is given the following ranking : $[ a_\alpha \succ a_\gamma \succ a_\beta ]$.\\
+        \vskip 0.5cm
+        {
+        $P= \bordermatrix{ & & \beta  & & \gamma &\cr 
+                          &. & . & . & . &.\cr
+                   \alpha & . & x  & . & y & . \cr 
+                          & . & .  & . & . & .\cr
+                   \gamma & . & z  & . & . & .\cr 
+                          &.  & .  & . & . & . \cr
+        } \quad
+        \rightarrow \quad \bordermatrix{ &  & \beta  & & \gamma &\cr
+                      & . & .    & . & .   &.\cr
+               \alpha & . & x+1  & . & y+1 & . \cr 
+                      & . & .    & . & .   & .\cr
+               \gamma & . & z+1  & . & .   & .\cr 
+                      &.  & .    & . & .   & . \cr
+                  }$}\\
+        \vskip 0.5cm
+        At this stage, the elements $p_{ij}$ of the matrix contain the total number of times that the alternative $a_i$ has been ranked before the alternative $a_j$ in one of the past iterations.
+    \item[line \ref{alg:line_normalise}, normalised:] returns a normalised probability matrix.
+        To normalise this matrix, all the elements $p_{ij}$ are divided by the sum of themself and of the conjugate elements of the matrix: $p_{ji}$. 
+        An example is shown here under :\\
+        \vskip 0.25cm
+    $P= \bordermatrix{ & & i  & & j &\cr 
+                      &. & .   & . & . &.\cr
+               i      & . & .  & . & y & . \cr 
+                      & . & .  & . & . & .\cr
+               j      & . & x  & . & . & .\cr 
+                      &.  & .  & . & . & . \cr
+        } \quad 
+        \rightarrow \quad \bordermatrix{ & & i  & & j &\cr 
+                      &. & .   & . & . &.\cr
+               i      & . & .  & . & \frac{y}{x+y} & . \cr 
+                      & . & .  & . & . & .\cr
+                      j      & . & \frac{x}{x+y} & . & . & .\cr 
+                      &.  & .  & . & . & . \cr
+        }$ \\
+
+        \vskip 0.5cm
+        This operation is done (after the $R$ iterations of the \textsc{promethee ii} method) to ensure that all $p_{ij}$ are included between zero and one and represent a probability.
+\end{description}

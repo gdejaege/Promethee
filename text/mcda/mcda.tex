@@ -1,0 +1,482 @@
+\chapter{Introduction to Multi-Criteria Decision Aid}
+\label{chap:mcda}
+
+\section{Introduction to Decision aid} \label{sec:intro}
+
+Every day, any human being has to face numerous choices (or decision problems).
+Most of them are rational and therefore try to make the choices leading to the most favorable consequences.
+All these decision problems appear in specific contexts that will be called the \textit{decision problem reality} or more simply, the problem reality. The contexts of decision problems can have very different natures \cite{Bertrand2002}\cite{roy1book85}: economical, political, industrial, military or even familial or personal.
+
+The decision is not always taken by a unique person.
+It can as well be taken by larger entities. These can be well defined, such as a board of directors, a council of ministers, a jury, or even a family or can be more vaguely defined such as professional pressure groups, employees of a company or the public opinion \cite{roy1book85}.
+
+In any cases, the entity, composed by one or more people, in charge of the final decision will be called the \textit{decision maker}.
+
+Most of the decision problems that we encounter in our daily lives are straightforward or of relatively small importance (what should we eat tonight? what movie should I watch?). They can generally be solved naturally and in a \textit{qualitative} way \cite{Bertrand2002}.
+As the problem is simple and the consequences of a non optimal decision are not dramatic, it is sufficient for the decision maker to use its own experience and its assessments of the problem reality in order to choose a solution that seems optimal to him.
+These kind of decision problems take most of the time place in a personal or familial context.
+
+Some problems, on the other hand, require a more in depth reflection (should this old nuclear power plant be closed? should I invest my savings in this particular company?). \\
+The decision problem reality in economical or industrial contexts have become too complex to be apprehensible in a purely qualitative manner \cite{Bertrand2002}.
+Furthermore, the  choice of a good or even of the best solution for these problems can be crucial since the consequences of a bad decision can be disastrous.
+In such cases, the decision maker could want to use a \textit{quantitative} approach, building a model \cite{Bertrand2002} \cite{DeSmet2013}.
+In this approach, a mathematical model needs to be built. This model, which is an abstraction of the reality, will be used as support for the investigation and the communication between the different actors of the problem \cite{DeSmet2013} \cite{roy1book85}. To build this mathematical model, the consequences of each possible decision must be foreseen and quantified.
+
+The discipline dealing with the analysis of the decision realities and the elaboration of the decision models is called operational research.
+As done in \cite{Bertrand2002}, the expression \textit{decision aid} will be used as its signification is closer to the problem described.
+
+It should also be noted that in decision aid, the quantitative and the qualitative approaches are not mutually exclusive.
+The decision problem reality being generally too complex and chaotic to be entirely modelable, the quantitative approach must be combined with the qualitative one. The quantitative approach will be used to give some insight into the problem to the decision maker, which will always use his own qualitative perception  to use these insights.
+
+In the rest of the chapter, the traditional mono-criterion approach will first be detailed. Some of it's drawbacks will then be highlighted, motivating the introduction of the multi-criteria approach that will then be detailed.
+
+%\subsection{Steps of the decision process}
+%
+%The decision process can be summarized in the three following steps \cite{Bertrand2002}:
+%
+%\subsubsection{1. Identification of the possible decisions}
+%When faced to a decision problem, the first step to do is build the space $A$ of possible decisions. From now on, the possible decisions will be called alternatives.
+%
+%The alternatives of a decision problem can be:
+%\begin{description}
+%    \item[finite and enumerable: ] the decision maker must hire one person from a set of $n$ applicants,
+%    \item[finite but not enumerable:] the decision maker is facing a \textit{Travelling Salesman Problem}. As the number of possible path increases exponentially, the number of alternatives easily becomes far too great be enumerated,
+%    \item[infinite:] the decision maker must choose the amount of money invested in a project.
+%\end{description}
+%
+%\subsubsection{Preference modelling}
+%All alternatives have of course not the same consequences and
+
+\section{Mono-criterion approach}
+\subsection{Formalisation and properties of mono-criterion \\ problems}
+
+A mono-criterion decision problem can be formulated in the following way \cite{Bertrand2002}:
+\begin{equation}
+    Opt \{ f(a_i) \mid a_i \in A\}
+    \label{eq:monocriterion_decision_problem}
+\end{equation}
+
+% The different elements of this formalisation will be detailed trough this section.
+These classical models where the only one used until the end of the sixties \cite{ROY1990324}. They cover numerous families of problems and are formalised according to the three following properties. 
+
+\subsubsection {1. $A$ forms a well-defined set of possible alternatives \cite{ROY1990324}} \label{sec:set_of_alternatives}
+
+The set $A$ of alternatives (also called actions) forms a well-defined set. These are all the possible choices of the decision maker. This set of alternatives can be finite and enumerable, finite but not enumerable or infinite. Here under are examples of decision problem with these kinds of alternative sets:
+\begin{itemize}
+    \item \textbf{finite and enumerable:} the decision maker must hire one person from a set of $n$ applicants,
+\item \textbf{finite but not enumerable:} the decision maker is facing a \textit{Travelling Salesman Problem}. As the number of possible path increases exponentially, the number of alternatives often becomes far too large to be enumerated,
+    \item \textbf{infinite:} the decision maker must choose the amount of money invested in a project.
+\end{itemize}
+
+If the alternatives are not enumerable, the set must be defined by stating the properties (such as linear constraints) which characterise its elements \cite{Vin92}.
+
+The set $A$ is also characterized by the following two properties \cite{Vin92}: \\
+\begin{itemize}
+    \item $A$ can be either \textit{stable}, if the set does not change during the decision procedure, or \textit{evolutive}, if, on the other hand, it can change. \\
+There can be different reasons leading to some changes of the alternatives considered such as for example an evolving decision reality or the elimination during the intermediate steps of the procedure of alternatives that are considered not to be relevant anymore.
+Consider the already mentioned example of a decision maker which has to hire one candidate from a set of applicants. It is very plausible that this set could vary during the decision process as some candidates could have found a better job elsewhere.
+
+    \item $A$ can be either \textit{globalised}, if the decision problem consists in the selection of one unique alternative (we say that the alternatives are mutually exclusive), or \textit{fragmented} if it consists in the selection of a subset of one or more alternatives.\\
+Consider for instance the problem of having to choose two locations from a set of $n$ possible locations where new warehouses would be built. This problem can be seen as fragmented if the alternatives consist in the set of $n$ locations and that two of them must be chosen, but it can also be seen as a globalised problem if the alternatives consist in the $\frac{n(n-1)}{2}$ possible couples of location and that only one must be chosen.
+\end{itemize}
+\subsubsection{2. The real-valued function $f(.)$ correctly reflects the preferences of the decision maker \cite{ROY1990324}}
+
+The preferences of the decision maker are considered to be correctly represented by the unique criterion $f(.)$. This criterion must therefore synthesise on its own all the objectives of the decision maker and the consequences of each of the alternatives \cite{ROY1990324} \cite{Bertrand2002}.
+
+Of course, this assumption can not always entirely be respected in real life decision problems. For example, a function $f(.)$ representing the profit made with the commercialisation of a product can often only be built by using estimations of the number of products that would be sold.
+In such cases $f(.)$ could be subject to some subjectivity.
+This specific kind of subjectivity should be avoided as much as possible as it introduces some imprecisions. The reality should be represented as accurately possible by the evaluation function $f(.)$. 
+Some other kind of subjectivity, which is essential and should therefore not be avoided, will be introduced in the section concerning the multi-criteria approach.
+
+The problem could consist in minimising this criterion (e.g. $f(.)$ represents a cost) or to maximise the criterion (e.g. $f(.)$ represents a profit). Without loss of generality, for the rest of this section we will consider that $f(.)$ is a criterion to maximise.
+
+\begin{equation}
+    Max \{ f(a_i) \mid a_i \in A \}
+    \label{eq:monocriterion_maximise}
+\end{equation}
+
+\subsubsection{ 3. The decision problem forms a well-formulated mathematical problem \cite{ROY1990324}}
+
+If a mono-criterion decision problem is modeled as \eqref{eq:monocriterion_maximise} with $A$ being a finite set, then there exists at least one solution such that:
+
+\begin{equation}
+    f(a_i^*) \ge f(a_j), \forall a_j \in A
+    \label{eq:monocriterion_optimal_solution}
+\end{equation}
+
+Such solutions are said to be optimal for the decision problem. These are entirely determined by the modelling of the problem. The process of finding such an optimal solution is a classical optimisation problem, leading to the discovery of some ``hidden truth'' \cite{ROY1990324}\cite{Vin92}. Indeed, if the decision maker approves the model, he should adopt one of the proposed optimal solutions.
+
+\subsubsection{4. Additional properties of the mono-criterion problem}
+With a mono-criterion problem, more can be done than finding an optimal solution. Indeed, $f(.)$ implies a natural dominance relation ($P$,$I$) on every pair of elements of $A$ \cite{Bertrand2002}:
+
+\begin{equation}
+    \forall a_i, a_j \in A: \left\{
+        \begin{array}[]{l c c c c}
+            f(a_i) & > & f(a_j) &\Leftrightarrow & a_iPa_j \\
+            f(a_i) & = & f(a_j) &\Leftrightarrow & a_iIa_j \\
+            f(a_i) & < & f(a_j) &\Leftrightarrow & a_jPa_i \\
+        \end{array}
+        \right .
+    \label{eq:dominance_relation_monocriterion}
+\end{equation}
+where $P$ and $I$ respectively stand for preference and indifference.
+
+The preference structure of this relation forms a \textit{complete preorder} \cite{Vin92}. All the alternatives can be ranked from the best one to the worst one (complete) with eventual ties between two alternatives (preorder).
+
+By nature, the following properties of $P$ and $I$ should also be noted \cite{Vin92}:
+\begin{equation}
+    \forall a_i,a_j \in A \left \{
+        \begin{split}
+            a_iPa_j \Rightarrow a_j \neg P a_i &: \text{ P is asymmetric} \\
+            a_iIa_i &: \text{ I is reflexive} \\
+            a_iIa_j \Rightarrow a_j I a_i &: \text{ I is symmetric} \\
+        \end{split}
+        \right .
+    \label{eq:properties_P_I}
+\end{equation}
+
+\subsection{Drawback of the mono-criterion approach} \label{sec:drawback_monocriteria}
+Two main drawbacks of the mono-criterion approach are underlined in \cite{Bertrand2002}.
+The first one is that, if the decision maker wants to take a decision according to several points of view (e.g. cost, sustainability, equity, \dots), a single criterion can generally not synthesise the decision problem reality.
+This is illustrated with the following example taken from \cite{roy1book85}.\\
+Suppose you are working in a rubber manufacturing firm and that you need to design a new rubber to respond to the needs of a customer.
+Your task will be to choose, between the different possible compositions of the rubber, one that best fulfills the specified requirements.
+Depending on these possible requirements you will probably have to choose a composition with a high breaking strength, a limited thermal conductivity, a certain elasticity, and that all these characteristics are valid for a range of temperature as large as possible. The client will probably also require that these properties do not deteriorate too quickly with time. He could also require that the rubber does not react with a specific paint with which it will be painted. Finally, you will also have to find a composition that minimises the cost of production.\\
+It can be concluded from this example that it is not always realistic to hope to find a unique criterion synthesising correctly all the aspects of the decision problem reality.
+
+The second drawback of the mono-criterion approach is that the classic notion of a criterion is only used in order to compare if the evaluation of an alternative $a_i$ is greater, smaller, or equal to the evaluation of an alternative $a_j$. This information could be misleading.\\
+If we consider again the problem of choosing a composition for the new rubber but this time only focusing on the expected lifetime criterion. A composition which is expected to maintain his required properties for 45 years will be preferred over a composition maintaining its properties for 40 years in the same way that it would be preferred over a third composition maintaining its properties for 5 years.\\
+This often does not represent the reality accurately. Suppose that the rubber is aimed to be used to manufacture parts of a car.
+Both 40 year and 45 year would therefore be considered as perfectly fine expected lifetimes and the difference between those two compositions would generally be considered as neglectable.
+The two compositions would then be equally preferred.
+On the other hand, an expected lifetime of 5 years is insufficient.
+In the classical mono-criterion approach, however, the rubber compositions whose expected lifetime is 45 years will be preferred over the one of 40 years exactly in the same that it will be preferred over the one whose expected lifetime is 5 years. This is misleading.
+
+For these reasons, the mono-criterion approach is not always adapted and some decision problems require a multi-criteria one. As it can easily be guessed, this second approach tackles the drawbacks mentioned above by introducing several evaluation criteria. This approach will be detailed in the next section.
+
+\section{Multi-Criteria Approach} \label{sec:Multi-criterion_approach}
+
+A multi-criteria decision problem can be modeled in the following way \cite{Bertrand2002}:
+\begin{equation}
+    Opt \  \{f_1(a_i), f_2(a_i), \cdots , f_c(a_i), \cdots , f_k(a_i) | a_i \in A\}
+    \label{eq:multicriteria_pb_model}
+\end{equation}
+With $A$, the set of alternatives, and $f_c(.), c=1,\cdots ,k$, a set of $k$ evaluation criteria which are applications of $A$ on the set of real numbers. \\
+
+The definition of the set of alternatives does not change from the mono-criterion case (section \ref{sec:set_of_alternatives}).\\
+The set of alternatives can be defined by an enumeration of each of the alternatives if these are enumerables. If the set is too large, it must be defined by the properties characterizing its alternatives.
+The set of alternatives can be stable or evolutive and globalized or fragmented.
+
+In the rest of this work, all multi-criteria decision aid methods that will be considered must be applied on a finite set of alternatives with a finite family of criteria. Without loss of generality, we will therefore only consider decision problems consisting in a set $A$ of $n$ alternatives evaluated on $k$ criteria that must be maximised.
+\begin{equation}
+    \max \  \{f_1(a_i), f_2(a_i), \cdots , f_c(a_i), \cdots , f_k(a_i) | a_i \in A\}
+    \label{eq:multicriteria_pb_model_maximisation}
+\end{equation}
+
+\subsection{Mathematically ill-defined problem}
+
+In opposition to the mono-criterion decision problem, the concept of optimal solution does not make sense anymore in a multi-criterion context.
+Indeed, due to the usually conflicting nature of the different criteria considered in a decision problem reality, it is generally not possible to find an alternative $a_i$ such that:
+
+\begin{equation}
+    f_c(a_i) \ge f_c(a_j), \forall a_j \in A, \forall c = 1, \dots,k
+    \label{eq:no_optimal_sol_mutlicriterion}
+\end{equation}
+
+The problem in this case does not consist anymore in the discovering of some hidden truth. It will consist in finding one or more alternatives that consist in a good compromise on all the criteria.
+The quality of a compromise is of course strongly dependent on the decision maker's perception of the problem reality. Some subjectivity must therefore explicitly be introduced. This subjectivity can be associated with the qualitative approach presented in section \ref{sec:intro}.
+
+It has already been seen in the mono-criterion approach that some subjectivity could be involuntarily introduced when building the evaluation function $f(.)$.
+This kind of subjectivity however should still be avoided in the multi-criteria approach.
+
+\subsection{Types of multi-criteria decision problems} \label{sec:type_of_pb}
+As shown by B. Roy, there exist different types of decisions problems \cite{Bertrand2002}. Here under are three examples of common types:
+\begin{itemize}
+    \item \textit{ Choice Problems}: these consist in choosing one or several alternatives from $A$ which could be considered as the best alternatives. One example of a choice problem could be the already mentioned problem of choosing the two most adapted locations to build new warehouses.
+    \item \textit{ Ranking Problems}: these consist in the partially ordering all the alternatives from the worst to the best one. One example of an ordering problem could be the following one: $n$ nuclear power station must be closed. However, it is not possible to close all these stations simultaneously. In which order should they be closed to minimise the risk and the cost.
+    \item \textit{ Sorting Problems}: these consist in sorting (or partially sorting) all the alternatives in different categories. One example of sorting problem is given hereafter.
+Consider $n$ patients that are sent to a liver specialist to assess whether or not these patients need a liver transplant. The specialist could have to classify these patients in three categories, the ones who do not need a transplant, the one who need a transplant, and the ones who need a transplant with urge.
+\end{itemize}
+
+More examples of decision problem types with some applications of these problems can be found in \cite{DeSmet2013}.
+
+\subsection{Dominance relation} \label{sec:multi_criteria_dominance_rel}
+
+The natural dominance relation defined in a mono-criterion context (equation \ref{eq:dominance_relation_monocriterion}) is generalized to a multi-criterion context as follow \cite{Bertrand2002}:
+
+\begin{equation}
+  \label{eqn:IP}
+  \forall a_i, a_j \in A: \left\{
+    \renewcommand{\arraystretch}{1.75}
+    \begin{array}{l l}
+      a_iPa_j  & \Leftrightarrow \quad \left\{
+          \begin{array}{l l}
+              f_c(a_i)\ge f_c(a_j) \quad \forall c=1\dots k \\
+              \exists h: f_h(a_i) > f_h(a_j) \\
+          \end{array} \right . \\
+      a_iIa_j & \Leftrightarrow \quad f_c(a_i) = f_c(a_j) \quad \forall c=1 \dots k \\
+      a_iRa_j & \Leftrightarrow \quad \left\{
+          \begin{array}{l l}
+              \exists h: f_h(a_i) > f_h(a_j) \\
+              \exists h': f_{h'}(a_i)< f_{h'}(a_j) \\
+          \end{array} \right . \\
+    \end{array} \right .
+\end{equation}
+where $P$ and $I$ still stand for preference and indifference and $R$ stands for incomparability.
+The preference structure of this relation is a \textit{partial preorder} structure \cite{Vin92} as only some subsets of alternatives can be ranked from ``best'' to ``worst'' with eventual ties.
+
+As the preference and indifference relation require unanimity on all the criteria, and the incomparability relation only needs two conflicting criteria, one can easily convince himself that the dominance relation is generally very poor, and that most pairs of alternatives will be incomparable.\\
+The main objective of the multi-criteria decision aid methods will be to enrich this dominance relation by reducing the number of incomparable pairs of alternatives. The final ordering of the alternatives is, as it will be seen here under, not only dependent on the decision maker, but also on the decision method used to enrich the dominance relation.
+
+\subsection{Types of multi-criteria decision aid methods}
+
+Multi-criteria decision aid methods can be divided in three families of methods \cite{Bertrand2002}:
+\begin{enumerate}
+    \item Aggregating methods (Multi-attribute utility theory)
+    \item Outranking methods
+    \item Interactive methods
+\end{enumerate}
+
+\subsubsection{Aggregation methods (Multi-attribute utility theory)}
+Aggregating methods consist in the substitution of a multi-criterion decision problem into a mono-criterion one.
+This is done by synthesising all of the $k$ criteria of the multi-criteria problem, into a unique utility function $U(a_i)$:
+\begin{equation}
+    U(a_i) = U[f_1(a_i), \dots, f_k(a_i)]
+    \label{eq:utility_fct}
+\end{equation}
+
+The problem is therefore summarised to:
+\begin{equation}
+    Max \{U(a_i) \mid a_i \in A \}
+    \label{eq:maut_model}
+\end{equation}
+
+A usual way to select an utility function is to build it as a sum of all the criteria evaluations \cite{Vin92}:
+
+\begin{equation}
+    U(a_i) = \sum\limits^k_{c=1} U_c(f_c(a_i))
+    \label{eq:maut_additive_utility_function}
+\end{equation}
+
+This kind of utility function will constitute the additive model. 
+The role of the different $U_c(.)$ functions must be at least to normalise all the criteria to get rid of all scaling effects introduced by the measuring scale in which the criteria are expressed.
+This is not the only role of these functions. They could for example also be used to manage criteria evaluations that should neither be maximised nor minimised but which should be as close as possible to a desired value. $U_c(.)$ could then be maximal when $f_c(a_i)$ is equal to that desired value.
+
+Another formulation can also be used to compute the utility function of the alternatives:
+% In a second time, some weight factors $w_c$ can also be introduced to express the relative importance of each criterion according to the decision maker:
+
+
+\begin{equation}
+    U(a_i) = \sum\limits^k_{c=1} w_c \cdot U_c(f_c(a_i))
+    \label{eq:maut_additive_utility_function_weighted}
+\end{equation}
+Here, some weight factors $w_c$ are introduced to express the relative importance of each criterion according to the decision maker.
+In equation \ref{eq:maut_additive_utility_function}, the effect of these coefficients were obtained by selecting an adequate $U_c(.)$ function but the two are kept distinct in equation \ref{eq:maut_additive_utility_function_weighted} to emphasise their respective meaning.
+
+It is quite obvious that the preference structure of such a problem will be the same as in a mono-criterion context. The dominance relation will therefore form a complete preorder.
+
+This seems at first sight to solve all the problem introduced by the different criteria. Unfortunately, these methods have some drawbacks. First of all, in such additive models, a very bad evaluation on one criterion can be completely compensated by better performances on the other criteria.
+
+Let's consider once again, the example of having to choose a rubber composition. Let's suppose we are evaluating the two only possible alternatives, $\mathcal{R}_1$ and $\mathcal{R}_2$, according to four following criteria: \textit{breaking strength, price, thermal conductivity and expected lifetime}. \\
+To get rid of any scaling effect, the $U_c(.)$ functions will assign to each criterion a score between $0$ and $100$ according to the preferences of the decision maker.
+
+Suppose, once again, that the rubber is aimed at manufacturing car parts and that one of the two alternatives ($\mathcal{R}_1$) has an expected lifetime of 5 years. The decision maker will therefore give its ``expected lifetime'' evaluation a value of 0.
+
+The evaluation table of the two alternatives could be similar to the following one:
+\begin{table}[h]
+\center
+\begin{tabular}{ l c c c c c}
+    \toprule
+     &  &  \multicolumn{4}{c}{$U_c(.)$} \\
+     \cmidrule{3-6}
+     Alternatives & & Breaking strength & Price & Conductivity & Lifetime  \\
+     \cmidrule(rl){1-1}   \cmidrule{3-6}
+      $\mathcal{R}_1$  & & 100      & 40    & 90      & 0   \\
+      $\mathcal{R}_2$  & &50       & 50    & 50      & 50  \\
+    \cmidrule(lr){1-6}
+    Weights   & &0.5      & 0.2   & 0.15    & 0.15 \\
+    \bottomrule
+\end{tabular}
+\caption{evaluation table for the rubber composition problem using an MAUT method}
+\label{tbl:maut_compensation_bad_criterion}
+\end{table}
+
+From this table it can easily be seen that even if the evaluation on the ``expected lifetime'' criterion of the first alternative is the worst possible, the total utility function $U(\mathcal{R}_1)$ will be equal to $0.5\cdot 100+ 0.2 \cdot 40 + 0.15\cdot 90 = 71.5$. This is greater than the utility function $U(\mathcal{R}_2)$ which is equal to $0.5$.
+
+Using this additive model, a good rubber composition, but with an unacceptable expected lifetime, could be preferred over a compromise composition. 
+%There is therefore no notion of veto.
+
+Another possible problem of the additive model is that not all preferences of a decision maker can be represented.
+
+Let's for example consider the following example proposed by Vincke \cite{Vin92}:
+
+\begin{table}[h]
+\center
+\begin{tabular}{@{} L  L L L L L L L L L @{}}
+    \toprule
+      a_i: & a_1 & a_2 & a_3 & a_4 & a_5 & a_6 & a_7 & a_8 & a_9 \\
+    \midrule
+     f_1(a_i) &1  &1 &1 &2 &2 &2 &3 &3 & 3\\
+     f_2(a_i) &1  &3 &5 &1 &3 &5 &1 &3 &5 \\
+    \bottomrule
+\end{tabular}
+\caption{evaluation for a potential decision maker}
+\label{tab:evaluation_example_vinck}
+\end{table}
+
+Suppose that the preferences of the decision maker are the following ones:
+\begin{equation}
+    a_9Pa_6Pa_8Pa_5Pa_3Ia_7Pa_2Ia_4Pa_1
+    \label{eq:example_vinck_pref_structure}
+\end{equation}
+
+This global preference can not be represented using an additive function. \\
+Indeed by the definition of the indifference relation in a mono-criterion context (section \ref{eq:dominance_relation_monocriterion}), and therefore valid for a aggregating method:
+\begin{equation}
+    \begin{split}
+        a_2Ia_4 & \Rightarrow U(a_2) = U(a_4) \\
+        & \Rightarrow  \sum\limits^k_{c=1} w_c \cdot U_c(f_c(a_2)) = \sum\limits^k_{c=1} w_c \cdot U_c(f_c(a_4)) \\
+        & \Rightarrow w_1 U_1(1) + w_2 U_2(3) = w_1 U_1(2) + w_2  U_2(1) \\
+        & \\
+        a_3Ia_7 & \Rightarrow U(a_3) = U(a_7) \\
+        & \Rightarrow  \sum\limits^k_{c=1} w_c \cdot U_c(f_c(a_3)) = \sum\limits^k_{c=1} w_c \cdot U_c(f_c(a_7)) \\
+        & \Rightarrow w_1 U_1(1) + w_2 U_2(5) = w_1 U_1(3) + w_2  U_2(1) \\
+    \end{split}
+\end{equation}
+If we subtract the second equation to the first one, we obtain the following equality:
+\begin{equation}
+    \begin{split}
+    w_1 U_1(3) + w_2 U_2(3) = w_1 U_1(2) + w_2 U_2(5) \\
+    \sum\limits^k_{c=1} w_c \cdot U_c(f_c(a_8)) = \sum\limits^k_{c=1} w_c \cdot U_c(f_c(a_6)) \\
+    \end{split}
+    \label{eq:example_vincke_step2}
+\end{equation}
+which is in contradiction with $a_6Pa_8$.
+
+Of course, not being able to model all possible preferences of a decision maker is not a problem since all possible preferences are not necessarily rational.
+A decision maker could for example prefer an alternative that is strictly worse than another for any concerned criterion.
+Useful decision aid methods could not be able to produce such outputs as they are expected to produce rankings which should be considered as rational for the given decision problem modelisation.\\
+%Useful decision aid method could not be able to produce such outputs as they are expected to produce rational rankings. \\
+However, this is not the case in this example where it is not possible to reproduce the preferences of a decision maker which seem rational and coherent with the problem modelisation.
+This is, in fact, not a particularity of aggregating methods. There are often preferences which are not compatible with how the multi-criteria decision aid method models the problem reality.
+
+There exist other models than the additive model, but, as already stated, the additive model is the most commonly used in practice \cite{Vin92}.
+
+The result of the application of a multiple attribute theory method leads to a complete preorder of all the alternatives. This preorder generally contains far more information than the natural dominance relation defined on the initial multi-criteria problem.
+This abundant quantity of information is due to the theory's strong assumptions (e.g. existence of a function $U$, additivity) and to the vast amount of information asked to the decision maker (e.g. preference intensities, \dots) \cite{Vin92}.
+
+Building a complete preorder may seems too radical as the data available with the problem is not always sufficient to compare all alternatives.
+Furthermore, keeping some alternatives incomparable can give some insights to the decision maker about the conflicting nature of the criteria in a specific multi-criteria problem.
+
+To deal with this problem, B. Roy introduced the concept of \textit{outranking relations} and \textit{outranking methods}. These concepts will be detailed here under.
+
+
+
+\subsubsection{Outranking methods}
+
+Outranking relations are relations aimed at enriching the dominance relation which is considered too poor, but in a realistic way.
+This is, not as much as with an utility function which is considered too rich to be reliable \cite{Bertrand2002}.
+
+B. Roy defines the outranking relation as \cite{roy1book85}:
+
+\begin{quote}
+\textit{    
+``a binary relation $S$ defined in $A$ such that $aSb$ if, given what is known about the decision-maker's preferences and given the quality of the valuations of the actions and the nature of the problem, there are enough arguments to decide that $a$ is at least as good as $b$, while there is no essential reason to refute that statement.''}
+\end{quote}
+
+The outranking relations have a different mathematical formalization in each outranking method.
+For instance, Roy's definition given here above describes a binary relation, meaning that the alternative $a_i$ either outranks another alternative $a_j$ either does not outranks this alternative, but an outranking relation could also be valued and give an indication of how $a_i$ outranks $a_j$. 
+
+These relations must not be complete (as already suggested) and must neither be transitive. 
+
+The \textsc{promethee} methods are outranking methods using an valued relation and will be explained in details in the following chapter.
+
+Here under is a brief description of the \textsc{electre i} method.
+
+\subsubsection{\textsc{electre i} } \label{sec:electre}
+
+
+\textsc{electre} is a family of multi-criteria decision aid methods whose name stand for ``ELimination Et Choix Traduisant la REalité'' (elimination and choice expressing reality).
+
+%The \textsc{electre i} multi-criteria decision aid method must be applied on a finite set $A$ of alternatives, with a finite set of $k$ evaluations functions (that will as usual suppose to be functions that must be maximised).
+
+\textsc{electre i} is a multi-criteria decision aid method of the \textsc{electre} family. It is based on the construction of an binary outranking relation $a_iSa_j$, meaning that $a_i$ is at least as good as $a_j$. This relation is built according to two indices \cite{Roy1968}: the \textit{concordance} index and the \textit{discordance} index.
+These indices are computed as follows.
+
+Given two alternatives $a_i$ and $a_j$, the set of criteria $C(a_i,a_j)$ is the subset of all the criteria composed of the criteria $c$ where the evaluation of $a_i$ is better or equal than the evaluation of $a_j$.
+
+If we suppose once again that the multi-criteria decision problem is composed of $k$ criteria to maximise, we can define $C(a_i,a_j)$ as:
+\begin{equation}
+    C(a_i,a_j) = \{c=1\dots k \mid f_c(a_i) \ge f_c(a_j)\}
+    \label{eq:electre_concordance_set}
+\end{equation}
+
+This set of criteria includes all the criteria in concordance with $a_iSa_j$ \cite{Roy1968}. The other criteria, that are not included in $C(a_i,a_j)$, form another subset $D(a_i,a_j)$. This subset includes all the criteria that are in discordance with $a_iSa_j$.
+
+To be able to use these two sets consistently, some relative importance factor must be assigned to each criterion in order to be able to measure the importance of the two sets. \\
+With these factors $w_c$, we can compute a concordance index $c(a_i,a_j)$ \cite{Roy1968}:
+\begin{equation}
+    c(a_i,a_j) = \frac{1}{W}\sum\limits_{\substack{c \in \\ C(a_i,a_j)}} w_c \quad \text{ with } W=\sum\limits_{c=1}^k w_c
+    \label{eq:electre_concordance_index}
+\end{equation}
+
+There are different ways of computing the discordance index $d(a_i,a_j)$, such as the one described in \cite{Roy1968}:
+\begin{equation}
+    d(a_i,a_j) = \left \{
+        \renewcommand{\arraystretch}{1.75}
+        \begin{array}{ l l l }
+            0 & \text{if } D(a_i,a_j) = \emptyset  \\
+            \dfrac{1}{d}  \max\limits_{\substack{c \in \\ D(a_i,a_j)}}[f_c(a_j)-f_c(a_i)] & \text{if } D(a_i,a_j) \neq \emptyset  \\
+        \end{array}
+        \right . \\
+    \label{eq:electre_discordance_index}
+\end{equation}
+with
+\begin{equation}
+    d = \max\limits_{c, i, j} \mid f_c(a_i) - f_c(a_j) \mid
+    \label{eq:electre_max_ecart}
+\end{equation}
+being the maximal difference of two alternatives on any criterion.
+
+The concordance index and the discordance index both have values in the range $[0,1]$. The concordance index $c(a_i,a_j)$ increases as the number of criteria for which $a_i$ is preferred or indifferent over $a_j$ increases. It represents the relative importance of the coalition of criteria for which $a_i$ is preferred. \\
+The discordance index increases as the maximal gap between an evaluation of $a_j$ and an evaluation of $a_i$ (where $a_j$ is preferred) increases. This index can be seen as the veto power to reject that $a_i$ outranks $a_j$.
+
+
+Using these two indices, the outranking relation $S$ will be built as follow:
+
+\begin{equation}
+    \forall a_i, a_j \in A, a_iSa_j \Leftrightarrow \left \{
+        \begin{array}[]{l}
+            c(a_i,a_j) \ge p \\
+            d(a_i,a_j) \le q \\
+        \end{array}
+        \right .
+    \label{eq:electre_dominance_relation}
+\end{equation}
+
+with $p$ and $q$ being the concordance and discordance thresholds defined by the decision maker.
+
+Once the outranking relation is built, it must still be exploited. We can represent the problem as a graph having as vertices the alternatives of the problem. The graph will have a directed edge from the vertice $a_i$ to the vertice $a_j$ if and only if $a_iSa_j$. We will therefore denote it as the outranking graph of the decision problem.
+
+The \textsc{electre i} method was designed for the multi-criteria choice problems (see section \ref{sec:type_of_pb}).
+It is aimed at finding a subset $N$ of alternatives such that no alternative in $N$ is outranked by any other alternative in $N$ and all alternatives in $A\setminus N$ are outranked by at least one alternative of $N$.
+
+\begin{equation}
+    \left \{
+        \begin{array}[]{l}
+            \forall a_j \in A \setminus N, \ \exists a_i \in N: a_iSa_j \\
+            \forall a_i, a_j \in N: a_i \neg S a_j \\
+        \end{array}
+        \right .
+    \label{eq:electre_graph_kernel}
+\end{equation}
+The problem of finding a subset $N$ of alternatives fulfilling these conditions is the problem of finding a kernel of the outranking graph.
+
+
+\section{Conclusion}
+
+As it has been seen, some decision problem can be more efficiently handled using a multi-criteria approach. There exist different type of multi-criteria decision aid methods, each having their advantages and their drawbacks.
+% The next chapter will introduce the \textsc{promethee} methods and the \textsc{promethee ii} method. The main focus of the rest of this work will be the study of two variations of the \textsc{promethee ii} method.
+
+The next chapter will introduce the \textsc{promethee} family of methods and the main focus of the rest of this work will be the study of two variations of \textsc{promethee ii}.
+

@@ -1,0 +1,198 @@
+%        File: pairwise_comparison_boud.tex
+%     Created: Mon Nov 21 07:00 PM 2016 C
+% Last Change: Mon Nov 21 07:00 PM 2016 C
+%
+
+\chapter{Temporar Chapter name}
+\label{chapter1}
+
+\section{Upper bound probability of not compairing all alternatives pairwise}
+The robust Promethee method is based on the iteration, $R$ times, of the Promethee II method on a random subset of $m$ alternatives chosen from the $n$ defined by the problem.\\
+
+The following two functions define if the alternatives $\alpha$ and $\beta$ have been selected at the $r$th iteration of the method and if alternative $\alpha$ has been ranked before alternative $\beta$: \\
+
+\begin{equation}
+  \label{eqn:ar}
+  A_{r}(\alpha ) = \left\{ 
+    \begin{array}{l l}
+      1 & \ \text{if $\alpha$ is in the selected alternatives at iteration $r$}\\
+      0 & \ \text{if $\alpha$ is not in the selected alternatives at iteration $r$}\\
+    \end{array} \right . 
+\end{equation}
+\begin{equation}
+  \label{eqn:prr}
+  Pr_{r}( \alpha , \beta) = \left\{ 
+    \begin{array}{l l}
+      1 & \ \text{if $\alpha$ is ranked berfore $\beta$ at the $r$th iteration}\\
+      0 & \ \text{else}\\
+    \end{array} \right . 
+\end{equation}
+
+At each iteration, the Promethee order obtained between the $m$ chosen alternatives will be used to build the preference matrix $P$. The elements $p_{ij}$ of this matrix are the number of iterations where the alternative $a_i$ was ranked before the alternative $a_j$ divided by the the number of iterations where both $a_i$ and $a_j$ where selected in the $m$ alternatives :
+
+\begin{equation}
+    \label{eqn:pij}
+    p_{ij} = \frac{\sum\limits_{r=1}^R Pr_r(i,j)}{\sum\limits_{r=1}^R A_r(i)\cdot A_r(j)}
+\end{equation}
+
+These quantities $p_{ij}$ have a sens only if the alternative $i$ and alternative $j$ have been compared pairwise at least once.\\ 
+
+Two upper bounds of the probability that there exist at least two alternatives which have not been compared pairwise during the Robust Promethee method will be given here under. These upper bound on the probability will be functions only of the $R$, $m$ and $n$ parameters of the method. Therefore, these bounds will allow us to deduce a lower bound on the values of $R$ and $m$ for a given desired upper bound probability and a given $n$.
+
+The number of distinct couples that can be made from $n$ alternatives is given by :
+\begin{equation}
+    \label{def:couples}
+    N:= C_n^2
+\end{equation}
+And, at each iteration, we compare $m$ random alternatives pairwise which means that :
+\begin{equation}
+    \label{def:iterationcouples}
+    M:= C_n^2
+\end{equation}
+distinct couples are evaluated.
+
+\subsection{Coupon collector problem}
+
+The Coupon collector's problem is described as follow (see \cite{Kobza2007}). At each iteration $i$, $Di$ balls are picked at random from an urn containing $k$ red balls. These balls are painted in white before being put back in the urn. After how many draws will all the balls be painted in white ?\\
+
+It is obvious that the coupon collector problem can be applied to the problem of comparing all alternatives pairwise in the Robust Promethee method with a total number of balls/couples equal to $N$ and the number of them that are drawn at each iteration would be constant and equal to $M$.
+However, since we are interesting in finding a upper bound of the probability, the assumption will be made that the couples are drawn one at the time which will highly simplify the reasoning.
+This assumption is sound since when the couples are draw $M$ at a time, we have the guarantee that these $M$ couples are distinct which is not the case otherwise. The upper bound on the probability and the lower bound on the values of $R$ and $m$ that will be found will therefore be higher than the real ones.
+
+We will define :
+\begin{description}
+\item[$D :=$] the number of random couples needed to observe all the couples at least once.
+\item[$d_i$ := ] the number of random couples needed to observe the $i$th couple after having already observed $(i-1)$ couples.
+\end{description}
+
+The probability of finding a new couple after $(i-1)$ have already been found is given by :
+\begin{equation}
+    \label{eqn:pti}
+    pi = \frac{N - (i-1)}{N}
+\end{equation}
+
+\subsubsection{Chebyshev Inequality}
+Observing that the variable $d_i$ follows a geometric law and that 
+\begin{equation}
+    D=\sum_i d_i
+\end{equation}
+We can deduce the expectation and variance of $D$
+\begin{equation}
+    \label{eqn:expectationD}
+    \begin{split}
+    E(D) & = \sum_i E(d_i) \\
+    & = \sum_i \frac{1}{p_i} \\ 
+    & = \frac{N}{N} +\frac{N}{N-1}+\dots+\frac{N}{1} \\
+    & = N\cdot H_N \\
+    & \text{With $H_N$ being the $N$th harmonic number}
+\end{split}
+\end{equation}
+\begin{equation}
+    \label{eqn:varD}
+    \begin{split}
+    Var(D) & = \sum_i Var(d_i) \\
+    & = \sum_i \frac{q_i}{p_i^2} \\
+    & = \sum_i \frac{1-p_i}{p_i^2}\\
+    & \le \sum_i \frac{1}{p_i^2}\\
+    & = N^2 \sum_i \left( \frac{1}{i}\right) ^2\\
+    & \le \frac{\pi ^2N^2}{6}\\
+    & \text{with $\frac{\pi^2}{6}$ being the result of the Riemann $\zeta$ function } \\ 
+    & \text{evaluated in $2$}
+    \end{split}
+\end{equation}
+
+A bound can be found using Chebyshev's inequality: 
+\begin{equation}
+    \label{eqn:chebshev}
+    P[\lvert D - N\cdot H_N\lvert \ge c \frac{\pi N }{\sqrt{6}}] \le \frac{1}{c^2}
+\end{equation}
+
+By setting $p = \frac{1}{c^2}$ the desired upper bound probability :
+\begin{equation}
+    \label{eqn:prob_cheb}
+    \begin{split}
+    P[\lvert D -N \cdot H_N\lvert \ge \frac{\pi N}{\sqrt{6p}}] \le p \\
+    P[D \ge N \cdot H_N +\frac{\pi N}{\sqrt{6p}}] \le p \\
+    \end{split}
+\end{equation}
+
+Therefore, if we want to bound the probability knowing that $R\cdot M$ couples have been picket at random during the methode, we must impose that :
+\begin{equation}
+    \label{prob_bound}
+    R\cdot M \ge N\cdot H_N + \frac{\pi N}{\sqrt{6p}}  
+\end{equation}
+
+Finally, by replacing $M$ and $N$ by their definitions (\ref{def:couples} and \ref{def:iterationcouples}) we find the desired bound :
+\begin{equation}
+    \begin{split}
+     R\frac{m^2 -m }{2} & \ge \frac{n^2-n}{2}\cdot H_\frac{n^2-n}{2}  + \frac{\pi \frac{n^2-n}{2}}{\sqrt{6p}} \\ 
+     R(m^2 -m) & \ge (n^2-n) H_\frac{n^2-n}{2} + \frac{\pi (n^2-n)}{\sqrt{6p}} 
+    \end{split}
+    \label{eqn:mr_values_cheb_bound}
+\end{equation}
+
+\subsubsection{Union bound argument}
+Another easy bound can be found simply by makig the union bound of the probabilities that one couple has not be evaluated after the evaluation oc $c$ random couples.
+The probability $P(i,c)$ of not having found the $i$th couple after $c$ random couples is lower than :
+\begin{equation}
+    \begin{split}
+    P(i,c) & = (1-\frac{1}{N})^c \\
+    & \le e^{\frac{-c}{N}}
+    \end{split}
+    \label{eqn:bound_p_for_i}
+\end{equation}
+
+By making the union of the probabilities for the $N$ couples : 
+\begin{equation}
+    P[D > c] \le N\cdot e^{-\frac{c}{N}}
+\end{equation}
+
+This inequality can be justified by the fact that $P[D > c]$ can be seen as the probability that at least on couple has not been evaluated after the evaluation of $c$ couples, and by remembering 
+Boole's inequality : %\cite{SENETA199224} :
+
+\begin{equation}
+    P \left( \mathop{\bigcup}_i B_i \right) \le \sum _i P(B_i)
+    \label{eqn:Boole_ineq}
+\end{equation}
+with the $B_i$ forming a set of events.
+
+Setting $p=N\cdot e^{-\frac{c}{N}}$ the desired upper bound probability, the abouve bound becomes :
+\begin{equation}
+    P[D \ge N\cdot \ln (\frac{N}{p})] \le p 
+\end{equation}
+
+Since we want this bound to be valid after that $R\cdot M$ random couples have been evaluated, we find the following restriction for $R$ and $M$ :
+\begin{equation}
+    \begin{split}
+        R\cdot M & \ge N \cdot \ln (\frac{N}{p}) \\    
+        & \Rightarrow \quad P[D \ge R\cdot M] \le p
+    \end{split}
+    \label{eqn:mr_values_unionprob}
+\end{equation}
+
+This restriction can easily be translated in terms of parameters of the Robust Promethee method ($R$, $m$ and $n$) :
+\begin{equation}
+    R\cdot (m^2-m) \ge (n^2-n) \ln (\frac{n^2-n}{2p})
+    \label{}
+\end{equation}
+
+More details about the two reasonings here above can be found in \cite{Mitzenmacher:2005:PCR:1076315}.
+
+\subsubsection{Comparison of the bounds}
+
+Since the harmonic has an logarithmic assymptotic behaviour (but is greater than a logarithm) we can deduce that the bound found using the union bound argument will be tighter than the one found using Chebyshev's inequality. 
+
+This statement is confirmed by the following figure (Figure : \ref{tbl:bounds} ) illustrating the bound on $R$ and $m$ in function of the number of alternatives.
+
+\begin{figure} 
+	\centering
+	\newlength\figureheight 
+	\newlength\figurewidth 
+	\setlength\figureheight{6cm} 
+	\setlength\figurewidth{6cm}
+	\input{chapter1/src/lower_bound.tikz}
+    \caption{lower bound for R and m}
+	\label{tbl:bounds}
+\end{figure}
+
+
