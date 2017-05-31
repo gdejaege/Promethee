@@ -61,5 +61,3 @@ succesfull seeds: [0]
 failed  seeds: []
 failed taus: []
 
-
-

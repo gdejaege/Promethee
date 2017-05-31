@@ -7,11 +7,7 @@ expected file hierarchy :
             /Sample2
             ...
         /res
-            /Sample1
             ...
-            /replicate_PII_refs::i  with i being an integer designed the number
-                                    of references used to replicate PII
-
 """
 import csv
 import string
@@ -78,7 +74,7 @@ def open_raw_RS(filename):
 def write_raw(alternatives, filename):
     """write classic csv-data-files.
 
-    evaluations ...
+    write set of alternatives to a csv file.
     """
     output = open(filename, 'w')
     for alt in alternatives:

@@ -1,14 +1,14 @@
 """Rough adaptative questionning procedure to find SRP reproducing PII ranks.
 
 The procedure is based on random points generation in a ref_num*crit_num
-dimension space. Each point represent a reference set (SRP).
+dimension space. Each point represents a reference set (SRP).
 
 At each iteration, the ranking obtained with the most admissible points is used
 to compute the query candidates which are couple of pairwise succesive
 alternatives.
 
 One couple is selected and the DM will have to decide which alternatives
-is the one he prefers (this is done according to the PII ranking that we are
+are the one he prefers (this is done according to the PII ranking that we are
 trying to reproduce). This will yield a new constraint and some points will not
 be admissible anymore.
 
@@ -19,16 +19,10 @@ here.
 import promethee as PII
 import data_reader as dr
 
-# from contextlib import redirect_stdout
-# import sys
 import string
 import random
 import numpy as np
-import scipy.spatial as spp
 import scipy.stats as stats
-import time
-
-# import os
 
 
 class Adaptive_procedure:
@@ -149,7 +143,7 @@ class Adaptive_procedure:
 
             for crit in range(len(SRP_per_crit)):
                 # Create a new point which can not be further than 5% of the
-                # maximal difference of each criterion from the the cloned point
+                # maximal difference of each criterion from the cloned point
                 lim = self.delta_per_crit[crit]*0.05
                 SRP_per_crit[crit] = \
                     [el + random.uniform(-lim, lim)
@@ -176,8 +170,9 @@ class Adaptive_procedure:
     def compute_center(self):
         """Compute the center of the points.
 
-        This center was originally used to make the next query.
-        This function only serve to check wheter the center is admissible
+        The center was originally used to make the next query.
+        This function only serve to check wheter the center is admissible. This
+        is not done in the last tests.
         """
         center = [[0 for i in range(self.crit_number)]
                   for j in range(self.ref_number)]
@@ -192,9 +187,10 @@ class Adaptive_procedure:
         self.center = center
 
     def query_cadidates(self):
-        """Return query candidates according to the most commonest ranking.
+        """Return query candidates according to the commonest ranking.
 
-        query candidates are pairs of succesive alternatives in this ranking
+        Query candidates are returned as a list of pairs (tuples) of the
+        succesive alternatives in this ranking.
         """
         ref_ranking = self.commonest_ranking
 
@@ -208,11 +204,12 @@ class Adaptive_procedure:
         if(len(candidates) == 0):
             print(ref_ranking)
             print(self.constraints)
+            # This never happened yet.
             exit("no admissible candidate")
         return candidates
 
     def select_best_candidate(self, candidates):
-        """Return the candidate with the highest discriminationg power.
+        """Return the candidate with the highest discriminating power.
 
         Input:
             candidates - list of tuples (pairs) of alternatives
@@ -275,7 +272,8 @@ class Adaptive_procedure:
 
         Input:
             alt - alternative concerned. List of evaluations.
-            point -  set of reference profiles list of list of evaluations.
+            point -  set of reference profiles list (set) of lists (profiles)
+                     of evaluations.
 
         This is not the real refferenced score. This should be divided by the
         number of referencs but it is useless in our procedure and therefore
@@ -332,7 +330,10 @@ class Adaptive_procedure:
         self.admissible_points = still_valid
 
     def check_for_errors(self):
-        """Check all points for a possible mistake."""
+        """Check all points for a possible mistake.
+
+        No error should be found.
+        """
         for pt in self.admissible_points:
             refflows = self.referenced.compute_scores(ref_set=pt)
             ranking = self.referenced.compute_ranking(refflows)
@@ -344,8 +345,10 @@ class Adaptive_procedure:
     def round_analyse(self):
         """Analyse the admissible but not correct points.
 
-        Return the best and worst kendall tau of the admissible points and
-        the number of possible rankings.
+        Returns the best, worst, mean, average, ... kendall tau of the rankings
+        obtained with the admissible points and add all the kendall correlation
+        coefficient in the list attribute "self.kendall_taus". This last
+        operation is done to make the boxplots of these coefficients.
         """
         all_taus = []
         min_kendall = 1
@@ -371,6 +374,7 @@ class Adaptive_procedure:
             max_kendall = 1
             all_taus.append(1)
 
+        # Add the coefficients in this list to plot the boxplots.
         self.kendall_taus.append(all_taus)
         if rankings:
             self.commonest_ranking = max(rankings, key=rankings.get)
@@ -400,24 +404,41 @@ class Adaptive_procedure:
         self.ask_question(best_cand)
 
     def round_add_points(self):
-        """Add points until self.desired_points our maxit iterations."""
+        """Add points until self.desired_points our maxit iterations.
+
+        The procedure tries to always have 'self.desired_points' in the set of
+        admissible points. Therefore, points should be added at each iteration.
+        Of course, there is a tradeoff with performances, we cannot search new
+        points indefinitely.
+        """
+        # New points by division of the existing ones.
         tot_pts = len(self.admissible_points) + len(self.correct_points)
         maxit = self.divide_it
         while (tot_pts < ((self.desired_points))*(2/3) and maxit >= 0):
             self.divide_points()
             tot_pts = len(self.admissible_points) + len(self.correct_points)
             maxit -= 1
+
+        # New points by random search
         maxit = self.random_add_it
         while (tot_pts < self.desired_points and maxit > 0):
             self.add_random_points()
             tot_pts = len(self.admissible_points) + len(self.correct_points)
             maxit -= 1
+
         if(tot_pts == 0):
             print('No points can be found anymore ...')
             exit()
 
     def execute(self, max_rounds=20):
-        """Execute one round of the procudure."""
+        """Execute one round of the procudure.
+
+        The execution take place by rounds, each round or iteration is divided
+        in 3 steps:
+            * round_analyse
+            * round_query_dm
+            * round_add_points
+        """
         print("it |init pts | corrects | ranks "
               + "|tau_min|tau_max|tau_mu |tau_med| center ok| deleted ")
 
@@ -429,10 +450,7 @@ class Adaptive_procedure:
             self.rankings, tau_min, tau_max, tau_mean, tau_median = \
                 self.round_analyse()
 
-            # check the center
-            # flows_center = self.referenced.compute_scores(ref_set=self.center)
-            # ranking_center = self.referenced.compute_ranking(flows_center)
-            # center_ok = str(self.is_admissible(ranking_center))
+            # it is not checked anymore if the center is admissible or not
             center_ok = " "
 
             self.round_query_dm()
@@ -445,14 +463,11 @@ class Adaptive_procedure:
                                           pts_deleted))
             self.round_add_points()
 
+        # Last iteration, we do not have to add points anymore, nor ask queries,
+        # this iteration only analysis the existing points
         self.iteration += 1
         corr_pts = len(self.correct_points)
         old_tot_pts = len(self.admissible_points) + corr_pts
-        # check the center
-        # flows_center = self.referenced.compute_scores(ref_set=self.center)
-        # ranking_center = self.referenced.compute_ranking(flows_center)
-        #  center_ok = str(self.is_admissible(ranking_center))
-        center_ok = " "
         self.rankings, tau_min, tau_max, tau_mean, tau_median = \
             self.round_analyse()
 

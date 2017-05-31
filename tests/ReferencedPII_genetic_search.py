@@ -6,9 +6,13 @@ import genetic_references_search as GS
 import time
 
 
-def first_search():
-    """Search good references sets for 15 random subsets of each data set."""
-    data_sets = ['EPI', 'SHA', 'GEQ']
+def first_search(pop_size=600, mut_prob=0.01, MAXIT=50):
+    """Try to find sets of reference profiles reproducing th PII ranking.
+
+    Search for 15 different seeds. Once some positive results have been found,
+    please use the next function to try again seeds that failed.
+    """
+    data_sets = ['SHA', 'EPI', 'GEQ']
     weights, ceils = None, None
     seeds = range(15)
 
@@ -16,7 +20,7 @@ def first_search():
 
     for data_set in data_sets:
         input_file = 'data/' + str(data_set) + '/raw.csv'
-        output = 'res/ReferencedPII_genetic_search/' + str(data_set) + '.txt'
+        output = 'res/ReferencedPII/genetic_search/' + str(data_set) + '.txt'
         alts = dr.open_raw(input_file)[0]
         for alt_num in alternative_numbers:
             succes = []
@@ -25,7 +29,9 @@ def first_search():
             for s in seeds:
                 t1 = time.time()
                 tau = GS.genetic_search(alts, seed=s, weights=weights,
-                                        ceils=ceils, alt_num=alt_num)
+                                        ceils=ceils, alt_num=alt_num,
+                                        pop_size=pop_size, mut_prob=mut_prob,
+                                        MAXIT=MAXIT)
                 print(str(s) + ', time: ' + str(time.time() - t1) + ', tau: '
                       + str(tau))
                 if (tau > 1 - 1e-5):
@@ -37,7 +43,8 @@ def first_search():
             save_res_to_file(output, alt_num, succes, failures, failures_tau)
 
 
-def retry_failed(data_set, alt_numbers, failed_seeds, ref_number=5, maxrep=1):
+def retry_failed(data_set, alt_numbers, failed_seeds, ref_number=5, maxrep=1,
+                 pop_size=600, mut_prob=0.01, MAXIT=50):
     """Retry the search for subsets which failed the first time."""
     weights, ceils = None, None
 
@@ -46,7 +53,7 @@ def retry_failed(data_set, alt_numbers, failed_seeds, ref_number=5, maxrep=1):
     alternative_numbers = alt_numbers
     seeds = failed_seeds
     input_file = 'data/' + str(data_set) + '/raw.csv'
-    output = 'res/ReferencedPII_genetic_search/' + str(data_set) + '.txt'
+    output = 'res/ReferencedPII/genetic_search/' + str(data_set) + '.txt'
     alts = dr.open_raw(input_file)[0]
     for i, alt_num in enumerate(alternative_numbers):
         succes = []
@@ -57,11 +64,10 @@ def retry_failed(data_set, alt_numbers, failed_seeds, ref_number=5, maxrep=1):
             tau = 0
             it = 0
             while (tau < 1 - 1e-5 and it < maxrep):
-                prob = 0.03 + 0.02*it
                 tau2 = GS.genetic_search(alts, seed=s, weights=weights,
-                                         RS_size=ref_number, ceils=ceils,
-                                         alt_num=alt_num, pop_size=600,
-                                         mut_prob=prob, MAXIT=50)
+                                         SRP_size=ref_number, ceils=ceils,
+                                         alt_num=alt_num, pop_size=pop_size,
+                                         mut_prob=mut_prob, MAXIT=MAXIT)
                 tau = max(tau, tau2)
                 print(str(s) + ', total time: ' + str(time.time() - t0) +
                       ", it time: " + str(time.time() - t1) + ', tau: '

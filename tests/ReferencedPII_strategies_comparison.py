@@ -6,11 +6,11 @@ import numpy
 
 
 def compare(tests_qty=3):
-    """Test the strategies."""
-    output = "res/ReferencedPII_strategies/comparisons.txt"
+    """Compare the different stratiegies."""
+    output = "res/ReferencedPII/strategies/comparisons.txt"
     data_sets = ['EPI', 'SHA', 'GEQ']
     # data_sets = ['HDI']
-    range_seed = range(80, 80 + tests_qty)
+    range_seed = range(0, 0 + tests_qty)
     alt_num = 30
     ref_number = 4
     strategies = [prom.strategy1, prom.strategy2,

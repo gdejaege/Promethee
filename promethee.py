@@ -238,7 +238,7 @@ class PrometheeII:
                            criterion.
         """
         # first, each Promethee parameter is set at random, this value is then
-        # overwritten by the the value of the parameters given as argument
+        # overwritten by the value of the parameters given as argument
         self.alternatives, self.weights, self.coefficients = \
             self.random_parameters(seed, alternatives, alt_num)
 
@@ -437,7 +437,7 @@ class PrometheeII:
                 if (verbose):
                     print("RR between " + str(init_copy[0]) + " and "
                           + str(new_copy[j]) + " when " + str(deleted_alt)
-                          + "is deleted")
+                          + " is deleted")
 
                 rr_quantity += 1
                 j += 1
@@ -449,7 +449,7 @@ class PrometheeII:
         """Compute the pair of alternatives for which rr occurs.
 
         Output:
-            all_rr_instance - dictionary containing the the pair of alternatives
+            all_rr_instance - dictionary containing the pair of alternatives
                               which have had their rank reversed (key), and the
                               quantity of time this reversal happened (value).
         Note:
@@ -494,7 +494,7 @@ class PrometheeII:
                 if (verbose):
                     print("RR between " + str(init_copy[0]) + " and "
                           + str(new_copy[j]) + " when " + str(deleted_alt)
-                          + "is deleted")
+                          + " is deleted")
 
                 # add occurrence to dict of rank reveSRPals
                 a = max(new_copy[j], init_copy[0])

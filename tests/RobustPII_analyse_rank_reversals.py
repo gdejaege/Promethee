@@ -36,7 +36,7 @@ def analyse_rr(data='SHA', max_rep=20, R_parameter=None, m_parameter=None):
     if m_parameter is not None:
         m = m_parameter
 
-    output = 'res/RobustPII_analyse_rank_reversals/' + str(data) + '.txt'
+    output = 'res/RobustPII/analyse_rank_reversals/' + str(data) + '.txt'
 
     promethee = prom.PrometheeII(alts, weights=weights, ceils=ceils, seed=seed)
     promethee_rr_instances = promethee.analyse_rr()
@@ -61,122 +61,6 @@ def analyse_rr(data='SHA', max_rep=20, R_parameter=None, m_parameter=None):
         all_info.append(line)
     print_to_file(output, all_info, promethee.scores, robust.scores, max_rep,
                   R, m)
-
-
-def test1(max_rep=20):
-    """Test done for the 20 first alternatives of the HDI data set.
-
-    Input:
-        max_rep=number of repetitions of the method
-    """
-    output = 'res/analyse_rank_reversals_RobustPII/test1.txt'
-
-    R = 10000
-    m = 7
-
-    # Do not change these parameters ! They are not saved
-    data_set = 'data/HDI/raw.csv'
-    alts = dr.open_raw(data_set)[0]
-    weights = [0.5, 0.5]
-    ceils = [3, 3]
-
-    promethee = prom.PrometheeII(alts, weights=weights, ceils=ceils)
-    robust = prom.RobustPII(alts, weights=weights, ceils=ceils, R=R, m=m)
-
-    all_rr_instances = dict()
-    for repetition in range(max_rep):
-        rr_instances = robust.analyse_rr()
-        for key in rr_instances:
-            all_rr_instances[key] = \
-                    all_rr_instances.get(key, 0) + rr_instances.get(key)
-
-    all_info = []
-    for key in all_rr_instances:
-        line = [key[0], key[1], all_rr_instances[key],
-                abs(promethee.scores[key[0]] - promethee.scores[key[1]]),
-                abs(robust.scores[key[0]] - robust.scores[key[1]])]
-        all_info.append(line)
-    print_rr_to_file(output, all_info, promethee.scores, robust.scores, max_rep)
-
-
-def test2(max_rep=10):
-    """Test done for the 20 first alternatives of the SHA data set.
-
-    Input:
-        max_rep=number of repetitions of the method
-    """
-    output = 'res/analyse_rank_reversals_RobustPII/test2.txt'
-
-    R = 5000
-    m = 9
-
-    # Do not change these parameters ! They are not saved
-    data_set = 'data/SHA/raw_20.csv'
-    alts = dr.open_raw(data_set)[0]
-    weights = [0.1667, 0.1667, 0.1667, 0.1667, 0.1667, 0.1667]
-    ceils = [17.100, 23.7750, 26.100, 27.3750, 17.9250, 13.5750]
-
-    promethee = prom.PrometheeII(alts, weights=weights, ceils=ceils)
-    robust = prom.RobustPII(alts, weights=weights, ceils=ceils, R=R, m=m)
-
-    all_rr_instances = dict()
-    for repetition in range(max_rep):
-        rr_instances = robust.analyse_rr()
-        for key in rr_instances:
-            all_rr_instances[key] = \
-                    all_rr_instances.get(key, 0) + rr_instances.get(key)
-
-    all_info = []
-    for key in all_rr_instances:
-        line = [key[0], key[1], all_rr_instances[key],
-                abs(promethee.scores[key[0]] - promethee.scores[key[1]]),
-                abs(robust.scores[key[0]] - robust.scores[key[1]])]
-        all_info.append(line)
-    print_rr_to_file(output, all_info, promethee.scores, robust.scores, max_rep,
-                     R, m)
-
-
-def test3(max_rep=10):
-    """Test done for the 20 first alternatives of the EPI data set.
-
-    Input:
-        max_rep=number of repetitions of the method
-    """
-    output = 'res/analyse_rank_reversals_RobustPII/test3.txt'
-
-    # Change these parameters if needed
-    R = 5000
-    m = 16
-
-    # Do not change these parameters ! They are not saved
-    data_set = 'data/EPI/raw.csv'
-    alts = dr.open_raw(data_set)[0]
-    alts = alts[0:20]
-    seed = 0
-
-    promethee = prom.PrometheeII(alts, seed=seed)
-    robust = prom.RobustPII(alts, weights=weights, ceils=ceils, R=R, m=m)
-
-    promethee_rr_instances = promethee.analyse_rr()
-
-    all_rr_instances = dict()
-    for repetition in range(max_rep):
-        rr_instances = robust.analyse_rr()
-        for key in rr_instances:
-            all_rr_instances[key] = \
-                    all_rr_instances.get(key, 0) + rr_instances.get(key)
-
-    all_info = []
-
-    key_set = set(all_rr_instances.keys()) | set(promethee_rr_instances.keys())
-    for key in key_set:
-        line = [key[0], key[1], all_rr_instances.get(key, 0),
-                promethee_rr_instances.get(key, 0),
-                abs(promethee.scores[key[0]] - promethee.scores[key[1]]),
-                abs(robust.scores[key[0]] - robust.scores[key[1]])]
-        all_info.append(line)
-    print_rr_to_file(output, all_info, promethee.scores, robust.scores, max_rep,
-                     R, m)
 
 
 def print_to_file(file_name, rr_info, PII_scores, Rob_scores, max_rep, R, m):
