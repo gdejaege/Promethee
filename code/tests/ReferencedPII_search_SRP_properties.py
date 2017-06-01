@@ -1,4 +1,7 @@
-"""Test file of the correct set of reference profiles found."""
+"""Test file of the correct set of reference profiles found.
+
+aqp means adaptive questioning procedure.
+"""
 
 import promethee as prom
 import data_reader as dr
@@ -11,8 +14,8 @@ from scipy import stats
 import numpy
 
 
-def RS_from_aqp(data_set="GEQ", seeds=range(3), alt_num=20):
-    """Analyse the correct RS found with this procedure."""
+def SRP_from_aqp(data_set="GEQ", seeds=range(3), alt_num=20):
+    """Analyse the correct SRP found with this procedure."""
     alts_file_name = "data/" + data_set + "/raw.csv"
     all_alts = dr.open_raw(alts_file_name)[0]
 
@@ -26,19 +29,19 @@ def RS_from_aqp(data_set="GEQ", seeds=range(3), alt_num=20):
         template_ratio += '{' + str(i+1) + ':+.3F}|'
 
     # Output
-    output_file = "res/ReferencedPII_RS_analysis/" + data_set
+    output_file = "res/ReferencedPII/SRP_analysis/" + data_set
 
     for seed in seeds:
         # Input
-        RS_prefix = "res/ReferencedPII_questioning_procedure/"
-        all_RS_file_name = data_set + "/" + str(seed) + ".csv"
-        all_RS = dr.open_raw_RS(RS_prefix + all_RS_file_name)
+        SRP_prefix = "res/ReferencedPII/adaptive_questioning_procedure/"
+        all_SRP_file_name = data_set + "/" + str(seed) + ".csv"
+        all_SRP = dr.open_raw_RS(SRP_prefix + all_SRP_file_name)
 
         # get the correct alt_num for the concerned seed
         promethee = prom.PrometheeII(all_alts, seed=seed, alt_num=alt_num)
         alts_per_criterion = list(map(list, zip(*promethee.alternatives)))
 
-        # Check if the parameters (= alternative subset) are indeed the same
+        # Check if the parameteres (= alternative subset) are indeed the same
         questioning_procedure = aqp.Adaptive_procedure(all_alts, seed=seed,
                                                        alt_num=alt_num,
                                                        ref_number=4,
@@ -51,20 +54,20 @@ def RS_from_aqp(data_set="GEQ", seeds=range(3), alt_num=20):
         """Will contain lists of means of the ref's evaluation for each criterion
         ex:
             all_means_ratio[0] = [mean(c1(r1), ..., mean(c2(r1), ..., c2(r4))]
-            RS_means[2] = [...]
+            SRP_means[2] = [...]
         """
-        # List of all ratios for individual RS
+        # List of all ratios for individual SRP
         all_mean_ratios = []
         all_var_ratios = []
 
-        for i in range(len(all_RS)):
-            RS = all_RS[i]
+        for i in range(len(all_SRP)):
+            SRP = all_SRP[i]
 
             # matrix = list of criteria which are lists of refs or
             # alternatives evaluations
-            refs_per_criterion = list(map(list, zip(*RS)))
+            refs_per_criterion = list(map(list, zip(*SRP)))
 
-            # ratio between estimator of on RS compared to the one of the alts
+            # ratio between estimator of on SRP compared to the one of the alts
             individual_mean_ratios, individual_var_ratios = [], []
             for crit in range(len(refs_per_criterion)):
                 var_ref = numpy.var(refs_per_criterion[crit])
@@ -80,7 +83,7 @@ def RS_from_aqp(data_set="GEQ", seeds=range(3), alt_num=20):
 
         # transpose the matrix : a list of references sets which are lists
         # of the estimators for each criterion becomes a list of estimators for
-        # each criterion which contains the estimater for each RS
+        # each criterion which contains the estimater for each SRP
         var_ratios_per_crit = list(map(list, zip(*all_var_ratios)))
         mean_ratios_per_crit = list(map(list, zip(*all_mean_ratios)))
 

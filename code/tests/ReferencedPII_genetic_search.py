@@ -43,8 +43,8 @@ def first_search(pop_size=600, mut_prob=0.01, MAXIT=50):
             save_res_to_file(output, alt_num, succes, failures, failures_tau)
 
 
-def retry_failed(data_set, alt_numbers, failed_seeds, ref_number=5, maxrep=1,
-                 pop_size=600, mut_prob=0.01, MAXIT=50):
+def retry_failed(data_set='SHA', alt_numbers=[20], failed_seeds=[[7, 8]],
+                 ref_number=5, maxrep=1, pop_size=600, mut_prob=0.01, MAXIT=50):
     """Retry the search for subsets which failed the first time."""
     weights, ceils = None, None
 

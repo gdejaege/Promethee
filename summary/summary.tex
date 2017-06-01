@@ -414,7 +414,7 @@
 In a world as wide and complex as ours, one is often confronted to intricate and complex decision problems. 
 These problems often consist of different conflicting aspects which should simultaneously be optimised.
 Unfortunately, there is generally no optimal solution which optimises all these aspects and choosing a best solution therefore consist in making the best trade-off. 
-Finding these trade-offs can be a fastidious task and as making a non optimal choice could lead to dramatic consequences.
+Finding these trade-offs can be a fastidious task and making a non optimal choice could lead to dramatic consequences.
 Therefore, the entity in charge of the decision (called the decision maker) could want to use some multi-criteria decision aid methods. These methods are aimed at giving the decision maker some insights about the problem by elaborating a mathematical model and quantifying the different solutions.
 
 % In the rest of this article, a decision problem will formalised as \cite{Bertrand2002}:
@@ -438,7 +438,7 @@ One of these multi-criteria decision aid methods is \textsc{promethee ii} (Prefe
 Such methods have often been criticised for being susceptible to the rank reversal phenomenon. This phenomenon is non uniquely defined but its main idea is that the relative ordering between two alternatives is influenced by the presence or absence of a third one \cite{Brans2016}.
 W. De Keyser and P. Peeters \cite{de1996note} were the first to point out that the \textsc{promethee} methods suffer from rank reversal occurrences.
 
-Indeed, if a decision aid methods based on pairwise comparisons build nontransitive pairwise preferences matrices, then there will always be some rank reversals possible.
+Indeed, if a decision aid method based on pairwise comparisons build nontransitive pairwise preferences matrices, then there will always be some rank reversals possible.
 
 One example of such a situation is given in Figure \ref{fig:untransitive_pref_example}, where 3 alternatives are considered.
 \begin{figure}[h]
@@ -529,16 +529,16 @@ The ranking method would probably now produce the following ranking:
   \label{eq:ranking_3alt_t}
 \end{equation}
 
-We can conclude from this example that a rank reversal between alternatives $x$ and $z$ occurred due to the removal of alternative $y$. This has some significant consequences since the country $x$ will not be selected as hosting country for the Olympic Games. It is not easy to find reasons why such rank reversals could occur (why should alternative $y$ influence the relative ordering between $x$ and $z$). Such situations are undesirable for most of the decision makers which there will try to avoid multi-criteria methods where rank reversals occur.
+We can conclude from this example that a rank reversal between alternatives $x$ and $z$ occurred due to the removal of alternative $y$. This has some significant consequences since the country $x$ will not be selected as hosting country for the Olympic Games. It is not easy to find reasons why such rank reversals could occur (why should alternative $y$ influence the relative ordering between $x$ and $z$). Such situations are undesirable for most of the decision makers. They will therefore try to avoid multi-criteria methods where rank reversals occur.
 
-For this reasons, two variations of the \textsc{promethee ii} methods have been proposed which were aimed at reducing, or suppressing these rank reversals. The main results of the investigation of these two methods is summarised here under.
+For these reasons, two variations of the \textsc{promethee ii} methods have been proposed which were aimed at reducing, or suppressing these rank reversals. The main results of the investigation of these two methods is summarised here under.
 
 \section{\textsc{robust promethee}}
 
 
 The \textsc{robust promethee} method has originally been proposed by De Smet in \cite{RobPII}. 
 
-It is based on the repetition, $R$ times, of \textsc{promethee ii} on samplings of size $m$. All the repetitions are used to build a probability matrix $P$ which elements $p_{ij}$ represent the probability that an alternative $a_i$ would be ranked before $a_j$ in one random subset. This probability matrix is then used to build a complete ranking. \textsc{robust promethee} is therefore also a ranking method based on pairwise comparisons, but it is hoped that the matrix $P$ will be more transitive than $\Pi$ and that there therefore will be less rank reversals.
+It is based on the repetition, $R$ times, of \textsc{promethee ii} on samplings of size $m$. All the repetitions are used to build a probability matrix $P$ which elements $p_{ij}$ represent the probability that an alternative $a_i$ would be ranked before $a_j$ in one random subset. This probability matrix is then used to build a complete ranking. \textsc{robust promethee} is therefore also a ranking method based on pairwise comparisons, but it is hoped that the matrix $P$ will be more transitive than $\Pi$ and that there will therefore be less rank reversals.
 
 Some empirical tests have been performed to verify this assertion on random samples of alternatives taken from the \textsc{epi}\cite{EPI}, \textsc{hdi}\cite{HDI} and \textsc{shanghai}\cite{SHA} data sets.
 The results of these tests show that \textsc{robust promethee} indeed seems to reduce the quantity of rank reversals, but only when used with appropriate values of $m$. Furthermore, these appropriate values of $m$ depend on the set of alternatives on which the method is applied and can vary from $30$ to $80 \%$ quantity of alternatives of the problem. This could be a serious obstacle in the practical usage of this method.
@@ -549,12 +549,12 @@ The results of these tests show that \textsc{robust promethee} indeed seems to r
 It has initially been proposed by Doan and De Smet in \cite{RefPII}.
 
 This method is not a ranking method based on pairwise comparisons, but compares each alternative of the problem to a predefined set of reference profiles.
-This method therefore does not suffer from rank reversals : the alternatives are ranked according to a score computed with fixed reference profiles, each alternative's score is therefore independent of any other alternative.
+This method therefore does not suffer from rank reversals: the alternatives are ranked according to a score computed with fixed reference profiles, each alternative's score is therefore independent of any other alternative.
 
 Unfortunately, this method comes with the additional cost of having to find a set of reference profiles. 
-It has been seen in the master thesis, that the rankings produced with \textsc{referenced promethee} were strongly dependent on these sets of profiles. Furthermore, it has been seen that it is generally possible to produce rankings similar to the one produced by \textsc{promethee ii} using only a small quantity of reference profiles (the rankings produced by \textsc{promethee ii} can be considered as satisfactory).
+It has been seen in the master thesis, that the rankings produced with \textsc{referenced promethee} were strongly dependent on these sets of profiles. Furthermore, it has been seen that it is generally possible to produce rankings similar to the one produced by \textsc{promethee ii} using only few reference profiles (the rankings produced by \textsc{promethee ii} can be considered as satisfactory).
 
-Two techniques aimed at finding sets of reference profiles were studied in the master thesis, but none of them is providings sets of reference producing ``\textsc{promethee ii}-similar'' rankings for all the sets of alternatives.
+Two techniques aimed at finding sets of reference profiles were studied in the master thesis, but none of them is providings sets of reference producing ``\textsc{promethee ii}-similar'' rankings for all decision problems.
 
 
 % An example of a floating figure using the graphicx package.

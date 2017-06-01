@@ -17,13 +17,10 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 
 def analyse(alt_num=20, seeds=range(0,3), data_sets=['EPI', 'SHA', 'GEQ'],
-            rounds=20):
+            rounds=20, make_pdf=False):
     """Analyse the results of the adaptive questioning procedure."""
-    data_sets = ['GEQ']
     weights, ceils = None, None
     seeds = range(3, 4)
-    rounds = 20
-    alt_num = 30
 
     output_dir = 'res/ReferencedPII/adaptive_questioning_procedure/'
     output_file = open(output_dir + "adaptative_questionning_results2.txt", "a")
@@ -51,18 +48,19 @@ def analyse(alt_num=20, seeds=range(0,3), data_sets=['EPI', 'SHA', 'GEQ'],
                 corrects = procedure.execute(rounds)
                 write_correct_pts(corrects, correct_pts_output)
                 print()
-            # Boxplot of the rankings
-            fig = plt.figure(1, figsize=(9, 6))
-            plt.suptitle(title_plot)
-            ax = fig.add_subplot(111)
-            ax.set_ylim(-0.3, 1.1)
-            ax.yaxis.set_major_locator(ticker.FixedLocator([-0.25, 0,
-                                                            0.25, 0.5,
-                                                            0.75, 1]))
-            bp = ax.boxplot(procedure.kendall_taus)
-            # pp.savefig(bbox_inches='tight')
-            fig.savefig(output_dir + title + '.pdf', bbox_inches='tight')
-            plt.clf()
+            if (make_pdf):
+                # Boxplot of the rankings
+                fig = plt.figure(1, figsize=(9, 6))
+                plt.suptitle(title_plot)
+                ax = fig.add_subplot(111)
+                ax.set_ylim(-0.3, 1.1)
+                ax.yaxis.set_major_locator(ticker.FixedLocator([-0.25, 0,
+                                                                0.25, 0.5,
+                                                                0.75, 1]))
+                bp = ax.boxplot(procedure.kendall_taus)
+                # pp.savefig(bbox_inches='tight')
+                fig.savefig(output_dir + title + '.pdf', bbox_inches='tight')
+                plt.clf()
     output_file.close()
     # pp.close()
 

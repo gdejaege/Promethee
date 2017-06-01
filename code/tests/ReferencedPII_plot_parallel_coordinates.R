@@ -5,14 +5,12 @@ options(stringsAsFactors = FALSE)
 data_sets <- c("EPI", "GEQ", "SHA")
 data_sets <- c("EPI", "GEQ", "SHA")
 seeds <- c(0, 1, 2)
-p <- 4                  # number of references profiles, do not change
-max_refs_sets <-10      # only 10 where collected in each file, therefore do not change
+p <- 4                  # number of reference profiles, do not change
+max_refs_sets <-10      # minimum 10 where collected in each file, therefore change with care
+                        # larger values could fail
 
 # make an array of the sets of reference profiles that must be plotted, do not exceed 10
 RS_to_plot <- c(1, 2)   
-
-# data_set <- data_sets[3]  # Choose the data set and  seed desired, not all possibilities are acceptable since
-# seed <- 0                 # there are data sets for which there where no sets of references profiles found
 
 for (data_set in data_sets){
     for (seed in seeds){
@@ -21,11 +19,12 @@ for (data_set in data_sets){
                        "sets of dominated reference profiles")
         pdf_title <- paste0("parallel_coordinate_plot_", data_set, '_seed_', seed, '_RS_',
                             paste(RS_to_plot, collapse='_', sep='_'), '.pdf')
-        res_folder <- ("../res/ReferencedPII_parallel_coordinate_plots/")
+        res_folder <- ("../res/ReferencedPII/parallel_coordinate_plots/")
         pdf_location_title <- paste0(res_folder, pdf_title)
         pdf_location_title
         pdf(pdf_location_title)
-        csvfile <- paste("../res/ReferencedPII_questioning_procedure/", data_set, "/", seed, ".csv", sep="")
+        csvfile <- paste("../res/ReferencedPII/adaptive_questioning_procedure/", data_set, 
+                         "/", seed, ".csv", sep="")
         dat = read.csv(csvfile, header=FALSE)
 
 
@@ -33,8 +32,8 @@ for (data_set in data_sets){
 
         # Initialisation off the matrix with the info to plot
         i <- RS_to_plot[1]
-        RS <- dat[seq(i:p),]                                 # get good lines
-        RS <- matrix(as.numeric(unlist(RS)),nrow=nrow(RS)) # transform in numericmatrix
+        RS <- dat[seq(i:p),]                                # get good lines
+        RS <- matrix(as.numeric(unlist(RS)),nrow=nrow(RS))  # transform in numericmatrix
         RS <- apply(RS, 2, sort)                            # sort columns (dominated RS) 
 
         # add an index to manage colors

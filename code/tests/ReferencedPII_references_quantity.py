@@ -4,10 +4,11 @@ import data_reader as dr
 import random
 
 
-def count_draws(threshold):
+def count_draws(threshold=0.001):
     """Test with EPI, SHA, GEQ dataset.
 
-    This test counts the number of draws."""
+    This test counts the number of draws.
+    """
     data_sets = ['SHA', 'EPI', 'GEQ']
     output = "res/ReferencedPII/reference_quantity/thresh_" + str(threshold) \
         + ".txt"
