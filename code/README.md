@@ -18,3 +18,12 @@ The following abbreviations should probabily be known in order to understand the
 
 * **SRP**, **RS**: Set or reference profiles, references set.
 * **aqp**: adaptive questioning procedure.
+
+
+The following libraries or utility files could be needed:
+
+* [numpy](http://www.numpy.org/)
+* [scipy](http://www.scipy.org/)
+* [bisect](https://docs.python.org/3/library/bisect.html)
+* [contextlib] (https://docs.python.org/3/library/contextlib.html)
+* [matplotlib] (https://matplotlib.org/)
